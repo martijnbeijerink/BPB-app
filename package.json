@@ -1,0 +1,17 @@
+{
+  "name": "bpb-app",
+  "private": true,
+  "description": "App voor cliënten en begeleiders van Burnout Preventie & Begeleiding",
+  "type": "module",
+  "scripts": {
+    "test": "node --test --test-reporter=spec \"tests/db/*.test.mjs\" \"tests/app/*.test.mjs\"",
+    "test:db": "node --test --test-reporter=spec \"tests/db/*.test.mjs\"",
+    "typecheck": "cd app && npx tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.8"
+  }
+}
