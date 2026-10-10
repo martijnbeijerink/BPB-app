@@ -21,7 +21,7 @@ Het fundament staat (bouwstap 1 uit het technisch ontwerp) en de eerste schermen
 | Tweede inlogstap | Niet in gebruik: inloggen is e-mailadres en wachtwoord. In de database met één instelling aan te zetten |
 | Uitnodigen per e-mail, wachtwoord herstellen | Volgt |
 | Meldingen op de telefoon (push) | Volgt |
-| Beheerder in de app: alles wat een begeleider kan, plus koppelen en ontkoppelen | Staat in de demo en in de ontwerpen (versie 0.4). In de echte app en de database nog te bouwen: daar is de beheerder nu nog geen begeleider |
+| Beheerder in de app: alles wat een begeleider kan, plus koppelen en ontkoppelen | Staat in de demo en in de ontwerpen (versie 0.5). In de echte app en de database nog te bouwen: daar is de beheerder nu nog geen begeleider |
 
 ## Indeling
 
@@ -31,7 +31,7 @@ Het fundament staat (bouwstap 1 uit het technisch ontwerp) en de eerste schermen
 | `tests/db/` | Tests die als cliënt, begeleider en beheerder proberen bij andermans gegevens te komen |
 | `tests/app/` | Tests van losse onderdelen van de app |
 | `app/` | De app zelf (Expo, React Native, TypeScript) |
-| `docs/` | Functioneel en technisch ontwerp, versie 0.4 (concept) |
+| `docs/` | Functioneel en technisch ontwerp, versie 0.5 (concept) |
 | `demo/` | Klikbare demo met voorbeeldgegevens, zonder backend: cliënt, begeleider en beheerder, op de telefoon en in de webbrowser, met een rondleiding |
 
 ## Tests draaien
