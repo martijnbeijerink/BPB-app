@@ -10,10 +10,10 @@ Dit is bouwstap 1 uit het technisch ontwerp: het fundament.
 
 | Onderdeel | Status |
 | --- | --- |
-| Database: tabellen en toegangsregels per rij | Klaar, met 48 tests |
+| Database: tabellen en toegangsregels per rij | Klaar, met 52 tests |
 | App: inloggen met e-mailadres en wachtwoord | Klaar, nog niet getest tegen een echt Supabase-project |
 | App: startscherm dat de bibliotheek uit de database leest | Klaar, idem |
-| Tweede inlogstap voor begeleiders en beheerder | Afgedwongen in de database, nog niet in de app |
+| Tweede inlogstap | Niet in gebruik: inloggen is e-mailadres en wachtwoord. In de database met één instelling aan te zetten |
 | Uitnodigen per e-mail, wachtwoord herstellen | Volgende stap |
 | Schermen Bibliotheek, Voor mij, Berichten, Profiel | Volgende stappen |
 | Toegangsregels voor bestanden (documenten, bijlagen) | Volgt bij de stap Bibliotheek |
@@ -26,7 +26,7 @@ Dit is bouwstap 1 uit het technisch ontwerp: het fundament.
 | `tests/db/` | Tests die als cliënt, begeleider en beheerder proberen bij andermans gegevens te komen |
 | `tests/app/` | Tests van losse onderdelen van de app |
 | `app/` | De app zelf (Expo, React Native, TypeScript) |
-| `docs/` | Functioneel en technisch ontwerp, versie 0.2 (concept) |
+| `docs/` | Functioneel en technisch ontwerp, versie 0.3 (concept) |
 | `demo/` | Klikbare demo met voorbeeldgegevens, zonder backend |
 
 ## Tests draaien
@@ -43,7 +43,7 @@ De tests bootsen het inlogsysteem van Supabase na (zie `tests/db/shim.sql`). Ze 
 ## Supabase instellen
 
 1. Maak op supabase.com een nieuw project in de regio **Central EU (Frankfurt)**.
-2. Open de SQL Editor, plak de inhoud van `supabase/migrations/20261009190000_fundament.sql` en voer die uit.
+2. Open de SQL Editor en voer de bestanden uit `supabase/migrations/` één voor één uit, in de volgorde van hun naam.
 3. Zet in de instellingen van Authentication het zelf registreren van nieuwe gebruikers uit. Accounts ontstaan alleen op uitnodiging.
 
 ### Een testcliënt aanmaken

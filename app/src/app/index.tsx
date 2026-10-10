@@ -20,16 +20,14 @@ const kindName = { video: 'Filmpje', document: 'Document' } as const;
 const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
 export default function Start() {
-  const { profile, secondStepDone, signOut } = useAuth();
+  const { profile, signOut } = useAuth();
   const [items, setItems] = useState<LibraryItem[] | null>(null);
   const [failed, setFailed] = useState(false);
 
   const active = profile?.status === 'active';
-  const needsSecondStep = !!profile && profile.role !== 'client' && !secondStepDone;
-  const mayRead = active && !needsSecondStep;
 
   useEffect(() => {
-    if (!supabase || !mayRead) return;
+    if (!supabase || !active) return;
     let current = true;
     supabase
       .from('library_items')
@@ -43,7 +41,7 @@ export default function Start() {
     return () => {
       current = false;
     };
-  }, [mayRead]);
+  }, [active]);
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -61,11 +59,7 @@ export default function Start() {
           </Notice>
         ) : null}
 
-        {active && needsSecondStep ? (
-          <Notice>Voor begeleiders en beheerders is een tweede inlogstap verplicht. Die wordt in de volgende bouwstap toegevoegd; tot dan zie je hier geen gegevens.</Notice>
-        ) : null}
-
-        {mayRead ? (
+        {active ? (
           <View style={styles.section}>
             <Text accessibilityRole="header" style={styles.sectionTitle}>
               Bibliotheek

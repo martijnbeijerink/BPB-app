@@ -80,8 +80,8 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <p class="lede">Hoe de app voor cliënten en begeleiders van Burnout Preventie &amp; Begeleiding wordt gebouwd, beveiligd en in gebruik genomen.</p>
   <dl class="meta">
     <dt>Opdrachtgever</dt><dd>Burnout Preventie &amp; Begeleiding</dd>
-    <dt>Versie</dt><dd>0.2</dd>
-    <dt>Datum</dt><dd>9 oktober 2026</dd>
+    <dt>Versie</dt><dd>0.3</dd>
+    <dt>Datum</dt><dd>10 oktober 2026</dd>
     <dt>Status</dt><dd>Concept, ter bespreking bij de demo</dd>
   </dl>
 </header>
@@ -121,7 +121,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <rect class="bx" x="24" y="24" width="340" height="64" rx="8"/><text class="tn" x="36" y="48">App voor cliënt en begeleider</text><text class="tb" x="36" y="66">Expo, één codebase voor Android en iPhone</text>
   <rect class="bx" x="396" y="24" width="340" height="64" rx="8"/><text class="tn" x="408" y="48">Webomgeving voor begeleider en beheerder</text><text class="tb" x="408" y="66">In de browser, met dezelfde inlog en regels</text>
 
-  <rect class="bx" x="40" y="168" width="158" height="88" rx="8"/><text class="tn" x="52" y="192">Inloggen</text><text class="tb" x="52" y="208">Alleen op uitnodiging,</text><text class="tb" x="52" y="224">tweestaps voor</text><text class="tb" x="52" y="240">begeleiders</text>
+  <rect class="bx" x="40" y="168" width="158" height="88" rx="8"/><text class="tn" x="52" y="192">Inloggen</text><text class="tb" x="52" y="208">Alleen op uitnodiging,</text><text class="tb" x="52" y="224">met e-mailadres</text><text class="tb" x="52" y="240">en wachtwoord</text>
   <rect class="bx-p" x="214" y="168" width="158" height="88" rx="8"/><text class="tn" x="226" y="192">Database</text><text class="tb-d" x="226" y="208">Toegangsregels per</text><text class="tb-d" x="226" y="224">rij: alleen de eigen</text><text class="tb-d" x="226" y="240">koppelingen</text>
   <rect class="bx" x="388" y="168" width="158" height="88" rx="8"/><text class="tn" x="400" y="192">Bestanden</text><text class="tb" x="400" y="208">Documenten en</text><text class="tb" x="400" y="224">bijlagen, besloten</text>
   <rect class="bx" x="562" y="168" width="158" height="88" rx="8"/><text class="tn" x="574" y="192">Serverfuncties</text><text class="tb" x="574" y="208">Videolinks tekenen,</text><text class="tb" x="574" y="224">meldingen versturen</text>
@@ -184,7 +184,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
     <tr><td class="key">Een begeleider ziet alleen eigen cliënten, en alleen de eigen pagina en het eigen gesprek</td><td><a href="https://supabase.com/docs/guides/auth/row-level-security">Toegangsregels per rij</a>: persoonlijke items, berichten en afspraken zijn alleen leesbaar voor de cliënt en de begeleider van die koppeling.</td></tr>
     <tr><td class="key">Een cliënt ziet nooit iets van andere cliënten</td><td>Dezelfde regels. De lijst met gebruikers is voor cliënten niet opvraagbaar.</td></tr>
     <tr><td class="key">De beheerder leest geen berichten en persoonlijke onderdelen</td><td>De beheerdersrol heeft geen leesrecht op die tabellen. Het beheer van accounts en koppelingen loopt via afgebakende functies.</td></tr>
-    <tr><td class="key">Tweestapsverificatie voor begeleiders en beheerder</td><td><a href="https://supabase.com/docs/guides/auth/auth-mfa">Tweestapsverificatie met een authenticator-app</a>. De toegangsregels eisen voor deze rollen dat de tweede stap is gedaan.</td></tr>
+    <tr><td class="key">Inloggen met e-mailadres en wachtwoord</td><td>Alle rollen loggen in met e-mailadres en wachtwoord. <a href="https://supabase.com/docs/guides/auth/auth-mfa">Tweestapsverificatie</a> is geen onderdeel van de eerste versie. De database kan die later met één instelling verplichten voor begeleiders en beheerder.</td></tr>
     <tr><td class="key">Bestanden zijn besloten</td><td>Documenten en bijlagen vallen onder dezelfde regels. Een filmpje speelt alleen af via een <a href="https://bunny.net/docs/stream/token-authentication.md">ondertekende link die verloopt</a>, uitgegeven na de toegangscontrole.</td></tr>
     <tr><td class="key">Een melding toont geen inhoud</td><td>De pushmelding bevat alleen de tekst dat er iets nieuws is. De app haalt de inhoud pas op na het ontgrendelen.</td></tr>
     <tr><td class="key">Na 1 jaar vervalt de toegang en verdwijnen de gegevens</td><td>Een dagelijkse taak sluit accounts 1 jaar na het einde van het traject en verwijdert berichten, persoonlijke items, bijlagen en persoonlijke filmpjes.</td></tr>
@@ -194,6 +194,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
 </div>
 <h3><span class="num">5.1</span>Grenzen van deze maatregelen</h3>
 <ul>
+  <li>Inloggen gebeurt met alleen e-mailadres en wachtwoord. Wie het wachtwoord van een begeleider kent, kan bij de gegevens van diens cliënten.</li>
   <li>Wie het Supabase-account zelf beheert, kan technisch altijd bij alle gegevens. Het advies is die toegang te beperken tot één of twee personen.</li>
   <li>Een ondertekende videolink is niet aan één kijker gebonden. Wie de link heeft, kan het filmpje bekijken tot de link verloopt. De looptijd wordt daarom kort gehouden.</li>
 </ul>
@@ -202,7 +203,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
 <p>De bouw verloopt in negen stappen. Elke stap wordt afgesloten met een test op een telefoon. De toegangsregels komen eerst, zodat alles wat daarna wordt gebouwd er vanaf het begin onder valt.</p>
 <ol class="rules">
   <li><strong>Fundament.</strong> Supabase-project in Frankfurt, de tabellen en de toegangsregels. Daarbij automatische tests die als cliënt, begeleider en beheerder proberen andermans gegevens te lezen en moeten falen.</li>
-  <li><strong>Inloggen.</strong> Uitnodiging per e-mail, wachtwoord, tweestapsverificatie voor begeleiders en vergrendeling met pincode of vingerafdruk. Testaccounts worden in deze fase nog met de hand aangemaakt.</li>
+  <li><strong>Inloggen.</strong> Uitnodiging per e-mail, wachtwoord en vergrendeling met pincode of vingerafdruk. Testaccounts worden in deze fase nog met de hand aangemaakt.</li>
   <li><strong>Bibliotheek.</strong> Bekijken in de app, daarna toevoegen en wijzigen door de begeleider, inclusief het uploaden van filmpjes.</li>
   <li><strong>Voor mij en afspraken.</strong> De pagina per discipline bij de cliënt, het delen door de begeleider en het overzicht van afspraken.</li>
   <li><strong>Berichten.</strong> Gesprekken per koppeling, met bijlagen.</li>
@@ -279,11 +280,12 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <tbody>
     <tr><td class="key">0.1</td><td>9 oktober 2026</td><td>Eerste concept, opgesteld bij de demo</td></tr>
     <tr><td class="key">0.2</td><td>9 oktober 2026</td><td>Overzicht van afspraken toegevoegd</td></tr>
+    <tr><td class="key">0.3</td><td>10 oktober 2026</td><td>Inloggen met alleen e-mailadres en wachtwoord; tweestapsverificatie vervallen, later aan te zetten</td></tr>
   </tbody>
 </table>
 </div>
 
-<footer><span>BPB-app · Technisch ontwerp</span><span>Versie 0.2 · 9 oktober 2026 · concept</span></footer>
+<footer><span>BPB-app · Technisch ontwerp</span><span>Versie 0.3 · 10 oktober 2026 · concept</span></footer>
 </div>
 </body>
 </html>

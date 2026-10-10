@@ -448,9 +448,8 @@ function libformScreen(s) {
     <p class="err" id="coach-err" hidden></p><button class="btn" type="button" data-act="lib-save">Opslaan</button>`);
 }
 function meScreen(role) {
-  const extra = role === 'coach' ? '<div class="setting"><span class="name">Tweestapsverificatie</span><span class="meta">Aan</span></div>' : '';
   return page(role, `<div class="profile"><img src="${LOGO}" alt="Burnout Preventie &amp; Begeleiding"><div class="head"><h2 class="h1">${ME[role].name}</h2><span class="meta">${ME[role].role}</span></div></div>
-    <div class="list"><div class="setting"><label for="${role}-notif">Pushmeldingen</label><input id="${role}-notif" type="checkbox" data-notif${ui[role].notif ? ' checked' : ''}></div>${extra}</div>
+    <div class="list"><div class="setting"><label for="${role}-notif">Pushmeldingen</label><input id="${role}-notif" type="checkbox" data-notif${ui[role].notif ? ' checked' : ''}></div></div>
     ${lock('Een melding toont nooit de inhoud, alleen dat er iets nieuws is.')}
     <button class="btn ghost" type="button" data-act="logout">Uitloggen</button>`);
 }
