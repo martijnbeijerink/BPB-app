@@ -48,6 +48,14 @@ const shapes = {
     </>
   ),
   left: <Path d="M15 6l-6 6 6 6" />,
+  right: <Path d="M9 6l6 6-6 6" />,
+  note: (
+    <>
+      <Path d="M5 4h14v11l-5 5H5z" />
+      <Path d="M14 20v-5h5" />
+    </>
+  ),
+  send: <Path d="M4 12l16-8-6 16-3-7z" />,
   lock: (
     <>
       <Rect x="5" y="11" width="14" height="9" rx="2" />
