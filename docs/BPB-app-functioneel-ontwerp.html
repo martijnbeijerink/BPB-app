@@ -80,7 +80,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <p class="lede">Een app voor Android en iPhone waarin cliënten en begeleiders van Burnout Preventie &amp; Begeleiding filmpjes, documenten en berichten delen.</p>
   <dl class="meta">
     <dt>Opdrachtgever</dt><dd>Burnout Preventie &amp; Begeleiding</dd>
-    <dt>Versie</dt><dd>0.3</dd>
+    <dt>Versie</dt><dd>0.4</dd>
     <dt>Datum</dt><dd>10 oktober 2026</dd>
     <dt>Status</dt><dd>Concept, ter bespreking bij de demo</dd>
   </dl>
@@ -112,26 +112,27 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
 <p>Het ontwerp is een concept. Opmerkingen uit de bespreking van de demo worden verwerkt in een volgende versie.</p>
 
 <h2 id="h2"><span class="num">2</span>Gebruikers en rechten</h2>
-<p>Drie rollen loggen in: de cliënt, de begeleider en de beheerder (het kantoor van BPB). De werkgever van een cliënt heeft geen account en ziet niets.</p>
+<p>Drie rollen loggen in: de cliënt, de begeleider en de beheerder. De beheerder is een begeleider met extra taken: die kan alles wat een begeleider kan, en regelt daarnaast de accounts en de koppelingen tussen cliënten en begeleiders. De werkgever van een cliënt heeft geen account en ziet niets.</p>
 <div class="tablewrap">
 <table>
   <thead><tr><th>Wat</th><th>Cliënt</th><th>Begeleider</th><th>Beheerder</th></tr></thead>
   <tbody>
     <tr><td class="key">Gedeelde bibliotheek bekijken</td><td>Ja</td><td>Ja</td><td>Ja</td></tr>
     <tr><td class="key">Gedeelde bibliotheek beheren</td><td class="no">Nee</td><td>Ja</td><td>Ja</td></tr>
-    <tr><td class="key">Persoonlijke onderdelen bekijken</td><td>Alleen de eigen</td><td>Alleen van eigen cliënten</td><td class="no">Nee</td></tr>
-    <tr><td class="key">Persoonlijke onderdelen plaatsen</td><td class="no">Nee</td><td>Voor eigen cliënten</td><td class="no">Nee</td></tr>
-    <tr><td class="key">Berichten met bijlagen</td><td>Met eigen begeleiders</td><td>Met eigen cliënten</td><td class="no">Nee</td></tr>
-    <tr><td class="key">Afspraken bekijken</td><td>Alleen de eigen</td><td>Alleen met eigen cliënten</td><td class="no">Nee</td></tr>
+    <tr><td class="key">Persoonlijke onderdelen bekijken</td><td>Alleen de eigen</td><td>Alleen van eigen cliënten</td><td>Alleen van eigen cliënten</td></tr>
+    <tr><td class="key">Persoonlijke onderdelen plaatsen</td><td class="no">Nee</td><td>Voor eigen cliënten</td><td>Voor eigen cliënten</td></tr>
+    <tr><td class="key">Berichten met bijlagen</td><td>Met eigen begeleiders</td><td>Met eigen cliënten</td><td>Met eigen cliënten</td></tr>
+    <tr><td class="key">Afspraken bekijken</td><td>Alleen de eigen</td><td>Alleen met eigen cliënten</td><td>Alleen met eigen cliënten</td></tr>
     <tr><td class="key">Accounts uitnodigen en afsluiten</td><td class="no">Nee</td><td class="no">Nee</td><td>Ja</td></tr>
-    <tr><td class="key">Cliënt per discipline aan begeleider koppelen</td><td class="no">Nee</td><td class="no">Nee</td><td>Ja</td></tr>
+    <tr><td class="key">Cliënt aan begeleider koppelen en ontkoppelen</td><td class="no">Nee</td><td class="no">Nee</td><td>Ja</td></tr>
+    <tr><td class="key">Overzicht van alle koppelingen bekijken</td><td class="no">Nee</td><td class="no">Nee</td><td>Ja</td></tr>
   </tbody>
 </table>
 </div>
-<p>De beheerder regelt accounts en koppelingen, maar leest geen berichten en geen persoonlijke onderdelen.</p>
+<p>De beheerder ziet welke cliënt bij welke begeleider hoort. Berichten en persoonlijke onderdelen van andere begeleiders en hun cliënten leest de beheerder niet.</p>
 
 <h2 id="h3"><span class="num">3</span>Opbouw van de app</h2>
-<p>Cliënt en begeleider gebruiken dezelfde app, elk met vijf hoofdschermen. De begeleider heeft dezelfde schermen ook in de webbrowser, bijvoorbeeld om filmpjes vanaf een computer te uploaden. De beheerder werkt alleen in de webbrowser.</p>
+<p>Cliënt, begeleider en beheerder gebruiken dezelfde app, elk met vijf hoofdschermen. De beheerder heeft de schermen van een begeleider. Op het scherm Cliënten staat voor de beheerder daarnaast het koppelen en ontkoppelen. Begeleider en beheerder hebben dezelfde schermen ook in de webbrowser, bijvoorbeeld om filmpjes vanaf een computer te uploaden. Accounts en de lijst met disciplines regelt de beheerder in de webbrowser.</p>
 <figure>
 <svg viewBox="0 0 760 452" role="img" aria-label="Schermen per rol: cliënt, begeleider en beheerder">
   <rect class="lane" x="24" y="16" width="712" height="120" rx="8"/>
@@ -151,10 +152,10 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <rect class="bx" x="584" y="184" width="124" height="72" rx="8"/><text class="tn" x="594" y="208">Profiel</text><text class="tb" x="594" y="224">Meldingen en</text><text class="tb" x="594" y="240">uitloggen</text>
 
   <rect class="lane" x="24" y="288" width="712" height="120" rx="8"/>
-  <text class="tn" x="40" y="309">Beheerder · in de webbrowser</text>
-  <rect class="bx" x="40" y="320" width="152" height="72" rx="8"/><text class="tn" x="52" y="344">Accounts</text><text class="tb" x="52" y="360">Uitnodigen en</text><text class="tb" x="52" y="376">afsluiten</text>
-  <rect class="bx" x="208" y="320" width="152" height="72" rx="8"/><text class="tn" x="220" y="344">Koppelingen</text><text class="tb" x="220" y="360">Cliënt en begeleider</text><text class="tb" x="220" y="376">per discipline</text>
-  <rect class="bx" x="376" y="320" width="152" height="72" rx="8"/><text class="tn" x="388" y="344">Bibliotheek</text><text class="tb" x="388" y="360">Indeling en items</text><text class="tb" x="388" y="376">beheren</text>
+  <text class="tn" x="40" y="309">Beheerder · de schermen van de begeleider, en daarnaast</text>
+  <rect class="bx" x="40" y="320" width="216" height="72" rx="8"/><text class="tn" x="52" y="344">Koppelingen</text><text class="tb" x="52" y="360">In de app: koppelen en</text><text class="tb" x="52" y="376">ontkoppelen</text>
+  <rect class="bx" x="268" y="320" width="216" height="72" rx="8"/><text class="tn" x="280" y="344">Accounts</text><text class="tb" x="280" y="360">In de webbrowser: uitnodigen</text><text class="tb" x="280" y="376">en afsluiten</text>
+  <rect class="bx" x="496" y="320" width="212" height="72" rx="8"/><text class="tn" x="508" y="344">Disciplines</text><text class="tb" x="508" y="360">In de webbrowser: de lijst</text><text class="tb" x="508" y="376">instellen</text>
 
   <rect class="bx-p" x="24" y="424" width="14" height="14" rx="3"/>
   <text class="tb" x="46" y="435">Privé: alleen deze cliënt en de eigen begeleider zien dit</text>
@@ -215,16 +216,22 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
 
 <h3><span class="num">4.7</span>Beheer</h3>
 <ul>
+  <li>De beheerder heeft in de app dezelfde schermen en functies als een begeleider, met eigen cliënten.</li>
+  <li>De beheerder koppelt in de app een cliënt aan een begeleider. De discipline is die van de begeleider. Per discipline heeft een cliënt één begeleider.</li>
+  <li>De beheerder ziet per cliënt een overzicht van de koppelingen: de discipline en de begeleider.</li>
+  <li>De beheerder kan een koppeling beëindigen (ontkoppelen). Cliënt en begeleider kunnen daarna niets nieuws meer delen of sturen, en komende afspraken vervallen. Wat er al staat, blijft voor beiden leesbaar tot de bewaartermijn uit hoofdstuk 5 afloopt.</li>
+  <li>Wordt dezelfde cliënt later opnieuw aan dezelfde begeleider gekoppeld, dan gaat de koppeling weer open met alles wat er al stond.</li>
+  <li>Een nieuwe of beëindigde koppeling is direct zichtbaar bij de cliënt en de begeleider.</li>
   <li>De beheerder nodigt gebruikers uit, blokkeert accounts en sluit ze af.</li>
-  <li>De beheerder koppelt een cliënt per discipline aan een begeleider en kan die koppeling wijzigen.</li>
   <li>De beheerder stelt de lijst met disciplines in.</li>
 </ul>
 
 <h2 id="h5"><span class="num">5</span>Privacy</h2>
-<p>De app verwerkt gegevens over de gezondheid van cliënten, terwijl de werkgever de opdrachtgever van het traject is. Daarom dwingt de app zes regels af, ongeacht wat een gebruiker probeert.</p>
+<p>De app verwerkt gegevens over de gezondheid van cliënten, terwijl de werkgever de opdrachtgever van het traject is. Daarom dwingt de app zeven regels af, ongeacht wat een gebruiker probeert.</p>
 <ol class="rules">
   <li>De werkgever heeft geen account en krijgt geen gegevens uit de app.</li>
   <li>Een begeleider ziet alleen cliënten die aan hem of haar gekoppeld zijn, en van die cliënten alleen de eigen pagina en het eigen gesprek.</li>
+  <li>De beheerder ziet welke cliënt bij welke begeleider hoort, maar leest alleen de pagina's en gesprekken van de eigen cliënten.</li>
   <li>Een cliënt ziet nooit iets van andere cliënten, ook geen namen.</li>
   <li>Een melding op het vergrendelscherm toont geen inhoud, alleen dat er iets nieuws is.</li>
   <li>Na het einde van een traject houdt de cliënt voorlopig 1 jaar toegang. Daarna wordt het account gesloten en worden berichten en persoonlijke onderdelen verwijderd.</li>
@@ -251,8 +258,10 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <li>Begeleiders van dezelfde cliënt zien elkaars pagina en gesprek niet.</li>
   <li>Alle begeleiders mogen de gedeelde bibliotheek beheren.</li>
   <li>De bibliotheek is ingedeeld in de zes werkenergie-thema's.</li>
-  <li>De begeleider werkt zowel in de app als in de webbrowser.</li>
-  <li>De beheerder kan berichten en persoonlijke onderdelen niet inzien.</li>
+  <li>Begeleider en beheerder werken zowel in de app als in de webbrowser.</li>
+  <li>De beheerder is zelf ook begeleider. Berichten en persoonlijke onderdelen van andere begeleiders en hun cliënten kan de beheerder niet inzien.</li>
+  <li>Elke begeleider heeft één discipline. Bij het koppelen volgt de discipline uit de gekozen begeleider.</li>
+  <li>Na het ontkoppelen blijft wat gedeeld en geschreven is leesbaar voor cliënt en begeleider, tot de bewaartermijn afloopt.</li>
   <li>De begeleider ziet niet of een cliënt een bericht heeft gelezen.</li>
   <li>De termijn van 1 jaar na het einde van het traject geldt voorlopig voor zowel de toegang van de cliënt als het bewaren van de gegevens.</li>
   <li>Afspraken worden vastgelegd door de begeleider of het kantoor van BPB. Hoe ze in de app komen, door invoer in de app of via een koppeling met een agenda, wordt nog afgestemd.</li>
@@ -266,11 +275,12 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
     <tr><td class="key">0.1</td><td>9 oktober 2026</td><td>Eerste concept, opgesteld bij de demo</td></tr>
     <tr><td class="key">0.2</td><td>9 oktober 2026</td><td>Overzicht van afspraken toegevoegd</td></tr>
     <tr><td class="key">0.3</td><td>10 oktober 2026</td><td>Inloggen met alleen e-mailadres en wachtwoord; tweestapsverificatie vervallen</td></tr>
+    <tr><td class="key">0.4</td><td>10 oktober 2026</td><td>De beheerder kan alles wat een begeleider kan; koppelen en ontkoppelen in de app</td></tr>
   </tbody>
 </table>
 </div>
 
-<footer><span>BPB-app · Functioneel ontwerp</span><span>Versie 0.3 · 10 oktober 2026 · concept</span></footer>
+<footer><span>BPB-app · Functioneel ontwerp</span><span>Versie 0.4 · 10 oktober 2026 · concept</span></footer>
 </div>
 </body>
 </html>

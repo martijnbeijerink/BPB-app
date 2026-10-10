@@ -91,8 +91,10 @@ button,input,textarea,select{font:inherit}
 .cardhead strong{flex:1;min-width:0;font-size:17px;overflow-wrap:anywhere}
 .cardhead .avatar{width:40px;height:40px;font-size:14px}
 .links{display:flex;flex-direction:column;margin:0;padding:0;list-style:none}
-.links li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line)}
-.links li span:first-child{font-weight:600}
+.links li{display:flex;align-items:center;gap:12px;min-height:44px;border-top:1px solid var(--line)}
+.links li span:first-child{flex:1;min-width:0;font-weight:600}
+.links li.ended span:first-child{color:var(--ink-2);font-weight:500}
+.unlink{flex:none;min-height:44px;padding:0 2px;border:0;background:transparent;color:var(--danger);font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .lock{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:16px;background:var(--calm);font-size:14px}
 .lock p{margin:0;text-wrap:pretty}
 .empty{margin:0;padding:20px;border:1.5px dashed var(--line-strong);border-radius:18px;color:var(--ink-2);font-size:15px;text-align:center;text-wrap:pretty}
@@ -110,6 +112,7 @@ button,input,textarea,select{font:inherit}
 .btn.accent{background:var(--accent);color:var(--ink);font-weight:700}
 .btn.accent .ic{color:var(--ink)}
 .btn.ghost{border:1.5px solid var(--ink);background:var(--surface);color:var(--ink)}
+.btn.danger{background:var(--danger);color:var(--on-ink)}
 .back{display:flex;align-items:center;gap:4px;align-self:flex-start;min-height:44px;margin-left:-6px;padding:0 12px 0 0;border:0;background:transparent;color:var(--ink);font-size:15px;font-weight:600;cursor:pointer}
 .coachcard{display:flex;align-items:center;gap:12px;padding:12px;border-radius:20px;background:var(--ink);color:var(--on-ink)}
 .coachcard .avatar{background:var(--on-ink);color:var(--ink)}
@@ -176,7 +179,7 @@ textarea.input{min-height:120px;padding:14px 16px;resize:vertical}
     <img id="bar-logo" alt="">
     <h1>BPB-app</h1>
     <span class="pill">Demo met voorbeeldgegevens</span>
-    <p>Deel iets als begeleider en zie het bij de cliënt verschijnen. Koppel als beheerder een cliënt aan een begeleider en zie de cliënt daar in de lijst komen.</p>
+    <p>Deel iets als begeleider en zie het bij de cliënt verschijnen. Koppel of ontkoppel als beheerder een cliënt en zie het bij de begeleider en de cliënt veranderen.</p>
     <button class="reset" id="reset" type="button">Opnieuw beginnen</button>
   </header>
   <div class="switch switch-all" role="tablist" aria-label="Kies een rol">
@@ -403,7 +406,7 @@ function personalItems(link, role, fresh) {
 function mineScreen() {
   const cards = mine('client').map(id => {
     const l = db.links[id], n = l.items.filter(i => !i.seen).length;
-    return `<button class="row tall" type="button" data-push="disc" data-a="${id}"><span class="avatar">${l.coachInit}</span><span class="row-main"><span class="row-title big">${esc(l.disc)}</span><span class="meta">met ${esc(l.coach)}</span></span>${n ? `<span class="badge">${n} nieuw</span>` : ''}${ic('right')}</button>`;
+    return `<button class="row tall" type="button" data-push="disc" data-a="${id}"><span class="avatar">${l.coachInit}</span><span class="row-main"><span class="row-title big">${esc(l.disc)}</span><span class="meta">met ${esc(l.coach)}${l.ended ? ' · afgerond' : ''}</span></span>${n ? `<span class="badge">${n} nieuw</span>` : ''}${ic('right')}</button>`;
   }).join('');
   return page('client', `<div class="head"><h2 class="h1">Voor mij</h2><p class="sub">Wat je begeleiders persoonlijk met je delen, per discipline.</p></div><div class="stack">${cards}</div>${lock('Elke pagina is privé. Alleen jij en de begeleider van die discipline zien wat erop staat. Je werkgever ziet niets.')}`);
 }
@@ -411,6 +414,7 @@ function discScreen(s) {
   const l = db.links[s.a];
   return page('client', `${back('Voor mij')}<h2 class="h1">${esc(l.disc)}</h2>
     <div class="coachcard"><span class="avatar">${l.coachInit}</span><div class="grow"><strong>${esc(l.coach)}</strong><span class="meta">Je begeleider voor ${esc(l.disc.toLowerCase())}</span></div><button class="btn accent small" type="button" data-push="chat" data-a="${l.id}">${ic('msg')}<span>Bericht</span></button></div>
+    ${l.ended ? lock('Dit traject is afgerond. Je kunt alles nog teruglezen.') : ''}
     <div class="stack">${personalItems(l, 'client', s.fresh || [])}</div>`);
 }
 function preview(link, role) {
@@ -436,12 +440,15 @@ function chatScreen(role, s) {
     : `<span class="avatar soft">${l.clientInit}</span><div class="grow"><h2>${esc(l.client)}</h2><span class="meta">Cliënt · ${esc(l.disc)}</span></div>`;
   const msgs = l.msgs.map(m => `${m.day ? `<div class="day">${m.day}</div>` : ''}<div class="bubble ${m.from === side(role) ? 'me' : 'them'}">${m.text ? `<span>${esc(m.text)}</span>` : ''}${m.att ? `<span class="att">${ic('file', 'sm')}<span>${esc(m.att)}</span></span>` : ''}</div>`).join('');
   const to = role === 'client' ? l.coach : first(l.client);
-  return `<div class="chathead"><button class="iconbtn" type="button" data-back aria-label="Terug">${ic('left')}</button>${head}</div>
-    <div class="msgs">${msgs || '<p class="empty">Nog geen berichten. Stuur het eerste bericht.</p>'}</div>
-    <div class="composer">${u.attach ? `<div class="pending">${ic('file', 'sm')}<span>Bijlage: foto.jpg (voorbeeld)</span></div>` : ''}
+  const composer = l.ended
+    ? `<div class="composer">${lock('Dit traject is afgerond. Je kunt de berichten nog teruglezen, maar geen nieuwe meer sturen.')}</div>`
+    : `<div class="composer">${u.attach ? `<div class="pending">${ic('file', 'sm')}<span>Bijlage: foto.jpg (voorbeeld)</span></div>` : ''}
       <div class="composer-row"><button class="iconbtn soft" type="button" data-act="attach" aria-pressed="${u.attach}" aria-label="Bijlage toevoegen">${ic('clip')}</button>
       <label class="sr" for="${role}-msg">Bericht aan ${esc(to)}</label><input id="${role}-msg" type="text" placeholder="Schrijf een bericht" autocomplete="off" data-msg>
       <button class="iconbtn accent" type="button" data-act="send" aria-label="Versturen">${ic('send')}</button></div></div>`;
+  return `<div class="chathead"><button class="iconbtn" type="button" data-back aria-label="Terug">${ic('left')}</button>${head}</div>
+    <div class="msgs">${msgs || `<p class="empty">${l.ended ? 'Er zijn geen berichten in dit gesprek.' : 'Nog geen berichten. Stuur het eerste bericht.'}</p>`}</div>
+    ${composer}`;
 }
 function apptsScreen(role) {
   const all = mine(role).flatMap(id => db.links[id].appts.map(a => ({ ...a, link: db.links[id] })));
@@ -465,7 +472,7 @@ function clientRows(role) {
   if (!ids.length) return '<p class="empty">Er zijn nog geen cliënten aan jou gekoppeld.</p>';
   return `<div class="list">${ids.map(id => {
     const l = db.links[id];
-    const status = l.unread.coach ? '<span class="status"><span class="dot"></span>Nieuw bericht</span>'
+    const status = l.ended ? '<span class="meta">Traject afgerond</span>' : l.unread.coach ? '<span class="status"><span class="dot"></span>Nieuw bericht</span>'
       : `<span class="meta">${l.items.length ? (l.items[0].date === 'Vandaag' ? 'Vandaag iets gedeeld' : `Laatst gedeeld op ${l.items[0].date}`) : 'Nog niets gedeeld'}</span>`;
     return `<button class="row" type="button" data-push="client" data-a="${id}"><span class="avatar soft">${l.clientInit}</span><span class="row-main"><span class="row-title">${esc(l.client)}</span>${status}</span>${ic('right')}</button>`;
   }).join('')}</div>`;
@@ -475,7 +482,9 @@ function allLinks() {
   return `<div class="stack">${CLIENTS.map(c => {
     const links = Object.values(db.links).filter(l => l.client === c.name);
     const lines = links.length
-      ? `<ul class="links">${links.map(l => `<li><span>${esc(l.disc)}</span><span class="meta">${esc(l.coach)}${l.owner === 'admin' ? ' (jij)' : ''}</span></li>`).join('')}</ul>`
+      ? `<ul class="links">${links.map(l => l.ended
+        ? `<li class="ended"><span>${esc(l.disc)}</span><span class="meta">${esc(l.coach)} · afgerond</span></li>`
+        : `<li><span>${esc(l.disc)}</span><span class="meta">${esc(l.coach)}${l.owner === 'admin' ? ' (jij)' : ''}</span><button class="unlink" type="button" data-push="unlink" data-a="${l.id}" aria-label="Ontkoppel ${esc(c.name)} van ${esc(l.coach)}">Ontkoppelen</button></li>`).join('')}</ul>`
       : '<p class="meta">Nog niet gekoppeld</p>';
     return `<div class="card" data-client="${esc(c.name)}"><div class="cardhead"><span class="avatar soft">${c.init}</span><strong>${esc(c.name)}</strong><button class="btn ghost small" type="button" data-push="link" data-a="${esc(c.name)}" aria-label="Koppel ${esc(c.name)} aan een begeleider">Koppelen</button></div>${lines}</div>`;
   }).join('')}</div>`;
@@ -487,7 +496,7 @@ function clientsScreen(role) {
   return page(role, `<div class="head"><h2 class="h1">Cliënten</h2><p class="sub">Als beheerder koppel je cliënten aan begeleiders.</p></div>
     <button class="btn" type="button" data-push="link" data-a="">${ic('link')}<span>Cliënt koppelen aan begeleider</span></button>
     <div class="chips">${chip('mine', 'Mijn cliënten')}${chip('all', 'Alle koppelingen')}</div>
-    ${all ? allLinks() + lock('Je ziet wie aan wie gekoppeld is. Wat een begeleider en een cliënt delen en schrijven, zie je alleen bij je eigen cliënten.')
+    ${all ? allLinks() + lock('Je ziet wie aan wie gekoppeld is en kunt een koppeling beëindigen. Wat een begeleider en een cliënt delen en schrijven, zie je alleen bij je eigen cliënten.')
       : clientRows(role) + lock(`Dit zijn je eigen cliënten, voor ${ME[role].disc.toLowerCase()}. Hier werk je als begeleider.`)}`);
 }
 function linkScreen(role, s) {
@@ -498,12 +507,19 @@ function linkScreen(role, s) {
     <p class="err" id="${role}-err" hidden></p><button class="btn" type="button" data-act="link-save">Koppelen</button>
     ${lock('De cliënt en de begeleider zien elkaar daarna in de app. Wat zij delen en schrijven, blijft tussen hen.')}`);
 }
+function unlinkScreen(role, s) {
+  const l = db.links[s.a], f = esc(first(l.client));
+  return page(role, `${back('Cliënten')}<div class="head"><h2 class="h1">${f} ontkoppelen van ${esc(l.coach)}?</h2><p class="sub">${esc(l.client)} · ${esc(l.disc)} met ${esc(l.coach)}</p></div>
+    ${lock(`${f} en ${esc(l.coach)} kunnen daarna niets nieuws meer delen of sturen. Wat er al staat, blijft voor hen leesbaar tot de bewaartermijn afloopt.`)}
+    <button class="btn danger" type="button" data-act="unlink">Ontkoppelen</button><button class="btn ghost" type="button" data-back>Annuleren</button>`);
+}
 function clientScreen(role, s) {
   const l = db.links[s.a], f = esc(first(l.client));
   const share = (kind, icon, label, alt) => `<button class="share${alt ? ' alt' : ''}" type="button" data-push="share" data-a="${l.id}" data-b="${kind}">${ic(icon)}<span>${label}</span></button>`;
   return page(role, `${back(role === 'coach' ? 'Mijn cliënten' : 'Cliënten')}
     <div class="headrow"><div class="grow"><h2 class="h1">${esc(l.client)}</h2><span class="meta">${esc(l.disc)} · alleen jij en ${f} zien dit</span></div><button class="btn small" type="button" data-push="chat" data-a="${l.id}">${ic('msg')}<span>Bericht</span></button></div>
-    <div class="stack"><h3 class="h2">Delen met ${f}</h3><div class="grid2">${share('video', 'play', 'Filmpje')}${share('doc', 'file', 'Document')}${share('note', 'note', 'Notitie')}${share('lib', 'book', 'Uit de bibliotheek', true)}</div></div>
+    ${l.ended ? lock('Dit traject is afgerond. Je kunt niets nieuws meer delen, maar alles nog wel teruglezen.')
+      : `<div class="stack"><h3 class="h2">Delen met ${f}</h3><div class="grid2">${share('video', 'play', 'Filmpje')}${share('doc', 'file', 'Document')}${share('note', 'note', 'Notitie')}${share('lib', 'book', 'Uit de bibliotheek', true)}</div></div>`}
     <div class="stack"><h3 class="h2">Gedeeld</h3>${personalItems(l, 'coach', [])}</div>`);
 }
 function shareScreen(role, s) {
@@ -543,7 +559,7 @@ function view(role) {
   const u = ui[role], s = top(role);
   let html;
   if (u.out) html = outScreen(role);
-  else if (s) html = { item: itemScreen, pitem: pitemScreen, chat: chatScreen, client: clientScreen, share: shareScreen, libform: libformScreen, link: linkScreen, disc: (r, x) => discScreen(x) }[s.name](role, s);
+  else if (s) html = { item: itemScreen, pitem: pitemScreen, chat: chatScreen, client: clientScreen, share: shareScreen, libform: libformScreen, link: linkScreen, unlink: unlinkScreen, disc: (r, x) => discScreen(x) }[s.name](role, s);
   else html = { lib: () => libScreen(role), mine: mineScreen, msgs: () => msgsScreen(role), me: () => meScreen(role), clients: () => clientsScreen(role), appts: () => apptsScreen(role) }[nav[role].tab]();
   return html + (u.toast ? `<div class="toast" role="status">${esc(u.toast)}</div>` : '');
 }
@@ -594,7 +610,7 @@ function act(role, name, btn) {
   if (name === 'theme') { u.theme = btn.dataset.a; renderPhone(role); }
   else if (name === 'attach') { u.attach = !u.attach; renderPhone(role); }
   else if (name === 'send') {
-    const l = db.links[s.a], text = val('msg'); if (!text && !u.attach) return;
+    const l = db.links[s.a], text = val('msg'); if (l.ended || (!text && !u.attach)) return;
     const m = { from: side(role), text, att: u.attach ? 'foto.jpg' : '' };
     if (!l.today) { m.day = 'Vandaag'; l.today = true; }
     l.msgs.push(m); l.last = 'Vandaag'; u.attach = false;
@@ -620,14 +636,30 @@ function act(role, name, btn) {
     if (!client) return fail('Kies een cliënt.');
     if (!staff) return fail('Kies een begeleider.');
     // Per discipline heeft een cliënt één begeleider.
-    const taken = Object.values(db.links).find(l => l.client === client.name && l.disc === staff.disc);
+    const taken = Object.values(db.links).find(l => !l.ended && l.client === client.name && l.disc === staff.disc);
     if (taken) return fail(taken.coach === staff.name ? `${first(client.name)} is al aan ${staff.name} gekoppeld.` : `${first(client.name)} heeft voor ${staff.disc.toLowerCase()} al een begeleider: ${taken.coach}.`);
-    const id = 'L' + (++uid);
-    db.links[id] = { id, client: client.name, clientInit: client.init, coach: staff.name, coachInit: staff.init, disc: staff.disc, last: '', unread: { client: false, coach: false }, items: [], msgs: [], appts: [], owner: staff.phone };
+    // Een eerder afgeronde koppeling met dezelfde begeleider gaat weer open, met alles wat er al stond.
+    const old = Object.values(db.links).find(l => l.ended && l.client === client.name && l.coach === staff.name);
+    if (old) old.ended = false;
+    else {
+      const id = 'L' + (++uid);
+      db.links[id] = { id, client: client.name, clientInit: client.init, coach: staff.name, coachInit: staff.init, disc: staff.disc, last: '', unread: { client: false, coach: false }, items: [], msgs: [], appts: [], owner: staff.phone };
+    }
     nav[role].stack.pop(); u.cview = staff.phone === role ? 'mine' : 'all';
-    toast(role, `${first(client.name)} gekoppeld aan ${staff.name}`);
+    toast(role, `${first(client.name)} ${old ? 'opnieuw ' : ''}gekoppeld aan ${staff.name}`);
     if (staff.phone && staff.phone !== role) toast(staff.phone, `Nieuwe cliënt: ${client.name}`);
     if (client.name === ME.client.name) toast('client', `Nieuwe begeleider: ${staff.name} · ${staff.disc}`);
+    renderAll();
+  }
+  else if (name === 'unlink') {
+    const l = db.links[s.a];
+    l.ended = true; l.appts = l.appts.filter(a => a.past);
+    // Wie net iets wilde delen met deze cliënt, gaat terug naar de pagina van de cliënt.
+    for (const r of ROLES) { const i = nav[r].stack.findIndex(x => x.name === 'share' && x.a === l.id); if (i >= 0) nav[r].stack.length = i; }
+    nav[role].stack.pop(); u.cview = 'all';
+    toast(role, `${first(l.client)} ontkoppeld van ${l.coach}`);
+    if (l.owner && l.owner !== role) toast(l.owner, `Traject met ${l.client} afgerond`);
+    if (l.client === ME.client.name) toast('client', `${l.disc} met ${l.coach} is afgerond`);
     renderAll();
   }
   else if (name === 'logout') { u.out = true; nav[role].stack = []; renderPhone(role); }
