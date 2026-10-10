@@ -66,16 +66,22 @@ Een nieuw account is standaard cliënt en nog niet actief. Zonder de eerste opdr
 
 Nodig: de app Expo Go op je telefoon, op hetzelfde wifi-netwerk als je computer.
 
+De app staat in de submap `app`. Installeren en starten doe je dus daar, niet in de hoofdmap:
+
 ```
 cd app
 npm install
 ```
 
-Kopieer `app/.env.example` naar `app/.env.local` en vul het adres en de publieke sleutel van je Supabase-project in. Start daarna:
+Kopieer `app/.env.example` naar `app/.env.local` en vul het adres en de publieke sleutel van je Supabase-project in. Gebruik de publieke sleutel (publishable of anon), nooit een secret key. Start daarna, nog steeds in de map `app`:
 
 ```
 npx expo start
 ```
+
+Vanuit de hoofdmap kan het ook met `npm start`.
+
+Krijg je de melding `Unable to resolve "../../App"`, dan is de app vanuit de hoofdmap gestart in plaats van vanuit `app`.
 
 Scan de QR-code met Expo Go (Android) of met de camera (iPhone).
 

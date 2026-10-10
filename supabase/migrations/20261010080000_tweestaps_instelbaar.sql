@@ -16,6 +16,10 @@ create table private.app_settings (
 );
 insert into private.app_settings default values;
 revoke all on private.app_settings from public, anon, authenticated;
+-- Tweede slot: row level security aan, zonder regels. Niemand behalve de
+-- eigenaar van de database kan de rij dan lezen of wijzigen. De functie
+-- hieronder draait als eigenaar en kan de instelling dus wel lezen.
+alter table private.app_settings enable row level security;
 
 -- De rol van de ingelogde gebruiker, of niets als die er nu niet in mag:
 --  * het account moet actief zijn (niet uitgenodigd, geblokkeerd of gesloten);

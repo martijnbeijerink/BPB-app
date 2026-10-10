@@ -4,6 +4,7 @@
   "description": "App voor cliënten en begeleiders van Burnout Preventie & Begeleiding",
   "type": "module",
   "scripts": {
+    "start": "cd app && npx expo start",
     "test": "node --test --test-reporter=spec \"tests/db/*.test.mjs\" \"tests/app/*.test.mjs\"",
     "test:db": "node --test --test-reporter=spec \"tests/db/*.test.mjs\"",
     "typecheck": "cd app && npx tsc --noEmit"
