@@ -1,8 +1,8 @@
 // Gedeelde opbouw van een scherm, en de tussenstand voor schermen die nog
 // gebouwd moeten worden.
 
-import type { ReactNode } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { useState, type ReactNode } from 'react';
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Body, Notice, Title } from '@/components/ui';
@@ -14,10 +14,26 @@ export const screenStyles = StyleSheet.create({
   head: { gap: 8 },
 });
 
-export function Screen({ children }: { children: ReactNode }) {
+/** Een scherm dat kan scrollen. Met onRefresh kan de gebruiker het scherm omlaag trekken om te verversen. */
+export function Screen({ children, onRefresh }: { children: ReactNode; onRefresh?(): Promise<unknown> }) {
+  const [refreshing, setRefreshing] = useState(false);
+  const refresh = async () => {
+    if (!onRefresh) return;
+    setRefreshing(true);
+    try {
+      await onRefresh();
+    } finally {
+      setRefreshing(false);
+    }
+  };
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={screenStyles.safe}>
-      <ScrollView contentContainerStyle={screenStyles.content}>{children}</ScrollView>
+      <ScrollView
+        contentContainerStyle={screenStyles.content}
+        keyboardShouldPersistTaps="handled"
+        refreshControl={onRefresh ? <RefreshControl onRefresh={refresh} refreshing={refreshing} tintColor={colors.ink} /> : undefined}>
+        {children}
+      </ScrollView>
     </SafeAreaView>
   );
 }

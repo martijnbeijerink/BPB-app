@@ -10,14 +10,17 @@ Het fundament staat (bouwstap 1 uit het technisch ontwerp) en de eerste schermen
 
 | Onderdeel | Status |
 | --- | --- |
-| Database: tabellen en toegangsregels per rij | Klaar, met 52 tests |
+| Database: tabellen en toegangsregels per rij | Klaar, met 61 tests |
 | App: inloggen met e-mailadres en wachtwoord | Klaar, getest op een telefoon tegen het echte Supabase-project |
-| App: menubalk met tabs per rol, Bibliotheek met thema's en zoeken, Profiel | Klaar. In een browser doorgeklikt tegen een nagebootste backend, nog niet op een telefoon |
+| App: menubalk met tabs per rol, Bibliotheek met thema's en zoeken, Profiel | Klaar, getest op een telefoon |
+| App: Voor mij (cliënt) en Cliënten (begeleider): notitie delen en een bibliotheekitem aanraden | Klaar. In een browser doorgeklikt tegen een nagebootste backend, nog niet op een telefoon |
+| App: Berichten tussen cliënt en begeleider, live, met tellers in de menubalk | Klaar, zonder bijlagen. In een browser doorgeklikt tegen een nagebootste backend, nog niet op een telefoon. Het live binnenkomen is alleen op het echte project te controleren |
+| Eigen filmpje of document delen, bijlagen bij berichten | Volgt zodra de bestandsopslag en de videodienst zijn gekoppeld |
 | Afspelen van filmpjes en openen van documenten | Volgt zodra de videodienst en de bestandsopslag zijn gekoppeld |
+| Scherm Afspraken | Volgende stap. De tab bestaat al en toont een tussenscherm |
 | Tweede inlogstap | Niet in gebruik: inloggen is e-mailadres en wachtwoord. In de database met één instelling aan te zetten |
-| Uitnodigen per e-mail, wachtwoord herstellen | Volgende stap |
-| Schermen Voor mij, Cliënten, Afspraken en Berichten | Volgende stappen. De tabs bestaan al en tonen een tussenscherm |
-| Toegangsregels voor bestanden (documenten, bijlagen) | Volgt bij de stap Bibliotheek |
+| Uitnodigen per e-mail, wachtwoord herstellen | Volgt |
+| Meldingen op de telefoon (push) | Volgt |
 
 ## Indeling
 
@@ -63,7 +66,32 @@ from auth.users where email = 'anouk@voorbeeld.nl';
 
 Een nieuw account is standaard cliënt en nog niet actief. Zonder de eerste opdracht ziet de gebruiker na het inloggen alleen de melding dat het account nog niet actief is.
 
-Een testbegeleider maak je op dezelfde manier, met `role = 'coach'` erbij in de eerste opdracht. Een begeleider ziet de tab Cliënten in plaats van Voor mij.
+### Een testbegeleider aanmaken en koppelen
+
+Voor mij, Cliënten en Berichten werken pas als een cliënt aan een begeleider is gekoppeld. Maak onder Authentication een tweede gebruiker aan en voer daarna in de SQL Editor uit, met de e-mailadressen van jouw twee testgebruikers:
+
+```sql
+-- De begeleider: naam, rol en actief
+update public.profiles
+set full_name = 'Marjolijn', role = 'coach', status = 'active'
+where id = (select id from auth.users where email = 'marjolijn@voorbeeld.nl');
+
+-- De discipline
+insert into public.disciplines (name) values ('ontspannen')
+on conflict (name) do nothing;
+
+-- De koppeling: deze cliënt, deze begeleider, deze discipline
+insert into public.assignments (client_id, coach_id, discipline_id)
+select c.id, b.id, d.id
+from auth.users c, auth.users b, public.disciplines d
+where c.email = 'anouk@voorbeeld.nl'
+  and b.email = 'marjolijn@voorbeeld.nl'
+  and d.name = 'ontspannen';
+```
+
+De laatste opdracht hoort "1 row" te melden. Meldt hij "0 rows", dan klopt een van de e-mailadressen niet.
+
+Een begeleider ziet de tab Cliënten in plaats van Voor mij. Log met de begeleider in om een notitie te delen of een bericht te sturen, en met de cliënt om het te zien. Dat kan op twee telefoons, of op één telefoon door uit en in te loggen.
 
 ## De app starten
 

@@ -327,3 +327,67 @@ describe('Leesstand en apparaten', () => {
     await assertDenied(run(u.bram, "insert into public.devices (user_id, push_token, platform) values ($1, 'token-vals', 'android')", [u.anouk.id]));
   });
 });
+
+describe('Overzicht per koppeling en leesstand', () => {
+  const mine = async (who) => (await run(who, 'select * from public.my_assignments()')).rows;
+  const byId = (rows, id) => rows.find((row) => row.assignment_id === id);
+
+  test('een cliënt ziet de eigen koppelingen met begeleider en discipline', async () => {
+    const rows = await mine(u.anouk);
+    assert.deepEqual(rows.map((row) => `${row.discipline} met ${row.coach_name}`), ['Ontspannen met Marjolijn', 'Voeding met Sanne']);
+    assert.ok(rows.every((row) => row.client_id === u.anouk.id));
+  });
+  test('een begeleider ziet alleen de eigen cliënten', async () => {
+    const rows = await mine(u.marjolijn);
+    assert.deepEqual(rows.map((row) => row.client_name).sort(), ['Anouk V.', 'Bram J.', 'Geblokkeerde cliënt']);
+    assert.ok(rows.every((row) => row.coach_id === u.marjolijn.id));
+  });
+  test('de beheerder en een geblokkeerd account krijgen niets terug', async () => {
+    assert.deepEqual(await mine(u.beheerder), []);
+    assert.deepEqual(await mine(u.geblokkeerd), []);
+    assert.deepEqual(await mine(u.uitgenodigd), []);
+  });
+  test('een bezoeker zonder account kan de functies niet aanroepen', async () => {
+    await assertDenied(run(ANON, 'select * from public.my_assignments()'));
+    await assertDenied(run(ANON, 'select public.mark_read($1, true, true)', [k.anoukOntspannen]));
+  });
+  test('nieuw en ongelezen tellen alleen wat van de ander komt', async () => {
+    const rows = await mine(u.anouk);
+    // Ontspannen: het enige bericht is van Anouk zelf; de notitie van Marjolijn is nieuw.
+    assert.equal(byId(rows, k.anoukOntspannen).unread_messages, 0);
+    assert.equal(byId(rows, k.anoukOntspannen).new_items, 1);
+    assert.equal(byId(rows, k.anoukOntspannen).last_message_mine, true);
+    // Voeding: Sanne stuurde een bericht dat Anouk nog niet las.
+    assert.equal(byId(rows, k.anoukVoeding).unread_messages, 1);
+    assert.equal(byId(rows, k.anoukVoeding).last_message_body, 'Bericht van Sanne aan Anouk');
+    // De begeleider ziet de eigen notitie niet als nieuw, het bericht van Anouk wel als ongelezen.
+    const coach = byId(await mine(u.marjolijn), k.anoukOntspannen);
+    assert.equal(coach.new_items, 0);
+    assert.equal(coach.unread_messages, 1);
+  });
+  test('na het lezen staat de teller op nul, en een nieuw bericht telt weer mee', async () => {
+    await run(u.anouk, 'select public.mark_read($1, true, false)', [k.anoukVoeding]);
+    let row = byId(await mine(u.anouk), k.anoukVoeding);
+    assert.equal(row.unread_messages, 0);
+    assert.equal(row.new_items, 1, 'onderdelen zijn nog niet bekeken');
+    await run(u.anouk, 'select public.mark_read($1, false, true)', [k.anoukVoeding]);
+    row = byId(await mine(u.anouk), k.anoukVoeding);
+    assert.equal(row.new_items, 0);
+    assert.equal(row.unread_messages, 0, 'de leesstand van berichten blijft staan');
+    await run(u.sanne, "insert into public.messages (assignment_id, sender_id, body, created_at) values ($1, $2, 'Nog een bericht', now() + interval '1 minute')", [k.anoukVoeding, u.sanne.id]);
+    assert.equal(byId(await mine(u.anouk), k.anoukVoeding).unread_messages, 1);
+  });
+  test('de leesstand van de een verandert niets voor de ander', async () => {
+    await run(u.anouk, 'select public.mark_read($1, true, true)', [k.anoukOntspannen]);
+    assert.equal(byId(await mine(u.marjolijn), k.anoukOntspannen).unread_messages, 1);
+  });
+  test('niemand kan de leesstand bijwerken in de koppeling van een ander', async () => {
+    await assertDenied(run(u.bram, 'select public.mark_read($1, true, true)', [k.anoukOntspannen]));
+    await assertDenied(run(u.sanne, 'select public.mark_read($1, true, true)', [k.anoukOntspannen]));
+    await assertDenied(run(u.beheerder, 'select public.mark_read($1, true, true)', [k.anoukOntspannen]));
+  });
+  test('een beëindigde koppeling staat als beëindigd in het overzicht', async () => {
+    assert.equal(byId(await mine(u.bram), k.bramVoedingGestopt).ended, true);
+    assert.equal(byId(await mine(u.bram), k.bramOntspannen).ended, false);
+  });
+});

@@ -10,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabBar } from '@/components/tab-bar';
 import { Body, Button, Notice, Title } from '@/components/ui';
 import { useAuth } from '@/lib/auth';
+import { OverviewProvider } from '@/lib/overview';
 import { colors } from '@/lib/theme';
 
 export default function TabsLayout() {
@@ -49,15 +50,17 @@ export default function TabsLayout() {
   }
 
   return (
-    <Tabs screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: colors.ground } }} tabBar={(props) => <TabBar {...props} />}>
-      <Tabs.Screen name="index" />
-      <Tabs.Screen name="bibliotheek" options={{ title: 'Bibliotheek' }} />
-      <Tabs.Screen name="voor-mij" options={{ title: 'Voor mij' }} />
-      <Tabs.Screen name="clienten" options={{ title: 'Cliënten' }} />
-      <Tabs.Screen name="afspraken" options={{ title: 'Afspraken' }} />
-      <Tabs.Screen name="berichten" options={{ title: 'Berichten' }} />
-      <Tabs.Screen name="profiel" options={{ title: 'Profiel' }} />
-    </Tabs>
+    <OverviewProvider>
+      <Tabs screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: colors.ground } }} tabBar={(props) => <TabBar {...props} />}>
+        <Tabs.Screen name="index" />
+        <Tabs.Screen name="bibliotheek" options={{ title: 'Bibliotheek' }} />
+        <Tabs.Screen name="voor-mij" options={{ title: 'Voor mij' }} />
+        <Tabs.Screen name="clienten" options={{ title: 'Cliënten' }} />
+        <Tabs.Screen name="afspraken" options={{ title: 'Afspraken' }} />
+        <Tabs.Screen name="berichten" options={{ title: 'Berichten' }} />
+        <Tabs.Screen name="profiel" options={{ title: 'Profiel' }} />
+      </Tabs>
+    </OverviewProvider>
   );
 }
 
