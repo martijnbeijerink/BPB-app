@@ -2,7 +2,7 @@
 
 App voor cliënten en begeleiders van Burnout Preventie & Begeleiding. Cliënten zien een gedeelde bibliotheek met filmpjes en documenten, krijgen per discipline persoonlijke onderdelen van hun begeleider en wisselen berichten uit.
 
-Het functioneel en technisch ontwerp staan in het Claude-project "Telefoon app Burnout Preventie".
+Het functioneel en technisch ontwerp staan in de map `docs/`, de klikbare demo in `demo/`. Beide zijn losse HTML-bestanden die in elke browser openen.
 
 ## Stand van zaken
 
@@ -26,6 +26,8 @@ Dit is bouwstap 1 uit het technisch ontwerp: het fundament.
 | `tests/db/` | Tests die als cliënt, begeleider en beheerder proberen bij andermans gegevens te komen |
 | `tests/app/` | Tests van losse onderdelen van de app |
 | `app/` | De app zelf (Expo, React Native, TypeScript) |
+| `docs/` | Functioneel en technisch ontwerp, versie 0.2 (concept) |
+| `demo/` | Klikbare demo met voorbeeldgegevens, zonder backend |
 
 ## Tests draaien
 
