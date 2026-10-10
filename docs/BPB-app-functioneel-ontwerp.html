@@ -80,7 +80,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <p class="lede">Een app voor Android en iPhone waarin cliënten en begeleiders van Burnout Preventie &amp; Begeleiding filmpjes, documenten en berichten delen.</p>
   <dl class="meta">
     <dt>Opdrachtgever</dt><dd>Burnout Preventie &amp; Begeleiding</dd>
-    <dt>Versie</dt><dd>0.4</dd>
+    <dt>Versie</dt><dd>0.5</dd>
     <dt>Datum</dt><dd>10 oktober 2026</dd>
     <dt>Status</dt><dd>Concept, ter bespreking bij de demo</dd>
   </dl>
@@ -120,9 +120,10 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
     <tr><td class="key">Gedeelde bibliotheek bekijken</td><td>Ja</td><td>Ja</td><td>Ja</td></tr>
     <tr><td class="key">Gedeelde bibliotheek beheren</td><td class="no">Nee</td><td>Ja</td><td>Ja</td></tr>
     <tr><td class="key">Persoonlijke onderdelen bekijken</td><td>Alleen de eigen</td><td>Alleen van eigen cliënten</td><td>Alleen van eigen cliënten</td></tr>
-    <tr><td class="key">Persoonlijke onderdelen plaatsen</td><td class="no">Nee</td><td>Voor eigen cliënten</td><td>Voor eigen cliënten</td></tr>
+    <tr><td class="key">Persoonlijke onderdelen plaatsen en intrekken</td><td class="no">Nee</td><td>Voor eigen cliënten</td><td>Voor eigen cliënten</td></tr>
     <tr><td class="key">Berichten met bijlagen</td><td>Met eigen begeleiders</td><td>Met eigen cliënten</td><td>Met eigen cliënten</td></tr>
     <tr><td class="key">Afspraken bekijken</td><td>Alleen de eigen</td><td>Alleen met eigen cliënten</td><td>Alleen met eigen cliënten</td></tr>
+    <tr><td class="key">Afspraken toevoegen</td><td class="no">Nee</td><td>Met eigen cliënten</td><td>Met eigen cliënten</td></tr>
     <tr><td class="key">Accounts uitnodigen en afsluiten</td><td class="no">Nee</td><td class="no">Nee</td><td>Ja</td></tr>
     <tr><td class="key">Cliënt aan begeleider koppelen en ontkoppelen</td><td class="no">Nee</td><td class="no">Nee</td><td>Ja</td></tr>
     <tr><td class="key">Overzicht van alle koppelingen bekijken</td><td class="no">Nee</td><td class="no">Nee</td><td>Ja</td></tr>
@@ -147,7 +148,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <text class="tn" x="40" y="173">Begeleider · dezelfde app, ook in de webbrowser</text>
   <rect class="bx-p" x="40" y="184" width="124" height="72" rx="8"/><text class="tn" x="50" y="208">Cliënten</text><text class="tb-d" x="50" y="224">Eigen cliënten,</text><text class="tb-d" x="50" y="240">persoonlijk delen</text>
   <rect class="bx" x="176" y="184" width="124" height="72" rx="8"/><text class="tn" x="186" y="208">Bibliotheek</text><text class="tb" x="186" y="224">Plaatsen en</text><text class="tb" x="186" y="240">wijzigen</text>
-  <rect class="bx-p" x="312" y="184" width="124" height="72" rx="8"/><text class="tn" x="322" y="208">Afspraken</text><text class="tb-d" x="322" y="224">Geweest en</text><text class="tb-d" x="322" y="240">komend</text>
+  <rect class="bx-p" x="312" y="184" width="124" height="72" rx="8"/><text class="tn" x="322" y="208">Afspraken</text><text class="tb-d" x="322" y="224">Toevoegen en</text><text class="tb-d" x="322" y="240">bekijken</text>
   <rect class="bx-p" x="448" y="184" width="124" height="72" rx="8"/><text class="tn" x="458" y="208">Berichten</text><text class="tb-d" x="458" y="224">Gesprek per</text><text class="tb-d" x="458" y="240">cliënt</text>
   <rect class="bx" x="584" y="184" width="124" height="72" rx="8"/><text class="tn" x="594" y="208">Profiel</text><text class="tb" x="594" y="224">Meldingen en</text><text class="tb" x="594" y="240">uitloggen</text>
 
@@ -179,6 +180,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <li>De bibliotheek bevat filmpjes en documenten, ingedeeld in de zes werkenergie-thema's van BPB: bewegen, brein, emoties, inzicht, ontspannen en voeding.</li>
   <li>De cliënt bladert per thema, zoekt op titel, speelt een filmpje af in de app en opent een document.</li>
   <li>De begeleider voegt een item toe met titel, korte omschrijving en thema, en kan het wijzigen of verwijderen.</li>
+  <li>Een verwijderd item verdwijnt ook bij cliënten aan wie het was aangeraden.</li>
 </ul>
 
 <h3><span class="num">4.3</span>Voor mij: persoonlijke onderdelen per discipline</h3>
@@ -186,6 +188,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <li>Een cliënt doorloopt meerdere disciplines, elk met een eigen begeleider. Onder Voor mij staat één pagina per discipline, met de naam van die begeleider.</li>
   <li>Op die pagina deelt de begeleider een filmpje, een document of een korte notitie met deze cliënt.</li>
   <li>De begeleider kan ook een item uit de gedeelde bibliotheek aanraden. Het verschijnt dan op de pagina van die discipline.</li>
+  <li>De begeleider kan een gedeeld onderdeel weer intrekken. De cliënt ziet het daarna niet meer.</li>
   <li>De cliënt ziet per pagina het nieuwste bovenaan, met de datum.</li>
   <li>Vanaf de pagina opent de cliënt het gesprek met die begeleider.</li>
   <li>Alleen deze cliënt en de begeleider van die discipline zien de pagina.</li>
@@ -203,6 +206,8 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <li>Cliënt en begeleider hebben een scherm Afspraken met twee lijsten: komende afspraken en afspraken die zijn geweest.</li>
   <li>De cliënt ziet per afspraak de datum, de tijd, de discipline en de begeleider.</li>
   <li>De begeleider ziet per afspraak de datum, de tijd en de cliënt.</li>
+  <li>De begeleider voegt een afspraak met een eigen cliënt toe: datum, tijd en plaats. De cliënt ziet de afspraak direct.</li>
+  <li>De begeleider kan een afspraak wijzigen of laten vervallen. In de demo is alleen het toevoegen te zien.</li>
   <li>Een afspraak hoort bij één cliënt en één begeleider. Alleen die twee zien de afspraak.</li>
   <li>De cliënt kan afspraken bekijken, maar niet zelf plannen of verzetten.</li>
 </ul>
@@ -264,7 +269,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <li>Na het ontkoppelen blijft wat gedeeld en geschreven is leesbaar voor cliënt en begeleider, tot de bewaartermijn afloopt.</li>
   <li>De begeleider ziet niet of een cliënt een bericht heeft gelezen.</li>
   <li>De termijn van 1 jaar na het einde van het traject geldt voorlopig voor zowel de toegang van de cliënt als het bewaren van de gegevens.</li>
-  <li>Afspraken worden vastgelegd door de begeleider of het kantoor van BPB. Hoe ze in de app komen, door invoer in de app of via een koppeling met een agenda, wordt nog afgestemd.</li>
+  <li>De begeleider voert afspraken in de app in. Of daarnaast een koppeling met een bestaande agenda nodig is, wordt nog afgestemd.</li>
 </ol>
 
 <h2 id="h8"><span class="num">8</span>Versiebeheer</h2>
@@ -276,11 +281,12 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
     <tr><td class="key">0.2</td><td>9 oktober 2026</td><td>Overzicht van afspraken toegevoegd</td></tr>
     <tr><td class="key">0.3</td><td>10 oktober 2026</td><td>Inloggen met alleen e-mailadres en wachtwoord; tweestapsverificatie vervallen</td></tr>
     <tr><td class="key">0.4</td><td>10 oktober 2026</td><td>De beheerder kan alles wat een begeleider kan; koppelen en ontkoppelen in de app</td></tr>
+    <tr><td class="key">0.5</td><td>10 oktober 2026</td><td>De begeleider voert afspraken in en kan een gedeeld onderdeel intrekken</td></tr>
   </tbody>
 </table>
 </div>
 
-<footer><span>BPB-app · Functioneel ontwerp</span><span>Versie 0.4 · 10 oktober 2026 · concept</span></footer>
+<footer><span>BPB-app · Functioneel ontwerp</span><span>Versie 0.5 · 10 oktober 2026 · concept</span></footer>
 </div>
 </body>
 </html>

@@ -3,6 +3,7 @@
 <style>
 /* Layout: a slim demo bar, then three phones side by side (client, coach, admin).
    880-1179px: client plus one staff phone, with a switch between coach and admin.
+   Browser view (from 880px): client phone plus the coach or admin in a browser window with a side menu.
    Below 880px: one phone at a time with a role switch. The phones keep the app's own light look in both themes. */
 :root{
   --page:#E6EBE9; --page-fg:#17323A; --page-muted:#54666B; --page-line:#C3CECB; --page-panel:#FFFFFF; --shadow:rgba(23,50,58,.14);
@@ -26,6 +27,10 @@ body{background:var(--page);color:var(--page-fg);font-family:var(--font);font-si
 .switch{display:none;gap:4px;padding:4px;border:1px solid var(--page-line);border-radius:14px;background:var(--page-panel)}
 .switch button{flex:1;min-width:0;min-height:44px;padding:0 6px;border:0;border-radius:10px;background:transparent;color:var(--page-muted);font:inherit;font-size:15px;font-weight:600;cursor:pointer}
 .switch button[aria-selected="true"]{background:var(--accent);color:var(--ink)}
+.seg{display:none;gap:4px;padding:4px;border:1px solid var(--page-line);border-radius:14px;background:var(--page-panel)}
+.seg button{min-height:36px;padding:0 12px;border:0;border-radius:10px;background:transparent;color:var(--page-muted);font:inherit;font-size:14px;font-weight:600;white-space:nowrap;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--ink)}
+.chrome{display:none}
 .stage{flex:1;min-height:0;display:flex;justify-content:center;gap:clamp(20px,3vw,48px)}
 .staff{display:contents}
 .device{flex:0 1 390px;min-width:0;min-height:0;display:flex;flex-direction:column;gap:10px}
@@ -46,6 +51,55 @@ body{background:var(--page);color:var(--page-fg);font-family:var(--font);font-si
   .staff .device.is-staff{display:flex}
   .staff .device-label{display:none}
 }
+
+@media (min-width:1180px){
+  .webmode .staff{min-width:0;min-height:0;display:flex;flex-direction:column;gap:10px}
+  .webmode .switch-staff{display:flex}
+  .webmode .device-label{display:flex;align-items:center;justify-content:center;min-height:54px}
+  .webmode .staff .device{display:none;flex:1 1 auto}
+  .webmode .staff .device.is-staff{display:flex}
+  .webmode .staff .device-label{display:none}
+}
+@media (min-width:880px){
+  .seg{display:flex}
+  .webmode .device[data-role="client"]{flex:0 1 350px}
+  .webmode .staff{flex:1 1 0;max-width:880px}
+  .webmode .switch-staff{align-self:flex-start;width:min(100%,390px)}
+  .webmode .staff .device{gap:0}
+  .webmode .chrome{display:flex;align-items:center;gap:6px;padding:10px 14px;border:1px solid var(--page-line);border-bottom:0;border-radius:14px 14px 0 0;background:var(--page-panel)}
+  .chrome i{flex:none;width:10px;height:10px;border-radius:5px;background:var(--page-line)}
+  .chrome span{flex:1;min-width:0;margin-left:8px;padding:5px 12px;border-radius:8px;background:var(--page);color:var(--page-muted);font-size:13px;font-weight:600;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .webmode .staff .phone{display:grid;grid-template-columns:clamp(150px,24%,208px) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;border-radius:0 0 14px 14px}
+  .webmode .staff .tabs{grid-column:1;grid-row:1/4;display:flex;flex-direction:column;gap:4px;padding:20px 10px;border-top:0;border-right:1px solid var(--line)}
+  .webmode .staff .tab{flex-direction:row;justify-content:flex-start;gap:12px;min-height:48px;padding:0 12px;border-top:0;border-radius:12px;font-size:15px}
+  .webmode .staff .tab[aria-current="page"],.webmode .staff .tab[data-in]{background:var(--calm);color:var(--ink);font-weight:700;box-shadow:inset 3px 0 0 var(--accent)}
+  .webmode .staff .tab .count{position:static;margin-left:auto}
+  .webmode .staff .scroll{grid-column:2;grid-row:1/4;padding:36px clamp(20px,5%,44px) 28px}
+  .webmode .staff .scroll > :not(.back):not(img){width:100%;max-width:640px;box-sizing:border-box}
+  .webmode .staff .scroll.center{grid-column:1/3}
+  .webmode .staff .chathead{grid-column:2;grid-row:1}
+  .webmode .staff .msgs{grid-column:2;grid-row:2;padding-inline:clamp(16px,5%,44px)}
+  .webmode .staff .composer{grid-column:2;grid-row:3}
+  .webmode .staff .bubble{max-width:min(82%,520px)}
+  .webmode .staff .toast{left:auto;right:24px;bottom:24px;max-width:340px}
+}
+
+/* ---- guided tour ---- */
+dialog.guide{width:min(900px,calc(100% - 32px));max-height:calc(100% - 32px);box-sizing:border-box;padding:0;border:1px solid var(--page-line);border-radius:20px;background:var(--page-panel);color:var(--page-fg);box-shadow:0 20px 50px var(--shadow)}
+dialog.guide::backdrop{background:rgba(15,28,32,.55)}
+.guide-head{position:sticky;top:0;display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--page-line);background:var(--page-panel)}
+.guide-head h2{flex:1;margin:0;font-size:22px;font-weight:700}
+.guide-body{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px 32px;padding:20px}
+.guide-body section{min-width:0;display:flex;flex-direction:column;gap:12px}
+.guide-body h3{margin:0;font-size:16px;font-weight:700}
+.guide-body ol,.guide-body ul{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
+.steps{counter-reset:step}
+.steps li{counter-increment:step;display:grid;grid-template-columns:24px minmax(0,1fr);gap:4px 10px;align-items:baseline}
+.steps li::before{content:counter(step);grid-row:1/3;color:var(--page-muted);font-weight:700;font-variant-numeric:tabular-nums}
+.steps strong{font-size:14px;font-weight:700}
+.guide-body p{margin:0;font-size:15px;line-height:1.45;text-wrap:pretty}
+.asks li{padding-left:14px;border-left:3px solid var(--accent);font-size:15px;line-height:1.45;text-wrap:pretty}
+.asks span{display:block;color:var(--page-muted);font-size:14px}
 
 /* ---- the app inside the phone ---- */
 button,input,textarea,select{font:inherit}
@@ -113,6 +167,7 @@ button,input,textarea,select{font:inherit}
 .btn.accent .ic{color:var(--ink)}
 .btn.ghost{border:1.5px solid var(--ink);background:var(--surface);color:var(--ink)}
 .btn.danger{background:var(--danger);color:var(--on-ink)}
+.btn.ghost.warn{border-color:var(--danger);color:var(--danger)}
 .back{display:flex;align-items:center;gap:4px;align-self:flex-start;min-height:44px;margin-left:-6px;padding:0 12px 0 0;border:0;background:transparent;color:var(--ink);font-size:15px;font-weight:600;cursor:pointer}
 .coachcard{display:flex;align-items:center;gap:12px;padding:12px;border-radius:20px;background:var(--ink);color:var(--on-ink)}
 .coachcard .avatar{background:var(--on-ink);color:var(--ink)}
@@ -145,6 +200,7 @@ textarea.input{min-height:120px;padding:14px 16px;resize:vertical}
 .tabs{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);padding:0 8px 10px;border-top:1px solid var(--line);background:var(--surface)}
 .tab{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:58px;padding:0;border:0;border-top:3px solid transparent;background:transparent;color:var(--ink-2);font-size:12px;font-weight:500;cursor:pointer}
 .tab[aria-current="page"]{border-top-color:var(--accent);color:var(--ink);font-weight:700}
+.tabs.web-only{display:none}
 .tab .count{position:absolute;top:5px;left:calc(50% + 6px);min-width:18px;height:18px;box-sizing:border-box;padding:0 5px;border-radius:9px;background:var(--accent);color:var(--ink);font-size:11px;font-weight:700;line-height:18px;text-align:center}
 .chathead{display:flex;align-items:center;gap:10px;padding:16px 12px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
 .chathead .grow{flex:1;min-width:0;display:flex;flex-direction:column}
@@ -179,7 +235,12 @@ textarea.input{min-height:120px;padding:14px 16px;resize:vertical}
     <img id="bar-logo" alt="">
     <h1>BPB-app</h1>
     <span class="pill">Demo met voorbeeldgegevens</span>
-    <p>Deel iets als begeleider en zie het bij de cliënt verschijnen. Koppel of ontkoppel als beheerder een cliënt en zie het bij de begeleider en de cliënt veranderen.</p>
+    <p>Deel iets als begeleider en zie het bij de cliënt verschijnen. De rondleiding laat stap voor stap zien wat je kunt proberen.</p>
+    <div class="seg" role="group" aria-label="Begeleider en beheerder bekijken op">
+      <button type="button" data-view="phone" aria-pressed="true">Telefoon</button>
+      <button type="button" data-view="web" aria-pressed="false">Webbrowser</button>
+    </div>
+    <button class="reset" id="guide-open" type="button">Rondleiding</button>
     <button class="reset" id="reset" type="button">Opnieuw beginnen</button>
   </header>
   <div class="switch switch-all" role="tablist" aria-label="Kies een rol">
@@ -195,19 +256,52 @@ textarea.input{min-height:120px;padding:14px 16px;resize:vertical}
     <div class="staff">
       <div class="switch switch-staff" role="tablist" aria-label="Kies begeleider of beheerder">
         <button type="button" role="tab" data-role="coach" aria-selected="true">Begeleider · Marjolijn</button>
-        <button type="button" role="tab" data-role="admin" aria-selected="false">Beheerder · Esther</button>
+        <button type="button" role="tab" data-role="admin" aria-selected="false">Beheerder · Femke</button>
       </div>
       <section class="device is-staff" data-role="coach">
         <h2 class="device-label">Begeleider · Marjolijn (ontspannen)</h2>
+        <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span>BPB-app in de webbrowser</span></div>
         <div class="phone" id="phone-coach" data-role="coach"></div>
       </section>
       <section class="device" data-role="admin">
-        <h2 class="device-label">Beheerder · Esther (ook begeleider inzicht)</h2>
+        <h2 class="device-label">Beheerder · Femke (ook begeleider inzicht)</h2>
+        <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span>BPB-app in de webbrowser</span></div>
         <div class="phone" id="phone-admin" data-role="admin"></div>
       </section>
     </div>
   </main>
 </div>
+
+<dialog class="guide" id="guide" aria-labelledby="guide-title">
+  <div class="guide-head"><h2 id="guide-title">Rondleiding</h2><button class="reset" id="guide-close" type="button">Sluiten</button></div>
+  <div class="guide-body">
+    <section>
+      <h3>Zo loop je de demo door</h3>
+      <ol class="steps">
+        <li><strong>Cliënt · Bibliotheek</strong><p>Kies een thema, zoek op titel en open een filmpje. Dit ziet elke cliënt.</p></li>
+        <li><strong>Begeleider · Cliënten</strong><p>Open Anouk en deel een notitie. Bij de cliënt verschijnt een teller bij Voor mij.</p></li>
+        <li><strong>Cliënt · Voor mij</strong><p>Open Ontspannen: de notitie staat bovenaan. Stuur van daaruit een bericht aan Marjolijn.</p></li>
+        <li><strong>Begeleider · Berichten</strong><p>Het bericht komt binnen. Antwoord, met of zonder bijlage.</p></li>
+        <li><strong>Begeleider · Afspraken</strong><p>Voeg een afspraak met Anouk toe. Die staat direct bij de cliënt.</p></li>
+        <li><strong>Beheerder · Cliënten</strong><p>Kies Alle koppelingen. Koppel Lotte aan Marjolijn en zie haar in Marjolijns lijst komen. Ontkoppel daarna een cliënt.</p></li>
+        <li><strong>Webbrowser</strong><p>Zet op een computerscherm de weergave bovenaan op Webbrowser. Begeleider en beheerder hebben daar dezelfde schermen.</p></li>
+        <li><strong>Privacy</strong><p>Wijs op de slotjes onderaan de schermen. Wat privé is, zien alleen de cliënt en de eigen begeleider.</p></li>
+      </ol>
+    </section>
+    <section>
+      <h3>Nog te bespreken</h3>
+      <ul class="asks">
+        <li>Welke disciplines zijn er, en heeft elke begeleider er één?<span>In de demo volgt de discipline uit de begeleider.</span></li>
+        <li>Wie wordt beheerder, en mag die meelezen bij andere begeleiders?<span>In de demo niet.</span></li>
+        <li>Hoe komen afspraken in de app?<span>In de demo voert de begeleider ze in. Een koppeling met een bestaande agenda is extra werk.</span></li>
+        <li>Hoe lang blijven gegevens bewaard na het einde van een traject?<span>Het ontwerp gaat uit van 1 jaar.</span></li>
+        <li>Vanaf welk e-mailadres gaan de uitnodigingen?</li>
+        <li>Wie levert de filmpjes en documenten voor de bibliotheek aan, en hoeveel zijn het er?</li>
+        <li>Komen de accounts bij Apple en Google op naam van BPB?<span>Apple vraagt daarvoor een D-U-N-S-nummer.</span></li>
+      </ul>
+    </section>
+  </div>
+</dialog>
 
 <script>
 (() => {
@@ -217,7 +311,7 @@ const KIND = { video: 'Filmpje', doc: 'Document', note: 'Notitie' };
 const ME = {
   client: { name: 'Anouk V.', role: 'Cliënt' },
   coach: { name: 'Marjolijn', role: 'Begeleider ontspannen', disc: 'Ontspannen' },
-  admin: { name: 'Esther', role: 'Beheerder · begeleider inzicht', disc: 'Inzicht' }
+  admin: { name: 'Femke', role: 'Beheerder · begeleider inzicht', disc: 'Inzicht' }
 };
 const ROLES = ['client', 'coach', 'admin'];
 // Alle cliënten en begeleiders die de beheerder kan koppelen. `phone` zegt
@@ -227,7 +321,7 @@ const STAFF = [
   { id: 'marjolijn', name: 'Marjolijn', init: 'M', disc: 'Ontspannen', phone: 'coach' },
   { id: 'joost', name: 'Joost', init: 'J', disc: 'Bewegen', phone: null },
   { id: 'sanne', name: 'Sanne', init: 'S', disc: 'Voeding', phone: null },
-  { id: 'esther', name: 'Esther', init: 'E', disc: 'Inzicht', phone: 'admin' }
+  { id: 'femke', name: 'Femke', init: 'F', disc: 'Inzicht', phone: 'admin' }
 ];
 const STAFF_TABS = [['clients', 'Cliënten', 'people'], ['lib', 'Bibliotheek', 'book'], ['appts', 'Afspraken', 'calendar'], ['msgs', 'Berichten', 'msg'], ['me', 'Profiel', 'person']];
 const TABS = {
@@ -253,6 +347,7 @@ const PATHS = {
   search: '<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>',
   pencil: '<path d="M4 20l1-4L16 5l3 3L8 19z"/>',
   calendar: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/>',
+  trash: '<path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/>',
   link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'
 };
 const ic = (n, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${PATHS[n]}</svg>`;
@@ -293,7 +388,7 @@ function seed() {
         items: [{ id: 'p7', kind: 'lib', ref: 'b4', date: '5 okt', seen: true }],
         msgs: [{ from: 'coach', text: 'Hoe gaat het wandelen?', day: 'Maandag 5 oktober' }, { from: 'client', text: 'Het wandelen gaat goed, dank je.' }] },
       L6: { id: 'L6', client: 'Anouk V.', clientInit: 'AV', coach: 'Sanne', coachInit: 'S', disc: 'Voeding', last: '', unread: { client: false, coach: false }, items: [], msgs: [] },
-      L7: { id: 'L7', client: 'Bram J.', clientInit: 'BJ', coach: 'Esther', coachInit: 'E', disc: 'Inzicht', last: '7 okt', unread: { client: false, coach: false },
+      L7: { id: 'L7', client: 'Bram J.', clientInit: 'BJ', coach: 'Femke', coachInit: 'F', disc: 'Inzicht', last: '7 okt', unread: { client: false, coach: false },
         items: [{ id: 'p8', kind: 'lib', ref: 'b3', date: '7 okt', seen: true }],
         msgs: [{ from: 'coach', text: 'Ik heb het werkblad voor je klaargezet. Lukt het om het voor vrijdag in te vullen?', day: 'Woensdag 7 oktober' }, { from: 'client', text: 'Ja, dat gaat lukken.' }] }
     }
@@ -347,11 +442,11 @@ const thumb = kind => `<span class="thumb ${kind}">${ic(kind === 'video' ? 'play
 const lock = text => `<div class="lock">${ic('lock')}<p>${text}</p></div>`;
 const back = label => `<button class="back" type="button" data-back>${ic('left')}<span>${label}</span></button>`;
 
-function tabs(role) {
+function tabs(role, cls = '') {
   const count = { mine: mine('client').reduce((n, id) => n + db.links[id].items.filter(i => !i.seen).length, 0), msgs: mine(role).filter(id => db.links[id].unread[side(role)]).length };
-  return `<nav class="tabs" aria-label="Hoofdmenu">${TABS[role].map(([id, label, icon]) => {
+  return `<nav class="tabs ${cls}" aria-label="Hoofdmenu">${TABS[role].map(([id, label, icon]) => {
     const n = (id === 'msgs' || (id === 'mine' && role === 'client')) ? count[id] : 0;
-    return `<button class="tab" type="button" data-tab="${id}"${nav[role].tab === id && !top(role) ? ' aria-current="page"' : ''}>${ic(icon)}<span>${label}</span>${n ? `<span class="count">${n}<span class="sr"> nieuw</span></span>` : ''}</button>`;
+    return `<button class="tab" type="button" data-tab="${id}"${nav[role].tab === id ? (top(role) ? ' data-in' : ' aria-current="page"') : ''}>${ic(icon)}<span>${label}</span>${n ? `<span class="count">${n}<span class="sr"> nieuw</span></span>` : ''}</button>`;
   }).join('')}</nav>`;
 }
 const page = (role, inner) => `<div class="scroll">${inner}</div>${tabs(role)}`;
@@ -390,16 +485,17 @@ function pitemScreen(role, s) {
   const link = db.links[s.a], i = link.items.find(x => x.id === s.b);
   return page(role, `${back(esc(link.disc))}${mediaBox(i.kind)}<div class="head"><h2 class="h1">${esc(i.title)}</h2><p class="meta">${KIND[i.kind]} · van ${esc(link.coach)} · ${i.date}</p></div>${lock(`Alleen jij en ${esc(link.coach)} zien dit.`)}`);
 }
-function personalItems(link, role, fresh) {
+function personalItems(link, role, fresh, edit = false) {
   if (!link.items.length) return `<p class="empty">${role === 'client' ? `${esc(link.coach)} heeft nog niets met je gedeeld.` : 'Nog niets gedeeld.'}</p>`;
   return link.items.map(i => {
     const isNew = fresh.includes(i.id) ? '<span class="badge">Nieuw</span>' : '';
-    if (i.kind === 'note') return `<div class="card"><div class="cardmeta">${ic('note', 'sm')}<span>Notitie · ${i.date}</span>${isNew}</div><p>${esc(i.text)}</p></div>`;
+    const del = label => (edit ? `<button class="iconbtn soft" type="button" data-push="withdraw" data-a="${link.id}" data-b="${i.id}" aria-label="Intrekken: ${esc(label)}">${ic('trash')}</button>` : '');
+    if (i.kind === 'note') return `<div class="card"><div class="cardmeta">${ic('note', 'sm')}<span>Notitie · ${i.date}</span>${isNew}${del(`notitie van ${i.date}`)}</div><p>${esc(i.text)}</p></div>`;
     const lib = i.kind === 'lib' ? libItem(i.ref) : null;
     const kind = lib ? lib.kind : i.kind, title = lib ? lib.title : i.title;
     const meta = lib ? `Aangeraden uit de bibliotheek · ${i.date}` : `${KIND[kind]} · ${i.date}`;
     const main = `${thumb(kind)}<span class="row-main"><span class="row-title">${esc(title)}</span><span class="meta">${meta}</span></span>${isNew}`;
-    if (role !== 'client') return `<div class="row static">${main}</div>`;
+    if (role !== 'client') return `<div class="row static">${main}${del(title)}</div>`;
     return lib ? `<button class="row" type="button" data-push="item" data-a="${lib.id}">${main}</button>` : `<button class="row" type="button" data-push="pitem" data-a="${link.id}" data-b="${i.id}">${main}</button>`;
   }).join('');
 }
@@ -448,7 +544,7 @@ function chatScreen(role, s) {
       <button class="iconbtn accent" type="button" data-act="send" aria-label="Versturen">${ic('send')}</button></div></div>`;
   return `<div class="chathead"><button class="iconbtn" type="button" data-back aria-label="Terug">${ic('left')}</button>${head}</div>
     <div class="msgs">${msgs || `<p class="empty">${l.ended ? 'Er zijn geen berichten in dit gesprek.' : 'Nog geen berichten. Stuur het eerste bericht.'}</p>`}</div>
-    ${composer}`;
+    ${composer}${role === 'client' ? '' : tabs(role, 'web-only')}`;
 }
 function apptsScreen(role) {
   const all = mine(role).flatMap(id => db.links[id].appts.map(a => ({ ...a, link: db.links[id] })));
@@ -464,8 +560,34 @@ function apptsScreen(role) {
   const sub = role === 'client' ? 'Je afspraken met je begeleiders.' : 'Je afspraken met je cliënten.';
   const note = role === 'client' ? 'Alleen jij en de begeleider van die afspraak zien dit.' : 'Je ziet alleen de afspraken met je eigen cliënten.';
   return page(role, `<div class="head"><h2 class="h1">Afspraken</h2><p class="sub">${sub}</p></div>
+    ${role === 'client' ? '' : `<button class="btn" type="button" data-push="apptform">${ic('plus')}<span>Afspraak toevoegen</span></button>`}
     <div class="stack"><h3 class="h2">Komend</h3>${coming.length ? coming.map(row).join('') : '<p class="empty">Er staan geen afspraken gepland.</p>'}</div>
     <div class="stack"><h3 class="h2">Geweest</h3>${been.length ? been.map(row).join('') : '<p class="empty">Er zijn nog geen afspraken geweest.</p>'}</div>${lock(note)}`);
+}
+const ISO = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+function apptformScreen(role) {
+  const ids = mine(role).filter(id => !db.links[id].ended);
+  if (!ids.length) return page(role, `${back('Afspraken')}<h2 class="h1">Afspraak toevoegen</h2><p class="empty">Je hebt geen cliënten om een afspraak mee te maken.</p>`);
+  return page(role, `${back('Afspraken')}<div class="head"><h2 class="h1">Afspraak toevoegen</h2><p class="sub">De cliënt ziet de afspraak direct onder Afspraken.</p></div>
+    <div class="field"><label for="${role}-aclient">Cliënt</label><select class="input" id="${role}-aclient"><option value="">Kies een cliënt</option>${ids.map(id => `<option value="${id}">${esc(db.links[id].client)}</option>`).join('')}</select></div>
+    <div class="field"><label for="${role}-adate">Datum</label><input class="input" id="${role}-adate" type="date" min="${ISO(new Date())}" value="${ISO(dayFromNow(7))}"></div>
+    <div class="field"><label for="${role}-atime">Tijd</label><input class="input" id="${role}-atime" type="time" value="10:00"></div>
+    <div class="field"><label for="${role}-aplace">Plaats</label><select class="input" id="${role}-aplace"><option>Op locatie</option><option>Telefonisch</option></select></div>
+    <p class="err" id="${role}-err" hidden></p><button class="btn" type="button" data-act="appt-save">Afspraak toevoegen</button>`);
+}
+// Bevestigen voor iets verdwijnt: een gedeeld onderdeel intrekken, een bibliotheekitem verwijderen.
+function withdrawScreen(role, s) {
+  const l = db.links[s.a], i = l.items.find(x => x.id === s.b), lib = i.kind === 'lib' ? libItem(i.ref) : null;
+  const what = i.kind === 'note' ? `Notitie van ${i.date}` : `${lib ? 'Aangeraden' : KIND[i.kind]}: ${esc(lib ? lib.title : i.title)}`;
+  return page(role, `${back(esc(l.client))}<div class="head"><h2 class="h1">Dit onderdeel intrekken?</h2><p class="sub">${what}</p></div>
+    ${lock(`${esc(first(l.client))} ziet het daarna niet meer onder Voor mij.${lib ? ' Het item blijft in de bibliotheek staan.' : ''}`)}
+    <button class="btn danger" type="button" data-act="withdraw">Intrekken</button><button class="btn ghost" type="button" data-back>Annuleren</button>`);
+}
+function libdelScreen(role, s) {
+  const i = libItem(s.a);
+  return page(role, `${back('Item wijzigen')}<div class="head"><h2 class="h1">Dit item verwijderen?</h2><p class="sub">${KIND[i.kind]}: ${esc(i.title)}</p></div>
+    ${lock('Het verdwijnt uit de bibliotheek voor alle cliënten, ook bij cliënten aan wie het is aangeraden.')}
+    <button class="btn danger" type="button" data-act="lib-delete">Verwijderen</button><button class="btn ghost" type="button" data-back>Annuleren</button>`);
 }
 function clientRows(role) {
   const ids = mine(role);
@@ -520,7 +642,7 @@ function clientScreen(role, s) {
     <div class="headrow"><div class="grow"><h2 class="h1">${esc(l.client)}</h2><span class="meta">${esc(l.disc)} · alleen jij en ${f} zien dit</span></div><button class="btn small" type="button" data-push="chat" data-a="${l.id}">${ic('msg')}<span>Bericht</span></button></div>
     ${l.ended ? lock('Dit traject is afgerond. Je kunt niets nieuws meer delen, maar alles nog wel teruglezen.')
       : `<div class="stack"><h3 class="h2">Delen met ${f}</h3><div class="grid2">${share('video', 'play', 'Filmpje')}${share('doc', 'file', 'Document')}${share('note', 'note', 'Notitie')}${share('lib', 'book', 'Uit de bibliotheek', true)}</div></div>`}
-    <div class="stack"><h3 class="h2">Gedeeld</h3>${personalItems(l, 'coach', [])}</div>`);
+    <div class="stack"><h3 class="h2">Gedeeld</h3>${personalItems(l, 'coach', [], !l.ended)}</div>`);
 }
 function shareScreen(role, s) {
   const l = db.links[s.a], f = esc(first(l.client)), b = back(esc(l.client));
@@ -543,7 +665,7 @@ function libformScreen(role, s) {
     <fieldset class="field"><legend>Soort</legend>
       <label class="choice"><input type="radio" name="${role}-lkind" id="${role}-lkind-video" value="video"${i.kind === 'video' ? ' checked' : ''}>Filmpje</label>
       <label class="choice"><input type="radio" name="${role}-lkind" id="${role}-lkind-doc" value="doc"${i.kind === 'doc' ? ' checked' : ''}>Document</label></fieldset>
-    <p class="err" id="${role}-err" hidden></p><button class="btn" type="button" data-act="lib-save">Opslaan</button>`);
+    <p class="err" id="${role}-err" hidden></p><button class="btn" type="button" data-act="lib-save">Opslaan</button>${s.a ? `<button class="btn ghost warn" type="button" data-push="libdel" data-a="${s.a}">Verwijderen</button>` : ''}`);
 }
 function meScreen(role) {
   return page(role, `<div class="profile"><img src="${LOGO}" alt="Burnout Preventie &amp; Begeleiding"><div class="head"><h2 class="h1">${ME[role].name}</h2><span class="meta">${ME[role].role}</span></div></div>
@@ -559,7 +681,7 @@ function view(role) {
   const u = ui[role], s = top(role);
   let html;
   if (u.out) html = outScreen(role);
-  else if (s) html = { item: itemScreen, pitem: pitemScreen, chat: chatScreen, client: clientScreen, share: shareScreen, libform: libformScreen, link: linkScreen, unlink: unlinkScreen, disc: (r, x) => discScreen(x) }[s.name](role, s);
+  else if (s) html = { item: itemScreen, pitem: pitemScreen, chat: chatScreen, client: clientScreen, share: shareScreen, libform: libformScreen, link: linkScreen, unlink: unlinkScreen, apptform: apptformScreen, withdraw: withdrawScreen, libdel: libdelScreen, disc: (r, x) => discScreen(x) }[s.name](role, s);
   else html = { lib: () => libScreen(role), mine: mineScreen, msgs: () => msgsScreen(role), me: () => meScreen(role), clients: () => clientsScreen(role), appts: () => apptsScreen(role) }[nav[role].tab]();
   return html + (u.toast ? `<div class="toast" role="status">${esc(u.toast)}</div>` : '');
 }
@@ -603,6 +725,10 @@ function share(role, linkId, item) {
   l.items.unshift(item); nav[role].stack.pop();
   toast(role, `Gedeeld met ${first(l.client)}`); renderAll();
 }
+// Schermen over iets dat net is verdwenen, sluiten op alle telefoons.
+function closeScreens(match) {
+  for (const r of ROLES) { const i = nav[r].stack.findIndex(match); if (i >= 0) nav[r].stack.length = i; }
+}
 function act(role, name, btn) {
   const u = ui[role], s = top(role);
   const val = id => { const f = document.getElementById(`${role}-${id}`); return f ? f.value.trim() : ''; };
@@ -629,6 +755,32 @@ function act(role, name, btn) {
     const data = { title, desc: val('ldesc'), theme: document.getElementById(`${role}-ltheme`).value, kind: document.getElementById(`${role}-lkind-doc`).checked ? 'doc' : 'video' };
     if (s.a) Object.assign(libItem(s.a), data); else db.lib.unshift({ id: 'b' + (++uid), ...data });
     nav[role].stack.pop(); toast(role, s.a ? 'Wijziging opgeslagen' : 'Toegevoegd aan de bibliotheek'); renderAll();
+  }
+  else if (name === 'lib-delete') {
+    const id = s.a;
+    db.lib = db.lib.filter(i => i.id !== id);
+    for (const l of Object.values(db.links)) l.items = l.items.filter(i => !(i.kind === 'lib' && i.ref === id));
+    closeScreens(x => ['item', 'libform', 'libdel'].includes(x.name) && x.a === id);
+    toast(role, 'Verwijderd uit de bibliotheek'); renderAll();
+  }
+  else if (name === 'withdraw') {
+    const l = db.links[s.a], itemId = s.b;
+    l.items = l.items.filter(i => i.id !== itemId);
+    closeScreens(x => (x.name === 'pitem' || x.name === 'withdraw') && x.a === l.id && x.b === itemId);
+    toast(role, 'Ingetrokken'); renderAll();
+  }
+  else if (name === 'appt-save') {
+    const l = db.links[val('aclient')], day = val('adate'), time = val('atime');
+    if (!l) return fail('Kies een cliënt.');
+    const [y, m, d] = day.split('-').map(Number), date = new Date(y, m - 1, d, 12);
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    if (!day || isNaN(date)) return fail('Kies een datum.');
+    if (date < today) return fail('Kies een datum vanaf vandaag.');
+    if (!time) return fail('Kies een tijd.');
+    l.appts.push({ date, past: false, time, place: val('aplace') });
+    nav[role].stack.pop(); toast(role, `Afspraak met ${first(l.client)} toegevoegd`);
+    if (l.client === ME.client.name) toast('client', `Nieuwe afspraak: ${DAY.format(date)} ${MONTH.format(date).replace('.', '')} om ${time} uur`);
+    renderAll();
   }
   else if (name === 'cview') { u.cview = btn.dataset.a; renderPhone(role); }
   else if (name === 'link-save') {
@@ -694,6 +846,17 @@ function setRole(role) {
 }
 document.querySelectorAll('.switch').forEach(sw => sw.addEventListener('click', e => { const b = e.target.closest('button'); if (b) setRole(b.dataset.role); }));
 document.getElementById('reset').addEventListener('click', () => { reset(); document.querySelectorAll('.phone').forEach(p => { delete p.dataset.key; }); renderAll(); });
+
+// Weergave voor begeleider en beheerder: telefoon of webbrowser. De schermen en de gegevens zijn dezelfde.
+document.querySelector('.seg').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  document.querySelector('.shell').classList.toggle('webmode', b.dataset.view === 'web');
+  document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+});
+const guide = document.getElementById('guide');
+document.getElementById('guide-open').addEventListener('click', () => { if (guide.showModal) guide.showModal(); else guide.setAttribute('open', ''); });
+document.getElementById('guide-close').addEventListener('click', () => { if (guide.close) guide.close(); else guide.removeAttribute('open'); });
+guide.addEventListener('click', e => { if (e.target === guide && guide.close) guide.close(); });
 
 document.getElementById('bar-logo').src = LOGO;
 reset(); renderAll();
