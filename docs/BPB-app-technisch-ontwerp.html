@@ -80,7 +80,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <p class="lede">Hoe de app voor cliënten en begeleiders van Burnout Preventie &amp; Begeleiding wordt gebouwd, beveiligd en in gebruik genomen.</p>
   <dl class="meta">
     <dt>Opdrachtgever</dt><dd>Burnout Preventie &amp; Begeleiding</dd>
-    <dt>Versie</dt><dd>0.3</dd>
+    <dt>Versie</dt><dd>0.4</dd>
     <dt>Datum</dt><dd>10 oktober 2026</dd>
     <dt>Status</dt><dd>Concept, ter bespreking bij de demo</dd>
   </dl>
@@ -118,7 +118,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <path class="ln" d="M601 256V296H194V320" marker-end="url(#arrow)"/>
   <path class="ln" d="M681 256V320" marker-end="url(#arrow)"/>
 
-  <rect class="bx" x="24" y="24" width="340" height="64" rx="8"/><text class="tn" x="36" y="48">App voor cliënt en begeleider</text><text class="tb" x="36" y="66">Expo, één codebase voor Android en iPhone</text>
+  <rect class="bx" x="24" y="24" width="340" height="64" rx="8"/><text class="tn" x="36" y="48">App voor cliënt, begeleider en beheerder</text><text class="tb" x="36" y="66">Expo, één codebase voor Android en iPhone</text>
   <rect class="bx" x="396" y="24" width="340" height="64" rx="8"/><text class="tn" x="408" y="48">Webomgeving voor begeleider en beheerder</text><text class="tb" x="408" y="66">In de browser, met dezelfde inlog en regels</text>
 
   <rect class="bx" x="40" y="168" width="158" height="88" rx="8"/><text class="tn" x="52" y="192">Inloggen</text><text class="tb" x="52" y="208">Alleen op uitnodiging,</text><text class="tb" x="52" y="224">met e-mailadres</text><text class="tb" x="52" y="240">en wachtwoord</text>
@@ -154,14 +154,14 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
 <div class="note"><p><strong>Aandachtspunt.</strong> Supabase is geen Europees bedrijf. De <a href="https://supabase.com/legal/dpa">verwerkersovereenkomst</a> wordt gesloten met Supabase Pte. Ltd., en de gegevens staan in een datacenter van Amazon in Frankfurt. Of dat voor BPB volstaat, is een vraag voor een privacydeskundige. Zie hoofdstuk 8.</p></div>
 
 <h2 id="h4"><span class="num">4</span>Gegevensmodel</h2>
-<p>Alles wat privé is, hangt aan één gegeven: de koppeling van één cliënt aan één begeleider voor één discipline. De persoonlijke pagina en het gesprek horen allebei bij zo'n koppeling.</p>
+<p>Alles wat privé is, hangt aan één gegeven: de koppeling van één cliënt aan één begeleider voor één discipline. De persoonlijke pagina en het gesprek horen allebei bij zo'n koppeling. De begeleider in een koppeling kan ook de beheerder zijn, want die begeleidt zelf ook cliënten.</p>
 <div class="tablewrap">
 <table>
   <thead><tr><th>Tabel</th><th>Inhoud</th></tr></thead>
   <tbody>
     <tr><td class="key">Gebruikers</td><td>Naam, e-mailadres, rol (cliënt, begeleider of beheerder), status van het account</td></tr>
     <tr><td class="key">Disciplines</td><td>De lijst die de beheerder instelt</td></tr>
-    <tr><td class="key">Koppelingen</td><td>Cliënt, begeleider en discipline, met begin- en einddatum</td></tr>
+    <tr><td class="key">Koppelingen</td><td>Cliënt, begeleider en discipline, met begin- en einddatum. Ontkoppelen vult de einddatum in; de koppeling en wat eraan hangt blijven staan</td></tr>
     <tr><td class="key">Bibliotheekitems</td><td>Titel, omschrijving, thema, soort (filmpje of document), verwijzing naar het bestand, wie het plaatste</td></tr>
     <tr><td class="key">Persoonlijke items</td><td>De koppeling, soort (filmpje, document, notitie of aanrader uit de bibliotheek), inhoud of verwijzing, datum</td></tr>
     <tr><td class="key">Berichten</td><td>De koppeling, afzender, tekst, tijdstip</td></tr>
@@ -183,7 +183,8 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
     <tr><td class="key">De werkgever ziet niets</td><td>Er bestaat geen rol voor werkgevers. Vrij registreren staat uit; een account ontstaat alleen via een uitnodiging van de beheerder.</td></tr>
     <tr><td class="key">Een begeleider ziet alleen eigen cliënten, en alleen de eigen pagina en het eigen gesprek</td><td><a href="https://supabase.com/docs/guides/auth/row-level-security">Toegangsregels per rij</a>: persoonlijke items, berichten en afspraken zijn alleen leesbaar voor de cliënt en de begeleider van die koppeling.</td></tr>
     <tr><td class="key">Een cliënt ziet nooit iets van andere cliënten</td><td>Dezelfde regels. De lijst met gebruikers is voor cliënten niet opvraagbaar.</td></tr>
-    <tr><td class="key">De beheerder leest geen berichten en persoonlijke onderdelen</td><td>De beheerdersrol heeft geen leesrecht op die tabellen. Het beheer van accounts en koppelingen loopt via afgebakende functies.</td></tr>
+    <tr><td class="key">De beheerder leest alleen de pagina's en gesprekken van eigen cliënten</td><td>Voor persoonlijke items, berichten en afspraken gelden voor de beheerder dezelfde toegangsregels als voor een begeleider: alleen de eigen koppelingen. Het overzicht van alle koppelingen bevat alleen namen en disciplines. Koppelen, ontkoppelen en het beheer van accounts lopen via afgebakende functies die alleen de beheerder mag aanroepen.</td></tr>
+    <tr><td class="key">Na het ontkoppelen kan niets nieuws meer gedeeld of gestuurd worden</td><td>De database weigert nieuwe persoonlijke items en berichten bij een koppeling waarvan de einddatum is verstreken. Lezen blijft mogelijk tot de bewaartermijn afloopt.</td></tr>
     <tr><td class="key">Inloggen met e-mailadres en wachtwoord</td><td>Alle rollen loggen in met e-mailadres en wachtwoord. <a href="https://supabase.com/docs/guides/auth/auth-mfa">Tweestapsverificatie</a> is geen onderdeel van de eerste versie. De database kan die later met één instelling verplichten voor begeleiders en beheerder.</td></tr>
     <tr><td class="key">Bestanden zijn besloten</td><td>Documenten en bijlagen vallen onder dezelfde regels. Een filmpje speelt alleen af via een <a href="https://bunny.net/docs/stream/token-authentication.md">ondertekende link die verloopt</a>, uitgegeven na de toegangscontrole.</td></tr>
     <tr><td class="key">Een melding toont geen inhoud</td><td>De pushmelding bevat alleen de tekst dat er iets nieuws is. De app haalt de inhoud pas op na het ontgrendelen.</td></tr>
@@ -194,21 +195,22 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
 </div>
 <h3><span class="num">5.1</span>Grenzen van deze maatregelen</h3>
 <ul>
-  <li>Inloggen gebeurt met alleen e-mailadres en wachtwoord. Wie het wachtwoord van een begeleider kent, kan bij de gegevens van diens cliënten.</li>
+  <li>Inloggen gebeurt met alleen e-mailadres en wachtwoord. Wie het wachtwoord van een begeleider kent, kan bij de gegevens van diens cliënten. Wie het wachtwoord van de beheerder kent, kan bovendien koppelingen maken en beëindigen.</li>
   <li>Wie het Supabase-account zelf beheert, kan technisch altijd bij alle gegevens. Het advies is die toegang te beperken tot één of twee personen.</li>
   <li>Een ondertekende videolink is niet aan één kijker gebonden. Wie de link heeft, kan het filmpje bekijken tot de link verloopt. De looptijd wordt daarom kort gehouden.</li>
 </ul>
 
 <h2 id="h6"><span class="num">6</span>Fasering</h2>
-<p>De bouw verloopt in negen stappen. Elke stap wordt afgesloten met een test op een telefoon. De toegangsregels komen eerst, zodat alles wat daarna wordt gebouwd er vanaf het begin onder valt.</p>
+<p>De bouw verloopt in tien stappen. Elke stap wordt afgesloten met een test op een telefoon. De toegangsregels komen eerst, zodat alles wat daarna wordt gebouwd er vanaf het begin onder valt.</p>
 <ol class="rules">
   <li><strong>Fundament.</strong> Supabase-project in Frankfurt, de tabellen en de toegangsregels. Daarbij automatische tests die als cliënt, begeleider en beheerder proberen andermans gegevens te lezen en moeten falen.</li>
   <li><strong>Inloggen.</strong> Uitnodiging per e-mail, wachtwoord en vergrendeling met pincode of vingerafdruk. Testaccounts worden in deze fase nog met de hand aangemaakt.</li>
   <li><strong>Bibliotheek.</strong> Bekijken in de app, daarna toevoegen en wijzigen door de begeleider, inclusief het uploaden van filmpjes.</li>
   <li><strong>Voor mij en afspraken.</strong> De pagina per discipline bij de cliënt, het delen door de begeleider en het overzicht van afspraken.</li>
   <li><strong>Berichten.</strong> Gesprekken per koppeling, met bijlagen.</li>
+  <li><strong>Beheerder in de app.</strong> De beheerder krijgt de schermen van een begeleider, met het overzicht van alle koppelingen en het koppelen en ontkoppelen. De toegangsregels en de tests uit stap 1 worden hierop aangepast: daarin is de beheerder nu nog geen begeleider.</li>
   <li><strong>Pushmeldingen.</strong> Bij een nieuw bericht en een nieuw persoonlijk onderdeel.</li>
-  <li><strong>Webomgeving.</strong> Accounts, koppelingen en disciplines voor de beheerder, en dezelfde schermen voor de begeleider in de browser.</li>
+  <li><strong>Webomgeving.</strong> Accounts en disciplines voor de beheerder, en dezelfde schermen voor begeleider en beheerder in de browser.</li>
   <li><strong>Bewaartermijn en inzage.</strong> De dagelijkse opruimtaak en het exporteren en verwijderen van de gegevens van één cliënt.</li>
   <li><strong>Pilot en publicatie.</strong> Een proef met een beperkte groep begeleiders en cliënten, daarna indienen bij de App Store en Google Play.</li>
 </ol>
@@ -248,6 +250,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
     <tr><td class="key">Supabase als verwerker</td><td>Toets door een privacydeskundige of een niet-Europees bedrijf met opslag in Frankfurt voor BPB volstaat. Het alternatief is Supabase zelf hosten bij een Europese partij.</td></tr>
     <tr><td class="key">Opslag van filmpjes in de EU</td><td>Bevestiging van Bunny Stream dat filmpjes uitsluitend in de EU kunnen worden opgeslagen. De website noemt een keuze uit opslagregio's, maar bevestigt dit niet.</td></tr>
     <tr><td class="key">D-U-N-S-nummer</td><td>Nagaan of BPB een D-U-N-S-nummer heeft. Apple vraagt hierom bij de aanmelding als organisatie.</td></tr>
+    <tr><td class="key">Disciplines per begeleider</td><td>Vaststellen of een begeleider altijd één discipline heeft. Zo niet, dan kiest de beheerder bij het koppelen ook de discipline.</td></tr>
     <tr><td class="key">Herkomst van afspraken</td><td>Vaststellen of afspraken in de app worden ingevoerd of uit een bestaande agenda komen. Een koppeling met een agenda is extra werk.</td></tr>
     <tr><td class="key">Afzender van uitnodigingen</td><td>Vaststellen vanaf welk e-mailadres van BPB de uitnodigingen worden verstuurd, en met welke maildienst.</td></tr>
   </tbody>
@@ -281,11 +284,12 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
     <tr><td class="key">0.1</td><td>9 oktober 2026</td><td>Eerste concept, opgesteld bij de demo</td></tr>
     <tr><td class="key">0.2</td><td>9 oktober 2026</td><td>Overzicht van afspraken toegevoegd</td></tr>
     <tr><td class="key">0.3</td><td>10 oktober 2026</td><td>Inloggen met alleen e-mailadres en wachtwoord; tweestapsverificatie vervallen, later aan te zetten</td></tr>
+    <tr><td class="key">0.4</td><td>10 oktober 2026</td><td>De beheerder is ook begeleider; koppelen en ontkoppelen in de app, als eigen bouwstap</td></tr>
   </tbody>
 </table>
 </div>
 
-<footer><span>BPB-app · Technisch ontwerp</span><span>Versie 0.3 · 10 oktober 2026 · concept</span></footer>
+<footer><span>BPB-app · Technisch ontwerp</span><span>Versie 0.4 · 10 oktober 2026 · concept</span></footer>
 </div>
 </body>
 </html>
