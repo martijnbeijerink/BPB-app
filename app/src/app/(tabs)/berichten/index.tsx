@@ -30,7 +30,7 @@ export default function Berichten() {
       {failed ? <Notice tone="error">Je berichten konden niet worden opgehaald. Trek het scherm omlaag om het opnieuw te proberen.</Notice> : null}
       {loading ? <Body muted>Bezig met ophalen…</Body> : null}
       {!loading && !failed && conversations.length === 0 ? (
-        <Notice>{coach ? 'Er zijn nog geen cliënten aan jou gekoppeld.' : 'Je bent nog niet aan een begeleider gekoppeld.'}</Notice>
+        <Notice>{coach ? 'Er zijn nog geen cliënten aan jou gekoppeld.' : 'Je bent nog niet aan een professional gekoppeld.'}</Notice>
       ) : null}
 
       {conversations.length > 0 ? (

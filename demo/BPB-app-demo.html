@@ -142,7 +142,8 @@ button,input,textarea,select{font:inherit}
 .cardmeta{display:flex;align-items:center;gap:8px;color:var(--ink-2);font-size:14px}
 .cardmeta span{flex:1}
 .cardhead{display:flex;align-items:center;gap:12px}
-.cardhead strong{flex:1;min-width:0;font-size:17px;overflow-wrap:anywhere}
+.cardhead .who{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.cardhead strong{font-size:17px;overflow-wrap:anywhere}
 .cardhead .avatar{width:40px;height:40px;font-size:14px}
 .links{display:flex;flex-direction:column;margin:0;padding:0;list-style:none}
 .links li{display:flex;align-items:center;gap:12px;min-height:44px;border-top:1px solid var(--line)}
@@ -166,6 +167,7 @@ button,input,textarea,select{font:inherit}
 .btn.accent{background:var(--accent);color:var(--ink);font-weight:700}
 .btn.accent .ic{color:var(--ink)}
 .btn.ghost{border:1.5px solid var(--ink);background:var(--surface);color:var(--ink)}
+.btn.ghost .ic{color:var(--ink)}
 .btn.danger{background:var(--danger);color:var(--on-ink)}
 .btn.ghost.warn{border-color:var(--danger);color:var(--danger)}
 .back{display:flex;align-items:center;gap:4px;align-self:flex-start;min-height:44px;margin-left:-6px;padding:0 12px 0 0;border:0;background:transparent;color:var(--ink);font-size:15px;font-weight:600;cursor:pointer}
@@ -235,8 +237,8 @@ textarea.input{min-height:120px;padding:14px 16px;resize:vertical}
     <img id="bar-logo" alt="">
     <h1>BPB-app</h1>
     <span class="pill">Demo met voorbeeldgegevens</span>
-    <p>Deel iets als begeleider en zie het bij de cliënt verschijnen. De rondleiding laat stap voor stap zien wat je kunt proberen.</p>
-    <div class="seg" role="group" aria-label="Begeleider en beheerder bekijken op">
+    <p>Deel iets als professional en zie het bij de cliënt verschijnen. De rondleiding laat stap voor stap zien wat je kunt proberen.</p>
+    <div class="seg" role="group" aria-label="Professional en beheerder bekijken op">
       <button type="button" data-view="phone" aria-pressed="true">Telefoon</button>
       <button type="button" data-view="web" aria-pressed="false">Webbrowser</button>
     </div>
@@ -245,7 +247,7 @@ textarea.input{min-height:120px;padding:14px 16px;resize:vertical}
   </header>
   <div class="switch switch-all" role="tablist" aria-label="Kies een rol">
     <button type="button" role="tab" data-role="client" aria-selected="true">Cliënt</button>
-    <button type="button" role="tab" data-role="coach" aria-selected="false">Begeleider</button>
+    <button type="button" role="tab" data-role="coach" aria-selected="false">Professional</button>
     <button type="button" role="tab" data-role="admin" aria-selected="false">Beheerder</button>
   </div>
   <main class="stage">
@@ -254,17 +256,17 @@ textarea.input{min-height:120px;padding:14px 16px;resize:vertical}
       <div class="phone" id="phone-client" data-role="client"></div>
     </section>
     <div class="staff">
-      <div class="switch switch-staff" role="tablist" aria-label="Kies begeleider of beheerder">
-        <button type="button" role="tab" data-role="coach" aria-selected="true">Begeleider · Marjolijn</button>
+      <div class="switch switch-staff" role="tablist" aria-label="Kies professional of beheerder">
+        <button type="button" role="tab" data-role="coach" aria-selected="true">Professional · Marjolijn</button>
         <button type="button" role="tab" data-role="admin" aria-selected="false">Beheerder · Femke</button>
       </div>
       <section class="device is-staff" data-role="coach">
-        <h2 class="device-label">Begeleider · Marjolijn (ontspannen)</h2>
+        <h2 class="device-label">Professional · Marjolijn (ontspannen)</h2>
         <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span>BPB-app in de webbrowser</span></div>
         <div class="phone" id="phone-coach" data-role="coach"></div>
       </section>
       <section class="device" data-role="admin">
-        <h2 class="device-label">Beheerder · Femke (ook begeleider inzicht)</h2>
+        <h2 class="device-label">Beheerder · Femke (ook professional inzicht)</h2>
         <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span>BPB-app in de webbrowser</span></div>
         <div class="phone" id="phone-admin" data-role="admin"></div>
       </section>
@@ -279,21 +281,21 @@ textarea.input{min-height:120px;padding:14px 16px;resize:vertical}
       <h3>Zo loop je de demo door</h3>
       <ol class="steps">
         <li><strong>Cliënt · Bibliotheek</strong><p>Kies een thema, zoek op titel en open een filmpje. Dit ziet elke cliënt.</p></li>
-        <li><strong>Begeleider · Cliënten</strong><p>Open Anouk en deel een notitie. Bij de cliënt verschijnt een teller bij Voor mij.</p></li>
+        <li><strong>Professional · Cliënten</strong><p>Open Anouk en deel een notitie. Bij de cliënt verschijnt een teller bij Voor mij.</p></li>
         <li><strong>Cliënt · Voor mij</strong><p>Open Ontspannen: de notitie staat bovenaan. Stuur van daaruit een bericht aan Marjolijn.</p></li>
-        <li><strong>Begeleider · Berichten</strong><p>Het bericht komt binnen. Antwoord, met of zonder bijlage.</p></li>
-        <li><strong>Begeleider · Afspraken</strong><p>Voeg een afspraak met Anouk toe. Die staat direct bij de cliënt.</p></li>
-        <li><strong>Beheerder · Cliënten</strong><p>Kies Alle koppelingen. Koppel Lotte aan Marjolijn en zie haar in Marjolijns lijst komen. Ontkoppel daarna een cliënt.</p></li>
-        <li><strong>Webbrowser</strong><p>Zet op een computerscherm de weergave bovenaan op Webbrowser. Begeleider en beheerder hebben daar dezelfde schermen.</p></li>
-        <li><strong>Privacy</strong><p>Wijs op de slotjes onderaan de schermen. Wat privé is, zien alleen de cliënt en de eigen begeleider.</p></li>
+        <li><strong>Professional · Berichten</strong><p>Het bericht komt binnen. Antwoord, met of zonder bijlage.</p></li>
+        <li><strong>Professional · Afspraken</strong><p>Voeg een afspraak met Anouk toe. Die staat direct bij de cliënt.</p></li>
+        <li><strong>Beheerder · Cliënten</strong><p>Nodig een nieuwe cliënt uit en koppel die aan Marjolijn: de cliënt komt in Marjolijns lijst. Kies daarna Alle koppelingen en ontkoppel een cliënt.</p></li>
+        <li><strong>Webbrowser</strong><p>Zet op een computerscherm de weergave bovenaan op Webbrowser. Professional en beheerder hebben daar dezelfde schermen.</p></li>
+        <li><strong>Privacy</strong><p>Wijs op de slotjes onderaan de schermen. Wat privé is, zien alleen de cliënt en de eigen professional.</p></li>
       </ol>
     </section>
     <section>
       <h3>Nog te bespreken</h3>
       <ul class="asks">
-        <li>Welke disciplines zijn er, en heeft elke begeleider er één?<span>In de demo volgt de discipline uit de begeleider.</span></li>
-        <li>Wie wordt beheerder, en mag die meelezen bij andere begeleiders?<span>In de demo niet.</span></li>
-        <li>Hoe komen afspraken in de app?<span>In de demo voert de begeleider ze in. Een koppeling met een bestaande agenda is extra werk.</span></li>
+        <li>Welke disciplines zijn er, en heeft elke professional er één?<span>In de demo volgt de discipline uit de professional.</span></li>
+        <li>Wie wordt beheerder, en mag die meelezen bij andere professionals?<span>In de demo niet.</span></li>
+        <li>Hoe komen afspraken in de app?<span>In de demo voert de professional ze in. Een koppeling met een bestaande agenda is extra werk.</span></li>
         <li>Hoe lang blijven gegevens bewaard na het einde van een traject?<span>Het ontwerp gaat uit van 1 jaar.</span></li>
         <li>Vanaf welk e-mailadres gaan de uitnodigingen?</li>
         <li>Wie levert de filmpjes en documenten voor de bibliotheek aan, en hoeveel zijn het er?</li>
@@ -310,12 +312,12 @@ const THEMES = ['Bewegen', 'Brein', 'Emoties', 'Inzicht', 'Ontspannen', 'Voeding
 const KIND = { video: 'Filmpje', doc: 'Document', note: 'Notitie' };
 const ME = {
   client: { name: 'Anouk V.', role: 'Cliënt' },
-  coach: { name: 'Marjolijn', role: 'Begeleider ontspannen', disc: 'Ontspannen' },
-  admin: { name: 'Femke', role: 'Beheerder · begeleider inzicht', disc: 'Inzicht' }
+  coach: { name: 'Marjolijn', role: 'Professional ontspannen', disc: 'Ontspannen' },
+  admin: { name: 'Femke', role: 'Beheerder · professional inzicht', disc: 'Inzicht' }
 };
 const ROLES = ['client', 'coach', 'admin'];
-// Alle cliënten en begeleiders die de beheerder kan koppelen. `phone` zegt
-// welke telefoon in de demo bij die begeleider hoort.
+// Alle cliënten en professionals die de beheerder kan koppelen. `phone` zegt
+// welke telefoon in de demo bij die professional hoort.
 const CLIENTS = [{ name: 'Anouk V.', init: 'AV' }, { name: 'Bram J.', init: 'BJ' }, { name: 'Fatima E.', init: 'FE' }, { name: 'Pieter K.', init: 'PK' }, { name: 'Lotte M.', init: 'LM' }];
 const STAFF = [
   { id: 'marjolijn', name: 'Marjolijn', init: 'M', disc: 'Ontspannen', phone: 'coach' },
@@ -327,7 +329,7 @@ const STAFF_TABS = [['clients', 'Cliënten', 'people'], ['lib', 'Bibliotheek', '
 const TABS = {
   client: [['lib', 'Bibliotheek', 'book'], ['mine', 'Voor mij', 'mark'], ['appts', 'Afspraken', 'calendar'], ['msgs', 'Berichten', 'msg'], ['me', 'Profiel', 'person']],
   coach: STAFF_TABS,
-  admin: STAFF_TABS // de beheerder kan alles wat een begeleider kan
+  admin: STAFF_TABS // de beheerder kan alles wat een professional kan
 };
 const PATHS = {
   book: '<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/>',
@@ -353,11 +355,12 @@ const PATHS = {
 const ic = (n, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${PATHS[n]}</svg>`;
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const first = name => name.split(' ')[0];
-// Een gesprek heeft twee kanten. De beheerder staat, net als een begeleider, aan de kant van de begeleider.
+// Een gesprek heeft twee kanten. De beheerder staat, net als een professional, aan de kant van de professional.
 const side = role => (role === 'client' ? 'client' : 'coach');
 
 function seed() {
   return {
+    clients: CLIENTS.map(c => ({ ...c })),
     lib: [
       { id: 'b1', kind: 'video', title: 'Ademhalingsoefening voor rustmomenten', theme: 'Ontspannen', desc: 'Een korte oefening om tussendoor tot rust te komen.' },
       { id: 'b2', kind: 'video', title: 'Wat doet stress met je brein?', theme: 'Brein', desc: 'Uitleg over wat langdurige stress in je hoofd doet.' },
@@ -429,9 +432,9 @@ function reset() {
   const fresh = () => ({ q: '', theme: 'Alles', toast: '', attach: false, out: false, notif: true, cview: 'mine' });
   ui = { client: fresh(), coach: fresh(), admin: fresh() };
 }
-// Welke telefoon hoort bij deze begeleider (null: geen telefoon in de demo).
+// Welke telefoon hoort bij deze professional (null: geen telefoon in de demo).
 const phoneOf = coach => (STAFF.find(p => p.name === coach) || {}).phone || null;
-// De koppelingen die iemand zelf ziet: de cliënt de eigen begeleiders, een begeleider of beheerder de eigen cliënten.
+// De koppelingen die iemand zelf ziet: de cliënt de eigen professionals, een professional of beheerder de eigen cliënten.
 const mine = role => Object.values(db.links).filter(l => (role === 'client' ? l.client === ME.client.name : l.owner === role)).map(l => l.id);
 const top = role => nav[role].stack.at(-1) || null;
 const libItem = id => db.lib.find(i => i.id === id);
@@ -504,12 +507,12 @@ function mineScreen() {
     const l = db.links[id], n = l.items.filter(i => !i.seen).length;
     return `<button class="row tall" type="button" data-push="disc" data-a="${id}"><span class="avatar">${l.coachInit}</span><span class="row-main"><span class="row-title big">${esc(l.disc)}</span><span class="meta">met ${esc(l.coach)}${l.ended ? ' · afgerond' : ''}</span></span>${n ? `<span class="badge">${n} nieuw</span>` : ''}${ic('right')}</button>`;
   }).join('');
-  return page('client', `<div class="head"><h2 class="h1">Voor mij</h2><p class="sub">Wat je begeleiders persoonlijk met je delen, per discipline.</p></div><div class="stack">${cards}</div>${lock('Elke pagina is privé. Alleen jij en de begeleider van die discipline zien wat erop staat. Je werkgever ziet niets.')}`);
+  return page('client', `<div class="head"><h2 class="h1">Voor mij</h2><p class="sub">Wat je professionals persoonlijk met je delen, per discipline.</p></div><div class="stack">${cards}</div>${lock('Elke pagina is privé. Alleen jij en de professional van die discipline zien wat erop staat. Je werkgever ziet niets.')}`);
 }
 function discScreen(s) {
   const l = db.links[s.a];
   return page('client', `${back('Voor mij')}<h2 class="h1">${esc(l.disc)}</h2>
-    <div class="coachcard"><span class="avatar">${l.coachInit}</span><div class="grow"><strong>${esc(l.coach)}</strong><span class="meta">Je begeleider voor ${esc(l.disc.toLowerCase())}</span></div><button class="btn accent small" type="button" data-push="chat" data-a="${l.id}">${ic('msg')}<span>Bericht</span></button></div>
+    <div class="coachcard"><span class="avatar">${l.coachInit}</span><div class="grow"><strong>${esc(l.coach)}</strong><span class="meta">Je professional voor ${esc(l.disc.toLowerCase())}</span></div><button class="btn accent small" type="button" data-push="chat" data-a="${l.id}">${ic('msg')}<span>Bericht</span></button></div>
     ${l.ended ? lock('Dit traject is afgerond. Je kunt alles nog teruglezen.') : ''}
     <div class="stack">${personalItems(l, 'client', s.fresh || [])}</div>`);
 }
@@ -526,13 +529,13 @@ function msgsScreen(role) {
       : `<span class="avatar soft">${l.clientInit}</span><span class="row-main"><span class="row-title">${esc(l.client)}</span>`;
     return `<button class="row" type="button" data-push="chat" data-a="${id}">${who}<span class="row-line${unread ? ' strong' : ''}">${preview(l, role)}</span></span><span class="row-side"><span>${l.last}</span>${unread ? '<span class="dot"></span><span class="sr">Ongelezen</span>' : ''}</span></button>`;
   }).join('');
-  const note = role === 'client' ? 'Alleen jij en de begeleider van dat gesprek lezen mee.' : role === 'coach' ? 'Alleen jij en de cliënt lezen mee. Andere begeleiders en de beheerder zien deze gesprekken niet.' : 'Alleen jij en de cliënt lezen mee. De gesprekken van andere begeleiders zie je als beheerder niet.';
-  return page(role, `<div class="head"><h2 class="h1">Berichten</h2><p class="sub">Eén gesprek per ${role === 'client' ? 'begeleider' : 'cliënt'}.</p></div>${rows ? `<div class="list">${rows}</div>` : '<p class="empty">Nog geen gesprekken.</p>'}${lock(note)}`);
+  const note = role === 'client' ? 'Alleen jij en de professional van dat gesprek lezen mee.' : role === 'coach' ? 'Alleen jij en de cliënt lezen mee. Andere professionals en de beheerder zien deze gesprekken niet.' : 'Alleen jij en de cliënt lezen mee. De gesprekken van andere professionals zie je als beheerder niet.';
+  return page(role, `<div class="head"><h2 class="h1">Berichten</h2><p class="sub">Eén gesprek per ${role === 'client' ? 'professional' : 'cliënt'}.</p></div>${rows ? `<div class="list">${rows}</div>` : '<p class="empty">Nog geen gesprekken.</p>'}${lock(note)}`);
 }
 function chatScreen(role, s) {
   const l = db.links[s.a], u = ui[role];
   const head = role === 'client'
-    ? `<span class="avatar">${l.coachInit}</span><div class="grow"><h2>${esc(l.coach)}</h2><span class="meta">Begeleider ${esc(l.disc.toLowerCase())}</span></div>`
+    ? `<span class="avatar">${l.coachInit}</span><div class="grow"><h2>${esc(l.coach)}</h2><span class="meta">Professional ${esc(l.disc.toLowerCase())}</span></div>`
     : `<span class="avatar soft">${l.clientInit}</span><div class="grow"><h2>${esc(l.client)}</h2><span class="meta">Cliënt · ${esc(l.disc)}</span></div>`;
   const msgs = l.msgs.map(m => `${m.day ? `<div class="day">${m.day}</div>` : ''}<div class="bubble ${m.from === side(role) ? 'me' : 'them'}">${m.text ? `<span>${esc(m.text)}</span>` : ''}${m.att ? `<span class="att">${ic('file', 'sm')}<span>${esc(m.att)}</span></span>` : ''}</div>`).join('');
   const to = role === 'client' ? l.coach : first(l.client);
@@ -557,8 +560,8 @@ function apptsScreen(role) {
     const weekday = WEEKDAY.format(a.date);
     return `<div class="row static appt${a.past ? ' past' : ''}"><span class="datebox${next ? ' next' : ''}"><strong>${DAY.format(a.date)}</strong><span>${MONTH.format(a.date).replace('.', '')}</span></span><span class="row-main"><span class="row-title">${who}</span><span class="meta">${weekday.charAt(0).toUpperCase() + weekday.slice(1)} · ${a.time} uur · ${a.place}</span>${next ? '<span class="sr">Eerstvolgende afspraak</span>' : ''}</span></div>`;
   };
-  const sub = role === 'client' ? 'Je afspraken met je begeleiders.' : 'Je afspraken met je cliënten.';
-  const note = role === 'client' ? 'Alleen jij en de begeleider van die afspraak zien dit.' : 'Je ziet alleen de afspraken met je eigen cliënten.';
+  const sub = role === 'client' ? 'Je afspraken met je professionals.' : 'Je afspraken met je cliënten.';
+  const note = role === 'client' ? 'Alleen jij en de professional van die afspraak zien dit.' : 'Je ziet alleen de afspraken met je eigen cliënten.';
   return page(role, `<div class="head"><h2 class="h1">Afspraken</h2><p class="sub">${sub}</p></div>
     ${role === 'client' ? '' : `<button class="btn" type="button" data-push="apptform">${ic('plus')}<span>Afspraak toevoegen</span></button>`}
     <div class="stack"><h3 class="h2">Komend</h3>${coming.length ? coming.map(row).join('') : '<p class="empty">Er staan geen afspraken gepland.</p>'}</div>
@@ -599,35 +602,44 @@ function clientRows(role) {
     return `<button class="row" type="button" data-push="client" data-a="${id}"><span class="avatar soft">${l.clientInit}</span><span class="row-main"><span class="row-title">${esc(l.client)}</span>${status}</span>${ic('right')}</button>`;
   }).join('')}</div>`;
 }
-// Alleen voor de beheerder: per cliënt bij welke begeleider die hoort.
+// Alleen voor de beheerder: per cliënt bij welke professional die hoort.
 function allLinks() {
-  return `<div class="stack">${CLIENTS.map(c => {
+  return `<div class="stack">${db.clients.map(c => {
     const links = Object.values(db.links).filter(l => l.client === c.name);
     const lines = links.length
       ? `<ul class="links">${links.map(l => l.ended
         ? `<li class="ended"><span>${esc(l.disc)}</span><span class="meta">${esc(l.coach)} · afgerond</span></li>`
         : `<li><span>${esc(l.disc)}</span><span class="meta">${esc(l.coach)}${l.owner === 'admin' ? ' (jij)' : ''}</span><button class="unlink" type="button" data-push="unlink" data-a="${l.id}" aria-label="Ontkoppel ${esc(c.name)} van ${esc(l.coach)}">Ontkoppelen</button></li>`).join('')}</ul>`
       : '<p class="meta">Nog niet gekoppeld</p>';
-    return `<div class="card" data-client="${esc(c.name)}"><div class="cardhead"><span class="avatar soft">${c.init}</span><strong>${esc(c.name)}</strong><button class="btn ghost small" type="button" data-push="link" data-a="${esc(c.name)}" aria-label="Koppel ${esc(c.name)} aan een begeleider">Koppelen</button></div>${lines}</div>`;
+    return `<div class="card" data-client="${esc(c.name)}"><div class="cardhead"><span class="avatar soft">${c.init}</span><span class="who"><strong>${esc(c.name)}</strong>${c.invited ? '<span class="meta">Uitgenodigd, nog niet ingelogd</span>' : ''}</span><button class="btn ghost small" type="button" data-push="link" data-a="${esc(c.name)}" aria-label="Koppel ${esc(c.name)} aan een professional">Koppelen</button></div>${lines}</div>`;
   }).join('')}</div>`;
 }
 function clientsScreen(role) {
   if (role === 'coach') return page(role, `<div class="headrow"><h2 class="h1 grow">Mijn cliënten</h2><span class="tag">${ME.coach.disc}</span></div>${clientRows(role)}${lock('Je ziet alleen cliënten die voor jouw discipline aan jou gekoppeld zijn.')}`);
   const all = ui[role].cview === 'all';
   const chip = (id, label) => `<button class="chip" type="button" data-act="cview" data-a="${id}" aria-pressed="${ui[role].cview === id}">${label}</button>`;
-  return page(role, `<div class="head"><h2 class="h1">Cliënten</h2><p class="sub">Als beheerder koppel je cliënten aan begeleiders.</p></div>
-    <button class="btn" type="button" data-push="link" data-a="">${ic('link')}<span>Cliënt koppelen aan begeleider</span></button>
+  return page(role, `<div class="head"><h2 class="h1">Cliënten</h2><p class="sub">Als beheerder nodig je cliënten uit en koppel je ze aan professionals.</p></div>
+    <div class="stack"><button class="btn" type="button" data-push="link" data-a="">${ic('link')}<span>Cliënt koppelen aan professional</span></button>
+    <button class="btn ghost" type="button" data-push="newclient">${ic('plus')}<span>Nieuwe cliënt uitnodigen</span></button></div>
     <div class="chips">${chip('mine', 'Mijn cliënten')}${chip('all', 'Alle koppelingen')}</div>
-    ${all ? allLinks() + lock('Je ziet wie aan wie gekoppeld is en kunt een koppeling beëindigen. Wat een begeleider en een cliënt delen en schrijven, zie je alleen bij je eigen cliënten.')
-      : clientRows(role) + lock(`Dit zijn je eigen cliënten, voor ${ME[role].disc.toLowerCase()}. Hier werk je als begeleider.`)}`);
+    ${all ? allLinks() + lock('Je ziet wie aan wie gekoppeld is en kunt een koppeling beëindigen. Wat een professional en een cliënt delen en schrijven, zie je alleen bij je eigen cliënten.')
+      : clientRows(role) + lock(`Dit zijn je eigen cliënten, voor ${ME[role].disc.toLowerCase()}. Hier werk je als professional.`)}`);
+}
+function newclientScreen(role) {
+  return page(role, `${back('Cliënten')}<div class="head"><h2 class="h1">Nieuwe cliënt uitnodigen</h2><p class="sub">De cliënt krijgt een e-mail met een uitnodiging en kiest zelf een wachtwoord.</p></div>
+    <div class="field"><label for="${role}-nname">Naam</label><input class="input" id="${role}-nname" type="text" autocomplete="off"></div>
+    <div class="field"><label for="${role}-nmail">E-mailadres</label><input class="input" id="${role}-nmail" type="email" autocomplete="off" inputmode="email"></div>
+    <div class="field"><label for="${role}-nstaff">Professional</label><select class="input" id="${role}-nstaff"><option value="">Later koppelen</option>${STAFF.map(p => `<option value="${p.id}">${esc(p.name)} · ${esc(p.disc)}${p.phone === role ? ' (jij)' : ''}</option>`).join('')}</select></div>
+    <p class="err" id="${role}-err" hidden></p><button class="btn" type="button" data-act="client-save">Uitnodigen</button>
+    <p class="empty">In deze demo wordt geen e-mail verstuurd.</p>`);
 }
 function linkScreen(role, s) {
   const opt = (value, label, selected) => `<option value="${esc(value)}"${selected ? ' selected' : ''}>${esc(label)}</option>`;
-  return page(role, `${back('Cliënten')}<div class="head"><h2 class="h1">Cliënt koppelen</h2><p class="sub">Kies een cliënt en een begeleider. De discipline is die van de begeleider.</p></div>
-    <div class="field"><label for="${role}-kclient">Cliënt</label><select class="input" id="${role}-kclient">${opt('', 'Kies een cliënt', !s.a)}${CLIENTS.map(c => opt(c.name, c.name, c.name === s.a)).join('')}</select></div>
-    <div class="field"><label for="${role}-kstaff">Begeleider</label><select class="input" id="${role}-kstaff">${opt('', 'Kies een begeleider', true)}${STAFF.map(p => opt(p.id, `${p.name} · ${p.disc}${p.phone === role ? ' (jij)' : ''}`, false)).join('')}</select></div>
+  return page(role, `${back('Cliënten')}<div class="head"><h2 class="h1">Cliënt koppelen</h2><p class="sub">Kies een cliënt en een professional. De discipline is die van de professional.</p></div>
+    <div class="field"><label for="${role}-kclient">Cliënt</label><select class="input" id="${role}-kclient">${opt('', 'Kies een cliënt', !s.a)}${db.clients.map(c => opt(c.name, c.name, c.name === s.a)).join('')}</select></div>
+    <div class="field"><label for="${role}-kstaff">Professional</label><select class="input" id="${role}-kstaff">${opt('', 'Kies een professional', true)}${STAFF.map(p => opt(p.id, `${p.name} · ${p.disc}${p.phone === role ? ' (jij)' : ''}`, false)).join('')}</select></div>
     <p class="err" id="${role}-err" hidden></p><button class="btn" type="button" data-act="link-save">Koppelen</button>
-    ${lock('De cliënt en de begeleider zien elkaar daarna in de app. Wat zij delen en schrijven, blijft tussen hen.')}`);
+    ${lock('De cliënt en de professional zien elkaar daarna in de app. Wat zij delen en schrijven, blijft tussen hen.')}`);
 }
 function unlinkScreen(role, s) {
   const l = db.links[s.a], f = esc(first(l.client));
@@ -681,7 +693,7 @@ function view(role) {
   const u = ui[role], s = top(role);
   let html;
   if (u.out) html = outScreen(role);
-  else if (s) html = { item: itemScreen, pitem: pitemScreen, chat: chatScreen, client: clientScreen, share: shareScreen, libform: libformScreen, link: linkScreen, unlink: unlinkScreen, apptform: apptformScreen, withdraw: withdrawScreen, libdel: libdelScreen, disc: (r, x) => discScreen(x) }[s.name](role, s);
+  else if (s) html = { item: itemScreen, pitem: pitemScreen, chat: chatScreen, client: clientScreen, share: shareScreen, libform: libformScreen, link: linkScreen, unlink: unlinkScreen, apptform: apptformScreen, newclient: newclientScreen, withdraw: withdrawScreen, libdel: libdelScreen, disc: (r, x) => discScreen(x) }[s.name](role, s);
   else html = { lib: () => libScreen(role), mine: mineScreen, msgs: () => msgsScreen(role), me: () => meScreen(role), clients: () => clientsScreen(role), appts: () => apptsScreen(role) }[nav[role].tab]();
   return html + (u.toast ? `<div class="toast" role="status">${esc(u.toast)}</div>` : '');
 }
@@ -724,6 +736,10 @@ function share(role, linkId, item) {
   if (isOpen('client', 'disc', linkId)) { item.seen = true; top('client').fresh.push(item.id); }
   l.items.unshift(item); nav[role].stack.pop();
   toast(role, `Gedeeld met ${first(l.client)}`); renderAll();
+}
+function addLink(client, staff) {
+  const id = 'L' + (++uid);
+  db.links[id] = { id, client: client.name, clientInit: client.init, coach: staff.name, coachInit: staff.init, disc: staff.disc, last: '', unread: { client: false, coach: false }, items: [], msgs: [], appts: [], owner: staff.phone };
 }
 // Schermen over iets dat net is verdwenen, sluiten op alle telefoons.
 function closeScreens(match) {
@@ -782,25 +798,39 @@ function act(role, name, btn) {
     if (l.client === ME.client.name) toast('client', `Nieuwe afspraak: ${DAY.format(date)} ${MONTH.format(date).replace('.', '')} om ${time} uur`);
     renderAll();
   }
+  else if (name === 'client-save') {
+    const full = val('nname').replace(/\s+/g, ' '), mail = val('nmail').toLowerCase(), staff = STAFF.find(p => p.id === val('nstaff'));
+    if (!full) return fail('Vul een naam in.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) return fail('Vul een geldig e-mailadres in.');
+    if (db.clients.some(c => c.name.toLowerCase() === full.toLowerCase())) return fail('Er is al een cliënt met deze naam.');
+    if (db.clients.some(c => c.mail === mail)) return fail('Er is al een cliënt met dit e-mailadres.');
+    const init = full.split(' ').map(w => w.replace(/[^\p{L}]/gu, '')).filter(Boolean).slice(0, 2).map(w => w.charAt(0).toUpperCase()).join('') || '?';
+    const client = { name: full, init, mail, invited: true };
+    db.clients.unshift(client);
+    if (staff) addLink(client, staff);
+    nav[role].stack.pop(); u.cview = staff && staff.phone === role ? 'mine' : 'all';
+    toast(role, `Uitnodiging verstuurd aan ${first(full)}`);
+    if (staff && staff.phone && staff.phone !== role) toast(staff.phone, `Nieuwe cliënt: ${full}`);
+    renderAll();
+  }
   else if (name === 'cview') { u.cview = btn.dataset.a; renderPhone(role); }
   else if (name === 'link-save') {
-    const client = CLIENTS.find(c => c.name === val('kclient')), staff = STAFF.find(p => p.id === val('kstaff'));
+    const client = db.clients.find(c => c.name === val('kclient')), staff = STAFF.find(p => p.id === val('kstaff'));
     if (!client) return fail('Kies een cliënt.');
-    if (!staff) return fail('Kies een begeleider.');
-    // Per discipline heeft een cliënt één begeleider.
+    if (!staff) return fail('Kies een professional.');
+    // Per discipline heeft een cliënt één professional.
     const taken = Object.values(db.links).find(l => !l.ended && l.client === client.name && l.disc === staff.disc);
-    if (taken) return fail(taken.coach === staff.name ? `${first(client.name)} is al aan ${staff.name} gekoppeld.` : `${first(client.name)} heeft voor ${staff.disc.toLowerCase()} al een begeleider: ${taken.coach}.`);
-    // Een eerder afgeronde koppeling met dezelfde begeleider gaat weer open, met alles wat er al stond.
+    if (taken) return fail(taken.coach === staff.name ? `${first(client.name)} is al aan ${staff.name} gekoppeld.` : `${first(client.name)} heeft voor ${staff.disc.toLowerCase()} al een professional: ${taken.coach}.`);
+    // Een eerder afgeronde koppeling met dezelfde professional gaat weer open, met alles wat er al stond.
     const old = Object.values(db.links).find(l => l.ended && l.client === client.name && l.coach === staff.name);
     if (old) old.ended = false;
     else {
-      const id = 'L' + (++uid);
-      db.links[id] = { id, client: client.name, clientInit: client.init, coach: staff.name, coachInit: staff.init, disc: staff.disc, last: '', unread: { client: false, coach: false }, items: [], msgs: [], appts: [], owner: staff.phone };
+      addLink(client, staff);
     }
     nav[role].stack.pop(); u.cview = staff.phone === role ? 'mine' : 'all';
     toast(role, `${first(client.name)} ${old ? 'opnieuw ' : ''}gekoppeld aan ${staff.name}`);
     if (staff.phone && staff.phone !== role) toast(staff.phone, `Nieuwe cliënt: ${client.name}`);
-    if (client.name === ME.client.name) toast('client', `Nieuwe begeleider: ${staff.name} · ${staff.disc}`);
+    if (client.name === ME.client.name) toast('client', `Nieuwe professional: ${staff.name} · ${staff.disc}`);
     renderAll();
   }
   else if (name === 'unlink') {
@@ -847,7 +877,7 @@ function setRole(role) {
 document.querySelectorAll('.switch').forEach(sw => sw.addEventListener('click', e => { const b = e.target.closest('button'); if (b) setRole(b.dataset.role); }));
 document.getElementById('reset').addEventListener('click', () => { reset(); document.querySelectorAll('.phone').forEach(p => { delete p.dataset.key; }); renderAll(); });
 
-// Weergave voor begeleider en beheerder: telefoon of webbrowser. De schermen en de gegevens zijn dezelfde.
+// Weergave voor professional en beheerder: telefoon of webbrowser. De schermen en de gegevens zijn dezelfde.
 document.querySelector('.seg').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   document.querySelector('.shell').classList.toggle('webmode', b.dataset.view === 'web');
