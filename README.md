@@ -1,10 +1,12 @@
 # BPB-app
 
-App voor cliënten en begeleiders van Burnout Preventie & Begeleiding. Cliënten zien een gedeelde bibliotheek met filmpjes en documenten, krijgen per discipline persoonlijke onderdelen van hun begeleider en wisselen berichten uit.
+App voor cliënten en professionals van Burnout Preventie & Begeleiding. Cliënten zien een gedeelde bibliotheek met filmpjes en documenten, krijgen per discipline persoonlijke onderdelen van hun professional en wisselen berichten uit.
 
 Het functioneel en technisch ontwerp staan in de map `docs/`, de klikbare demo in `demo/`. Beide zijn losse HTML-bestanden die in elke browser openen.
 
 ## Stand van zaken
+
+In de app en de ontwerpen heet de begeleider van een cliënt een **professional**. In de database en de code heet die rol `coach`.
 
 Het fundament staat (bouwstap 1 uit het technisch ontwerp) en de eerste schermen van de app zijn gebouwd.
 
@@ -13,26 +15,26 @@ Het fundament staat (bouwstap 1 uit het technisch ontwerp) en de eerste schermen
 | Database: tabellen en toegangsregels per rij | Klaar, met 61 tests |
 | App: inloggen met e-mailadres en wachtwoord | Klaar, getest op een telefoon tegen het echte Supabase-project |
 | App: menubalk met tabs per rol, Bibliotheek met thema's en zoeken, Profiel | Klaar, getest op een telefoon |
-| App: Voor mij (cliënt) en Cliënten (begeleider): notitie delen en een bibliotheekitem aanraden | Klaar. In een browser doorgeklikt tegen een nagebootste backend, nog niet op een telefoon |
-| App: Berichten tussen cliënt en begeleider, live, met tellers in de menubalk | Klaar, zonder bijlagen. In een browser doorgeklikt tegen een nagebootste backend, nog niet op een telefoon. Het live binnenkomen is alleen op het echte project te controleren |
+| App: Voor mij (cliënt) en Cliënten (professional): notitie delen en een bibliotheekitem aanraden | Klaar. In een browser doorgeklikt tegen een nagebootste backend, nog niet op een telefoon |
+| App: Berichten tussen cliënt en professional, live, met tellers in de menubalk | Klaar, zonder bijlagen. In een browser doorgeklikt tegen een nagebootste backend, nog niet op een telefoon. Het live binnenkomen is alleen op het echte project te controleren |
 | Eigen filmpje of document delen, bijlagen bij berichten | Volgt zodra de bestandsopslag en de videodienst zijn gekoppeld |
 | Afspelen van filmpjes en openen van documenten | Volgt zodra de videodienst en de bestandsopslag zijn gekoppeld |
 | Scherm Afspraken | Volgende stap. De tab bestaat al en toont een tussenscherm |
 | Tweede inlogstap | Niet in gebruik: inloggen is e-mailadres en wachtwoord. In de database met één instelling aan te zetten |
 | Uitnodigen per e-mail, wachtwoord herstellen | Volgt |
 | Meldingen op de telefoon (push) | Volgt |
-| Beheerder in de app: alles wat een begeleider kan, plus koppelen en ontkoppelen | Staat in de demo en in de ontwerpen (versie 0.5). In de echte app en de database nog te bouwen: daar is de beheerder nu nog geen begeleider |
+| Beheerder in de app: alles wat een professional kan, plus een nieuwe cliënt uitnodigen, koppelen en ontkoppelen | Staat in de demo en in de ontwerpen (versie 0.6). In de echte app en de database nog te bouwen: daar is de beheerder nu nog geen professional |
 
 ## Indeling
 
 | Map | Inhoud |
 | --- | --- |
 | `supabase/migrations/` | De database: tabellen en toegangsregels |
-| `tests/db/` | Tests die als cliënt, begeleider en beheerder proberen bij andermans gegevens te komen |
+| `tests/db/` | Tests die als cliënt, professional en beheerder proberen bij andermans gegevens te komen |
 | `tests/app/` | Tests van losse onderdelen van de app |
 | `app/` | De app zelf (Expo, React Native, TypeScript) |
-| `docs/` | Functioneel en technisch ontwerp, versie 0.5 (concept) |
-| `demo/` | Klikbare demo met voorbeeldgegevens, zonder backend: cliënt, begeleider en beheerder, op de telefoon en in de webbrowser, met een rondleiding |
+| `docs/` | Functioneel en technisch ontwerp, versie 0.6 (concept) |
+| `demo/` | Klikbare demo met voorbeeldgegevens, zonder backend: cliënt, professional en beheerder, op de telefoon en in de webbrowser, met een rondleiding |
 
 ## Tests draaien
 
@@ -67,12 +69,12 @@ from auth.users where email = 'anouk@voorbeeld.nl';
 
 Een nieuw account is standaard cliënt en nog niet actief. Zonder de eerste opdracht ziet de gebruiker na het inloggen alleen de melding dat het account nog niet actief is.
 
-### Een testbegeleider aanmaken en koppelen
+### Een testprofessional aanmaken en koppelen
 
-Voor mij, Cliënten en Berichten werken pas als een cliënt aan een begeleider is gekoppeld. Maak onder Authentication een tweede gebruiker aan en voer daarna in de SQL Editor uit, met de e-mailadressen van jouw twee testgebruikers:
+Voor mij, Cliënten en Berichten werken pas als een cliënt aan een professional is gekoppeld. Maak onder Authentication een tweede gebruiker aan en voer daarna in de SQL Editor uit, met de e-mailadressen van jouw twee testgebruikers:
 
 ```sql
--- De begeleider: naam, rol en actief
+-- De professional: naam, rol en actief
 update public.profiles
 set full_name = 'Marjolijn', role = 'coach', status = 'active'
 where id = (select id from auth.users where email = 'marjolijn@voorbeeld.nl');
@@ -81,7 +83,7 @@ where id = (select id from auth.users where email = 'marjolijn@voorbeeld.nl');
 insert into public.disciplines (name) values ('ontspannen')
 on conflict (name) do nothing;
 
--- De koppeling: deze cliënt, deze begeleider, deze discipline
+-- De koppeling: deze cliënt, deze professional, deze discipline
 insert into public.assignments (client_id, coach_id, discipline_id)
 select c.id, b.id, d.id
 from auth.users c, auth.users b, public.disciplines d
@@ -92,7 +94,7 @@ where c.email = 'anouk@voorbeeld.nl'
 
 De laatste opdracht hoort "1 row" te melden. Meldt hij "0 rows", dan klopt een van de e-mailadressen niet.
 
-Een begeleider ziet de tab Cliënten in plaats van Voor mij. Log met de begeleider in om een notitie te delen of een bericht te sturen, en met de cliënt om het te zien. Dat kan op twee telefoons, of op één telefoon door uit en in te loggen.
+Een professional ziet de tab Cliënten in plaats van Voor mij. Log met de professional in om een notitie te delen of een bericht te sturen, en met de cliënt om het te zien. Dat kan op twee telefoons, of op één telefoon door uit en in te loggen.
 
 ## De app starten
 
@@ -127,7 +129,7 @@ De database gebruikt Engelse namen, de ontwerpen Nederlandse.
 | --- | --- |
 | `profiles` | Gebruikers |
 | `disciplines` | Disciplines |
-| `assignments` | Koppelingen: één cliënt, één begeleider, één discipline |
+| `assignments` | Koppelingen: één cliënt, één professional, één discipline |
 | `library_items` | Bibliotheekitems |
 | `personal_items` | Persoonlijke items |
 | `messages` | Berichten |

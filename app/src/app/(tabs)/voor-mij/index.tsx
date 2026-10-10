@@ -20,13 +20,13 @@ export default function VoorMij() {
     <Screen onRefresh={refresh}>
       <View style={screenStyles.head}>
         <Title>Voor mij</Title>
-        <Body muted>Wat je begeleiders persoonlijk met je delen, per discipline.</Body>
+        <Body muted>Wat je professionals persoonlijk met je delen, per discipline.</Body>
       </View>
 
       {failed ? <Notice tone="error">Je gegevens konden niet worden opgehaald. Trek het scherm omlaag om het opnieuw te proberen.</Notice> : null}
       {loading ? <Body muted>Bezig met ophalen…</Body> : null}
       {!loading && !failed && assignments.length === 0 ? (
-        <Notice>Je bent nog niet aan een begeleider gekoppeld. Neem contact op met Burnout Preventie & Begeleiding.</Notice>
+        <Notice>Je bent nog niet aan een professional gekoppeld. Neem contact op met Burnout Preventie & Begeleiding.</Notice>
       ) : null}
 
       {assignments.map((assignment) => (
@@ -48,7 +48,7 @@ export default function VoorMij() {
         </Pressable>
       ))}
 
-      {assignments.length > 0 ? <LockNote>Alleen jij en de begeleider van die discipline zien wat hier staat.</LockNote> : null}
+      {assignments.length > 0 ? <LockNote>Alleen jij en de professional van die discipline zien wat hier staat.</LockNote> : null}
     </Screen>
   );
 }

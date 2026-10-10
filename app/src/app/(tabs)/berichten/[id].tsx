@@ -118,7 +118,7 @@ export default function Gesprek() {
                   {other}
                 </Text>
                 <Text numberOfLines={1} style={partStyles.rowMeta}>
-                  {coach ? capitalize(assignment.discipline) : `Je begeleider voor ${assignment.discipline}`}
+                  {coach ? capitalize(assignment.discipline) : `Je professional voor ${assignment.discipline}`}
                 </Text>
               </View>
             </>

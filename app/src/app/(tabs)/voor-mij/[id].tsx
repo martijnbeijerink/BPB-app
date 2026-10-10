@@ -42,7 +42,7 @@ export default function Discipline() {
             <Avatar label={initials(assignment.coach_name)} />
             <View style={partStyles.rowText}>
               <Text style={partStyles.rowTitle}>{assignment.coach_name}</Text>
-              <Text style={partStyles.rowMeta}>Je begeleider voor {assignment.discipline}</Text>
+              <Text style={partStyles.rowMeta}>Je professional voor {assignment.discipline}</Text>
             </View>
             <Pressable
               accessibilityLabel={`Bericht aan ${firstName(assignment.coach_name)}`}
