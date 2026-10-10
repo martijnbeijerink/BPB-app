@@ -6,16 +6,17 @@ Het functioneel en technisch ontwerp staan in de map `docs/`, de klikbare demo i
 
 ## Stand van zaken
 
-Dit is bouwstap 1 uit het technisch ontwerp: het fundament.
+Het fundament staat (bouwstap 1 uit het technisch ontwerp) en de eerste schermen van de app zijn gebouwd.
 
 | Onderdeel | Status |
 | --- | --- |
 | Database: tabellen en toegangsregels per rij | Klaar, met 52 tests |
-| App: inloggen met e-mailadres en wachtwoord | Klaar, nog niet getest tegen een echt Supabase-project |
-| App: startscherm dat de bibliotheek uit de database leest | Klaar, idem |
+| App: inloggen met e-mailadres en wachtwoord | Klaar, getest op een telefoon tegen het echte Supabase-project |
+| App: menubalk met tabs per rol, Bibliotheek met thema's en zoeken, Profiel | Klaar. In een browser doorgeklikt tegen een nagebootste backend, nog niet op een telefoon |
+| Afspelen van filmpjes en openen van documenten | Volgt zodra de videodienst en de bestandsopslag zijn gekoppeld |
 | Tweede inlogstap | Niet in gebruik: inloggen is e-mailadres en wachtwoord. In de database met één instelling aan te zetten |
 | Uitnodigen per e-mail, wachtwoord herstellen | Volgende stap |
-| Schermen Bibliotheek, Voor mij, Berichten, Profiel | Volgende stappen |
+| Schermen Voor mij, Cliënten, Afspraken en Berichten | Volgende stappen. De tabs bestaan al en tonen een tussenscherm |
 | Toegangsregels voor bestanden (documenten, bijlagen) | Volgt bij de stap Bibliotheek |
 
 ## Indeling
@@ -60,7 +61,9 @@ select 'Ademhalingsoefening voor rustmomenten', 'ontspannen', 'video', id
 from auth.users where email = 'anouk@voorbeeld.nl';
 ```
 
-Een nieuw account is standaard cliënt en nog niet actief. Zonder de eerste opdracht ziet de gebruiker na het inloggen niets.
+Een nieuw account is standaard cliënt en nog niet actief. Zonder de eerste opdracht ziet de gebruiker na het inloggen alleen de melding dat het account nog niet actief is.
+
+Een testbegeleider maak je op dezelfde manier, met `role = 'coach'` erbij in de eerste opdracht. Een begeleider ziet de tab Cliënten in plaats van Voor mij.
 
 ## De app starten
 
@@ -84,6 +87,8 @@ Vanuit de hoofdmap kan het ook met `npm start`.
 Krijg je de melding `Unable to resolve "../../App"`, dan is de app vanuit de hoofdmap gestart in plaats van vanuit `app`.
 
 Scan de QR-code met Expo Go (Android) of met de camera (iPhone).
+
+Na het binnenhalen van een nieuwe versie van de code: draai in de map `app` eerst opnieuw `npm install`. Er kunnen onderdelen zijn bijgekomen.
 
 ## Namen in de database
 
