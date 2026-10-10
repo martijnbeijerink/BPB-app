@@ -27,7 +27,7 @@ function Screens() {
   return (
     <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.ground } }}>
       <Stack.Protected guard={session !== null}>
-        <Stack.Screen name="index" />
+        <Stack.Screen name="(tabs)" />
       </Stack.Protected>
       <Stack.Protected guard={session === null}>
         <Stack.Screen name="inloggen" />

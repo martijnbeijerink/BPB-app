@@ -15,7 +15,11 @@ type AuthState = {
   /** false zolang de opgeslagen sessie nog wordt opgehaald */
   ready: boolean;
   session: Session | null;
+  /** het profiel van de ingelogde gebruiker; null als het (nog) niet is opgehaald */
   profile: Profile | null;
+  /** true zolang het profiel wordt opgehaald */
+  profileLoading: boolean;
+  reloadProfile(): void;
   signIn(email: string, password: string): Promise<string | null>;
   signOut(): Promise<void>;
 };
@@ -35,6 +39,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [attempt, setAttempt] = useState(0);
+  // voor welke gebruiker en poging het profiel al is opgehaald
+  const [loadedKey, setLoadedKey] = useState<string | null>(null);
 
   useEffect(() => {
     if (!supabase) {
@@ -56,8 +63,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const userId = session?.user.id ?? null;
+  const key = userId ? `${userId}:${attempt}` : null;
+  const profileLoading = key !== null && loadedKey !== key;
   useEffect(() => {
-    if (!supabase || !userId) {
+    if (!supabase || !userId || !key) {
       setProfile(null);
       return;
     }
@@ -68,12 +77,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .eq('id', userId)
       .maybeSingle()
       .then(({ data: row }) => {
-        if (active) setProfile((row as Profile | null) ?? null);
+        if (!active) return;
+        setProfile((row as Profile | null) ?? null);
+        setLoadedKey(key);
       });
     return () => {
       active = false;
     };
-  }, [userId]);
+  }, [userId, key]);
+
+  const reloadProfile = useCallback(() => setAttempt((count) => count + 1), []);
 
   const signIn = useCallback(async (email: string, password: string) => {
     if (!supabase) return 'De app is nog niet aan Supabase gekoppeld.';
@@ -86,8 +99,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ ready, session, profile, signIn, signOut }),
-    [ready, session, profile, signIn, signOut],
+    () => ({ ready, session, profile, profileLoading, reloadProfile, signIn, signOut }),
+    [ready, session, profile, profileLoading, reloadProfile, signIn, signOut],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
