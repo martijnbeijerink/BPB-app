@@ -25,9 +25,10 @@ before(async () => {
     await run(null, 'update public.profiles set role = $2, status = $3 where id = $1', [id, role, status]);
     u[key] = { id, aal };
   };
-  await user('beheerder', 'Beheerder', 'admin', 'active', 'aal2');
-  await user('marjolijn', 'Marjolijn', 'coach', 'active', 'aal2');   // begeleider ontspannen
-  await user('sanne', 'Sanne', 'coach', 'active', 'aal2');           // begeleider voeding
+  // Iedereen logt in met alleen e-mailadres en wachtwoord (aal1).
+  await user('beheerder', 'Beheerder', 'admin', 'active', 'aal1');
+  await user('marjolijn', 'Marjolijn', 'coach', 'active', 'aal1');   // begeleider ontspannen
+  await user('sanne', 'Sanne', 'coach', 'active', 'aal1');           // begeleider voeding
   await user('anouk', 'Anouk V.', 'client', 'active', 'aal1');
   await user('bram', 'Bram J.', 'client', 'active', 'aal1');
   await user('geblokkeerd', 'Geblokkeerde cliënt', 'client', 'blocked', 'aal1');
@@ -255,18 +256,43 @@ describe('Beheer: accounts, koppelingen en disciplines', () => {
   });
 });
 
-describe('Tweestapsverificatie en accountstatus', () => {
+describe('Inloggen: tweede stap is uit, maar instelbaar', () => {
   const tables = ['library_items', 'personal_items', 'messages', 'attachments', 'assignments', 'disciplines'];
-  test('een begeleider zonder tweede inlogstap ziet niets', async () => {
-    const zonder = { ...u.marjolijn, aal: 'aal1' };
-    for (const table of tables) assert.deepEqual((await run(zonder, `select * from public.${table}`)).rows, [], table);
-    await assertDenied(run(zonder, "insert into public.personal_items (assignment_id, kind, body, created_by) values ($1, 'note', 'Zonder tweede stap', $2)", [k.anoukOntspannen, u.marjolijn.id]));
+  const verplicht = () => run(null, 'update private.app_settings set require_second_step = true');
+
+  test('standaard is e-mailadres en wachtwoord genoeg voor begeleider en beheerder', async () => {
+    assert.deepEqual(ids(await run(u.marjolijn, 'select id from public.personal_items')), [x.itemAnoukOntspannen, x.itemBram].sort());
+    await run(u.beheerder, "select public.admin_update_profile($1, 'client', 'blocked')", [u.bram.id]);
   });
-  test('een beheerder zonder tweede inlogstap kan niets', async () => {
-    const zonder = { ...u.beheerder, aal: 'aal1' };
-    assert.deepEqual(ids(await run(zonder, 'select id from public.profiles')), [u.beheerder.id]);
-    await assertDenied(run(zonder, "select public.admin_update_profile($1, 'client', 'blocked')", [u.bram.id]));
+  test('niemand kan de instelling zelf lezen of wijzigen', async () => {
+    for (const who of [ANON, u.anouk, u.marjolijn, u.beheerder]) {
+      await assertDenied(run(who, 'select * from private.app_settings'));
+      await assertDenied(run(who, 'update private.app_settings set require_second_step = false'));
+    }
   });
+  test('met de instelling aan ziet een begeleider zonder tweede stap niets', async () => {
+    await verplicht();
+    for (const table of tables) assert.deepEqual((await run(u.marjolijn, `select * from public.${table}`)).rows, [], table);
+    await assertDenied(run(u.marjolijn, "insert into public.personal_items (assignment_id, kind, body, created_by) values ($1, 'note', 'Zonder tweede stap', $2)", [k.anoukOntspannen, u.marjolijn.id]));
+  });
+  test('met de instelling aan kan een beheerder zonder tweede stap niets', async () => {
+    await verplicht();
+    assert.deepEqual(ids(await run(u.beheerder, 'select id from public.profiles')), [u.beheerder.id]);
+    await assertDenied(run(u.beheerder, "select public.admin_update_profile($1, 'client', 'blocked')", [u.bram.id]));
+  });
+  test('met de instelling aan werkt alles weer na de tweede stap', async () => {
+    await verplicht();
+    assert.deepEqual(ids(await run({ ...u.marjolijn, aal: 'aal2' }, 'select id from public.personal_items')), [x.itemAnoukOntspannen, x.itemBram].sort());
+    await run({ ...u.beheerder, aal: 'aal2' }, "select public.admin_update_profile($1, 'client', 'blocked')", [u.bram.id]);
+  });
+  test('een cliënt heeft nooit een tweede stap nodig', async () => {
+    await verplicht();
+    assert.deepEqual(ids(await run(u.anouk, 'select id from public.personal_items')), [x.itemAnoukOntspannen, x.itemAnoukVoeding].sort());
+  });
+});
+
+describe('Accountstatus', () => {
+  const tables = ['library_items', 'personal_items', 'messages', 'attachments', 'assignments', 'disciplines'];
   test('een geblokkeerd account ziet niets meer', async () => {
     for (const table of tables) assert.deepEqual((await run(u.geblokkeerd, `select * from public.${table}`)).rows, [], table);
     await assertDenied(run(u.geblokkeerd, "insert into public.messages (assignment_id, sender_id, body) values ($1, $2, 'Toch nog')", [k.geblokkeerd, u.geblokkeerd.id]));

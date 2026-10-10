@@ -16,8 +16,6 @@ type AuthState = {
   ready: boolean;
   session: Session | null;
   profile: Profile | null;
-  /** true als de tweede inlogstap is gedaan */
-  secondStepDone: boolean;
   signIn(email: string, password: string): Promise<string | null>;
   signOut(): Promise<void>;
 };
@@ -37,7 +35,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [secondStepDone, setSecondStepDone] = useState(false);
 
   useEffect(() => {
     if (!supabase) {
@@ -62,19 +59,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!supabase || !userId) {
       setProfile(null);
-      setSecondStepDone(false);
       return;
     }
     let active = true;
-    (async () => {
-      const [{ data: row }, { data: level }] = await Promise.all([
-        supabase.from('profiles').select('id, full_name, role, status').eq('id', userId).maybeSingle(),
-        supabase.auth.mfa.getAuthenticatorAssuranceLevel(),
-      ]);
-      if (!active) return;
-      setProfile((row as Profile | null) ?? null);
-      setSecondStepDone(level?.currentLevel === 'aal2');
-    })();
+    supabase
+      .from('profiles')
+      .select('id, full_name, role, status')
+      .eq('id', userId)
+      .maybeSingle()
+      .then(({ data: row }) => {
+        if (active) setProfile((row as Profile | null) ?? null);
+      });
     return () => {
       active = false;
     };
@@ -91,8 +86,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ ready, session, profile, secondStepDone, signIn, signOut }),
-    [ready, session, profile, secondStepDone, signIn, signOut],
+    () => ({ ready, session, profile, signIn, signOut }),
+    [ready, session, profile, signIn, signOut],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
