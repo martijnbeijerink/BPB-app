@@ -12,7 +12,7 @@ Het fundament staat (bouwstap 1 uit het technisch ontwerp) en de eerste schermen
 
 | Onderdeel | Status |
 | --- | --- |
-| Database: tabellen en toegangsregels per rij | Klaar, met 74 tests |
+| Database: tabellen en toegangsregels per rij | Klaar, met 84 tests |
 | Demo-gegevens voor de app: dezelfde voorbeelden als in de klikbare demo | Klaar als script voor de SQL Editor. Getest in de testdatabase, nog niet op het echte Supabase-project |
 | App: inloggen met e-mailadres en wachtwoord | Klaar, getest op een telefoon tegen het echte Supabase-project |
 | App: menubalk met tabs per rol, Bibliotheek met thema's en zoeken, Profiel | Klaar, getest op een telefoon |
@@ -20,7 +20,7 @@ Het fundament staat (bouwstap 1 uit het technisch ontwerp) en de eerste schermen
 | App: Berichten tussen cliënt en professional, live, met tellers in de menubalk | Klaar, zonder bijlagen. In een browser doorgeklikt tegen een nagebootste backend, nog niet op een telefoon. Het live binnenkomen is alleen op het echte project te controleren |
 | Eigen filmpje of document delen, bijlagen bij berichten | Volgt zodra de bestandsopslag en de videodienst zijn gekoppeld |
 | Afspelen van filmpjes en openen van documenten | Volgt zodra de videodienst en de bestandsopslag zijn gekoppeld |
-| Scherm Afspraken | Volgende stap. De tab bestaat al en toont een tussenscherm |
+| App: Afspraken, komend en geweest; de professional voegt een afspraak toe | Klaar. In een browser doorgeklikt tegen een nagebootste backend, nog niet op een telefoon. Een afspraak wijzigen of laten vervallen kan in de database, maar heeft nog geen scherm |
 | Tweede inlogstap | Niet in gebruik: inloggen is e-mailadres en wachtwoord. In de database met één instelling aan te zetten |
 | Uitnodigen per e-mail, wachtwoord herstellen | Volgt |
 | Meldingen op de telefoon (push) | Volgt |
@@ -100,13 +100,13 @@ Een professional ziet de tab Cliënten in plaats van Voor mij. Log met de profes
 
 ### Demo-gegevens laden
 
-Met `supabase/demo/demo-gegevens-laden.sql` laat de app dezelfde voorbeelden zien als de klikbare demo: vier bibliotheekitems, de vier cliënten van Marjolijn, de drie disciplines van Anouk, gedeelde onderdelen en berichten.
+Met `supabase/demo/demo-gegevens-laden.sql` laat de app dezelfde voorbeelden zien als de klikbare demo: vier bibliotheekitems, de vier cliënten van Marjolijn, de drie disciplines van Anouk, gedeelde onderdelen, berichten en afspraken. Voer eerst alle migraties uit.
 
 Nodig: de twee testaccounts van hierboven, één actieve cliënt en één actieve professional. Zij worden Anouk en Marjolijn; je logt in met hun eigen e-mailadres en wachtwoord.
 
 1. Open het bestand, kopieer de hele inhoud en plak die in de SQL Editor.
 2. Kies Run. Supabase waarschuwt dat de opdracht gegevens verwijdert; bevestig dat.
-3. Onderaan verschijnt een regel met 4 bibliotheekitems, 3 disciplines van Anouk, 4 cliënten van Marjolijn, 7 persoonlijke onderdelen en 7 berichten.
+3. Onderaan verschijnt een regel met 4 bibliotheekitems, 3 disciplines van Anouk, 4 cliënten van Marjolijn, 7 persoonlijke onderdelen, 7 berichten en 12 afspraken.
 
 Goed om te weten:
 
@@ -114,7 +114,8 @@ Goed om te weten:
 - Joost, Sanne, Bram, Fatima en Pieter bestaan alleen als naam. Met die accounts kan niemand inloggen.
 - Opnieuw uitvoeren zet alles terug in de beginstand, bijvoorbeeld na een demonstratie.
 - Heb je meer dan één actieve cliënt of professional, vul dan bovenaan in het script de twee e-mailadressen in.
-- Afspraken en de beheerder zitten nog niet in de app en dus ook niet in deze gegevens.
+- De afspraken staan op dagen ten opzichte van vandaag: voer het script opnieuw uit als de komende afspraken voorbij zijn.
+- De beheerder zit nog niet in de app en dus ook niet in deze gegevens.
 
 Met `supabase/demo/demo-gegevens-verwijderen.sql` haal je de extra personen weer weg. Doe dat voordat er echte cliënten in de database komen.
 
@@ -155,6 +156,7 @@ De database gebruikt Engelse namen, de ontwerpen Nederlandse.
 | `library_items` | Bibliotheekitems |
 | `personal_items` | Persoonlijke items |
 | `messages` | Berichten |
+| `appointments` | Afspraken |
 | `attachments` | Bijlagen |
 | `read_states` | Leesstand |
 | `devices` | Apparaten |

@@ -2,7 +2,11 @@
 --
 -- Zet de voorbeeldgegevens uit de klikbare demo in de database, zodat de app
 -- op de telefoon hetzelfde laat zien: de bibliotheek, de cliënten van
--- Marjolijn, de disciplines van Anouk, gedeelde onderdelen en berichten.
+-- Marjolijn, de disciplines van Anouk, gedeelde onderdelen, berichten en
+-- afspraken.
+--
+-- Voer eerst alle bestanden uit supabase/migrations/ uit, ook die van de
+-- afspraken.
 --
 -- Uitvoeren: plak dit hele bestand in de SQL Editor van Supabase en kies Run.
 -- Supabase waarschuwt dat er iets wordt verwijderd; dat klopt, zie hieronder.
@@ -13,7 +17,7 @@
 --
 -- Wat het doet:
 --   1. Het verwijdert de koppelingen van die twee accounts, met alles wat
---      eraan hangt (gedeelde onderdelen, berichten), en de bibliotheekitems
+--      eraan hangt (gedeelde onderdelen, berichten, afspraken), en de bibliotheekitems
 --      die zij hebben geplaatst.
 --   2. Het maakt vijf extra personen aan die alleen als naam bestaan: de
 --      professionals Joost en Sanne en de cliënten Bram, Fatima en Pieter.
@@ -41,6 +45,10 @@ declare
   b_adem uuid; b_brein uuid; b_werkblad uuid; b_wandel uuid;
   today timestamptz := date_trunc('day', now());
 begin
+  if to_regclass('public.appointments') is null then
+    raise exception 'De tabel voor afspraken ontbreekt. Voer eerst supabase/migrations/20261011090000_afspraken.sql uit.';
+  end if;
+
   -- 1. De twee accounts waarmee je inlogt ----------------------------------
   if trim(client_email) <> '' then
     select array_agg(u.id) into found from auth.users u where lower(u.email) = lower(trim(client_email));
@@ -163,6 +171,31 @@ begin
     (marjolijn, l_bram, now(), now()),
     (marjolijn, l_fatima, now(), now()),
     (marjolijn, l_pieter, now(), now());
+
+  -- 10. Afspraken: dagen vanaf vandaag, in Nederlandse tijd. Een afspraak
+  --     die op een weekend zou vallen, schuift naar de dichtstbijzijnde werkdag.
+  insert into public.appointments (assignment_id, starts_at, place, created_by)
+  select v.assignment_id,
+    ((d.day + case extract(isodow from d.day)::int
+        when 6 then (case when v.days < 0 then -1 else 2 end)
+        when 7 then (case when v.days < 0 then -2 else 1 end)
+        else 0 end) + v.at) at time zone 'Europe/Amsterdam',
+    v.place, v.coach
+  from (values
+    (l_anouk, marjolijn, -28, time '10:00', 'Op locatie'),
+    (l_anouk, marjolijn, -14, time '10:00', 'Op locatie'),
+    (l_anouk, marjolijn, 5, time '10:00', 'Op locatie'),
+    (l_anouk, marjolijn, 19, time '10:00', 'Op locatie'),
+    (l_bewegen, joost, -9, time '14:30', 'Op locatie'),
+    (l_bewegen, joost, 8, time '14:30', 'Op locatie'),
+    (l_voeding, sanne, 12, time '09:00', 'Telefonisch'),
+    (l_bram, marjolijn, -6, time '11:30', 'Op locatie'),
+    (l_bram, marjolijn, 7, time '11:30', 'Op locatie'),
+    (l_fatima, marjolijn, -20, time '13:00', 'Telefonisch'),
+    (l_fatima, marjolijn, 2, time '13:00', 'Op locatie'),
+    (l_pieter, marjolijn, 9, time '15:00', 'Op locatie')
+  ) as v (assignment_id, coach, days, at, place)
+  cross join lateral (select (now() at time zone 'Europe/Amsterdam')::date + v.days as day) d;
 end
 $$;
 
@@ -172,4 +205,5 @@ select
   (select count(*) from public.assignments a join public.profiles p on p.id = a.client_id where p.full_name = 'Anouk V.') as disciplines_van_anouk,
   (select count(*) from public.assignments a join public.profiles p on p.id = a.coach_id where p.full_name = 'Marjolijn') as clienten_van_marjolijn,
   (select count(*) from public.personal_items) as persoonlijke_onderdelen,
-  (select count(*) from public.messages) as berichten;
+  (select count(*) from public.messages) as berichten,
+  (select count(*) from public.appointments) as afspraken;

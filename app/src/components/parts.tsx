@@ -45,6 +45,20 @@ export function LockNote({ children }: { children: ReactNode }) {
   );
 }
 
+/** Een keuzeknop in een rij: thema, tijd, plaats. */
+export function Chip({ label, selected, onPress, accessibilityLabel }: { label: string; selected: boolean; onPress(): void; accessibilityLabel?: string }) {
+  return (
+    <Pressable
+      accessibilityLabel={accessibilityLabel ?? label}
+      accessibilityRole="button"
+      accessibilityState={{ selected }}
+      onPress={onPress}
+      style={[styles.chip, selected && styles.chipSelected]}>
+      <Text style={[styles.chipLabel, selected && styles.chipLabelSelected]}>{label}</Text>
+    </Pressable>
+  );
+}
+
 export function SectionTitle({ children }: { children: ReactNode }) {
   return (
     <Text accessibilityRole="header" style={styles.section}>
@@ -80,4 +94,8 @@ const styles = StyleSheet.create({
   lock: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, padding: 16, borderRadius: 16, backgroundColor: colors.calm },
   lockText: { flex: 1, fontFamily: fonts.regular, fontSize: 14, lineHeight: 20, color: colors.ink },
   section: { fontFamily: fonts.bold, fontSize: 15, color: colors.ink },
+  chip: { minWidth: 52, minHeight: 44, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 14, borderWidth: 1, borderColor: colors.lineStrong, borderRadius: 22, backgroundColor: colors.surface },
+  chipSelected: { borderColor: colors.ink, backgroundColor: colors.ink },
+  chipLabel: { fontFamily: fonts.medium, fontSize: 15, color: colors.ink },
+  chipLabelSelected: { fontFamily: fonts.semibold, color: colors.onInk },
 });

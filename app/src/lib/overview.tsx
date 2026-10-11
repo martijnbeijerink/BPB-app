@@ -6,7 +6,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { AppState } from 'react-native';
 
 import { fetchAssignments, type Assignment } from './data';
-import { supabase } from './supabase';
+import { channelName, supabase } from './supabase';
 
 type Overview = {
   assignments: Assignment[];
@@ -50,7 +50,7 @@ export function OverviewProvider({ children }: { children: ReactNode }) {
     });
     // Live: een nieuw bericht of persoonlijk onderdeel werkt de tellers bij.
     const channel = supabase
-      ?.channel('overzicht')
+      ?.channel(channelName('overzicht'))
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, () => refresh())
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'personal_items' }, () => refresh())
       .subscribe();

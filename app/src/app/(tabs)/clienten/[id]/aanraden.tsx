@@ -100,7 +100,7 @@ export default function Aanraden() {
             return (
               <Pressable
                 accessibilityRole="radio"
-                accessibilityState={{ selected }}
+                aria-checked={selected}
                 key={item.id}
                 onPress={() => {
                   setChosen(item.id);

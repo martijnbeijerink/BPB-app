@@ -33,6 +33,9 @@ export type PersonalItem = {
 
 export type Message = { id: string; assignment_id: string; sender_id: string; body: string; created_at: string };
 
+/** Een afspraak bij één koppeling. De namen komen uit het overzicht van de koppelingen. */
+export type Appointment = { id: string; assignment_id: string; starts_at: string; place: string };
+
 function client() {
   if (!supabase) throw new Error('De app is nog niet aan Supabase gekoppeld.');
   return supabase;
@@ -89,4 +92,18 @@ export async function recommendLibraryItem(assignmentId: string, coachId: string
 /** Zet de leesstand op "nu", met de klok van de server. Mislukken is niet erg: de teller blijft dan staan. */
 export async function markRead(assignmentId: string, what: { messages?: boolean; items?: boolean }): Promise<void> {
   await client().rpc('mark_read', { a_id: assignmentId, mark_messages: !!what.messages, mark_items: !!what.items });
+}
+
+/** Alle afspraken die de ingelogde gebruiker mag zien: de database geeft alleen de eigen terug. */
+export async function fetchAppointments(): Promise<Appointment[]> {
+  const { data, error } = await client().from('appointments').select('id, assignment_id, starts_at, place').order('starts_at', { ascending: true });
+  if (error) throw error;
+  return (data as Appointment[] | null) ?? [];
+}
+
+export async function addAppointment(assignmentId: string, coachId: string, startsAt: Date, place: string): Promise<void> {
+  const { error } = await client()
+    .from('appointments')
+    .insert({ assignment_id: assignmentId, starts_at: startsAt.toISOString(), place, created_by: coachId });
+  if (error) throw error;
 }
