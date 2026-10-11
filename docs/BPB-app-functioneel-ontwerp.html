@@ -80,8 +80,8 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <p class="lede">Een app voor Android en iPhone waarin cliënten en professionals van Burnout Preventie &amp; Begeleiding filmpjes, documenten en berichten delen.</p>
   <dl class="meta">
     <dt>Opdrachtgever</dt><dd>Burnout Preventie &amp; Begeleiding</dd>
-    <dt>Versie</dt><dd>0.6</dd>
-    <dt>Datum</dt><dd>10 oktober 2026</dd>
+    <dt>Versie</dt><dd>0.7</dd>
+    <dt>Datum</dt><dd>11 oktober 2026</dd>
     <dt>Status</dt><dd>Concept, ter bespreking bij de demo</dd>
   </dl>
 </header>
@@ -112,10 +112,10 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
 <p>Het ontwerp is een concept. Opmerkingen uit de bespreking van de demo worden verwerkt in een volgende versie.</p>
 
 <h2 id="h2"><span class="num">2</span>Gebruikers en rechten</h2>
-<p>Drie rollen loggen in: de cliënt, de professional en de beheerder. Een professional begeleidt een cliënt voor één discipline. De beheerder is een professional met extra taken: die kan alles wat een professional kan, en regelt daarnaast de accounts en de koppelingen tussen cliënten en professionals. De werkgever van een cliënt heeft geen account en ziet niets.</p>
+<p>Drie rollen loggen in: de cliënt, de professional en de casehouder. Een professional begeleidt een cliënt voor één discipline. De casehouder is ook coach van eigen cliënten: die kan alles wat een professional kan, en regelt daarnaast de accounts en de koppelingen tussen cliënten en professionals. De werkgever van een cliënt heeft geen account en ziet niets.</p>
 <div class="tablewrap">
 <table>
-  <thead><tr><th>Wat</th><th>Cliënt</th><th>Professional</th><th>Beheerder</th></tr></thead>
+  <thead><tr><th>Wat</th><th>Cliënt</th><th>Professional</th><th>Casehouder</th></tr></thead>
   <tbody>
     <tr><td class="key">Gedeelde bibliotheek bekijken</td><td>Ja</td><td>Ja</td><td>Ja</td></tr>
     <tr><td class="key">Gedeelde bibliotheek beheren</td><td class="no">Nee</td><td>Ja</td><td>Ja</td></tr>
@@ -130,12 +130,12 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   </tbody>
 </table>
 </div>
-<p>De beheerder ziet welke cliënt bij welke professional hoort. Berichten en persoonlijke onderdelen van andere professionals en hun cliënten leest de beheerder niet.</p>
+<p>De casehouder ziet welke cliënt bij welke professional hoort. Berichten en persoonlijke onderdelen van andere professionals en hun cliënten leest de casehouder niet.</p>
 
 <h2 id="h3"><span class="num">3</span>Opbouw van de app</h2>
-<p>Cliënt, professional en beheerder gebruiken dezelfde app, elk met vijf hoofdschermen. De beheerder heeft de schermen van een professional. Op het scherm Cliënten staat voor de beheerder daarnaast het uitnodigen van een nieuwe cliënt en het koppelen en ontkoppelen. Professional en beheerder hebben dezelfde schermen ook in de webbrowser, bijvoorbeeld om filmpjes vanaf een computer te uploaden. Professionals uitnodigen, accounts afsluiten en de lijst met disciplines regelt de beheerder in de webbrowser.</p>
+<p>Cliënt, professional en casehouder gebruiken dezelfde app, elk met vijf hoofdschermen. De casehouder heeft de schermen van een professional. Op het scherm Cliënten staat voor de casehouder daarnaast het uitnodigen van een nieuwe cliënt en het koppelen en ontkoppelen. Professional en casehouder hebben dezelfde schermen ook in de webbrowser, bijvoorbeeld om filmpjes vanaf een computer te uploaden. Professionals uitnodigen, accounts afsluiten en de lijst met disciplines regelt de casehouder in de webbrowser.</p>
 <figure>
-<svg viewBox="0 0 760 452" role="img" aria-label="Schermen per rol: cliënt, professional en beheerder">
+<svg viewBox="0 0 760 452" role="img" aria-label="Schermen per rol: cliënt, professional en casehouder">
   <rect class="lane" x="24" y="16" width="712" height="120" rx="8"/>
   <text class="tn" x="40" y="37">Cliënt · app op de telefoon</text>
   <rect class="bx" x="40" y="48" width="124" height="72" rx="8"/><text class="tn" x="50" y="72">Bibliotheek</text><text class="tb" x="50" y="88">Filmpjes en</text><text class="tb" x="50" y="104">documenten</text>
@@ -153,7 +153,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <rect class="bx" x="584" y="184" width="124" height="72" rx="8"/><text class="tn" x="594" y="208">Profiel</text><text class="tb" x="594" y="224">Meldingen en</text><text class="tb" x="594" y="240">uitloggen</text>
 
   <rect class="lane" x="24" y="288" width="712" height="120" rx="8"/>
-  <text class="tn" x="40" y="309">Beheerder · de schermen van de professional, en daarnaast</text>
+  <text class="tn" x="40" y="309">Casehouder · de schermen van de professional, en daarnaast</text>
   <rect class="bx" x="40" y="320" width="216" height="72" rx="8"/><text class="tn" x="52" y="344">Cliënten en koppelingen</text><text class="tb" x="52" y="360">In de app: cliënt uitnodigen,</text><text class="tb" x="52" y="376">koppelen en ontkoppelen</text>
   <rect class="bx" x="268" y="320" width="216" height="72" rx="8"/><text class="tn" x="280" y="344">Accounts</text><text class="tb" x="280" y="360">In de webbrowser: afsluiten,</text><text class="tb" x="280" y="376">professionals uitnodigen</text>
   <rect class="bx" x="496" y="320" width="212" height="72" rx="8"/><text class="tn" x="508" y="344">Disciplines</text><text class="tb" x="508" y="360">In de webbrowser: de lijst</text><text class="tb" x="508" y="376">instellen</text>
@@ -169,7 +169,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
 
 <h3><span class="num">4.1</span>Inloggen en account</h3>
 <ul>
-  <li>Een account bestaat alleen op uitnodiging van de beheerder, per e-mail. Vrij registreren kan niet.</li>
+  <li>Een account bestaat alleen op uitnodiging van de casehouder, per e-mail. Vrij registreren kan niet.</li>
   <li>Inloggen gaat met e-mailadres en wachtwoord, voor alle rollen.</li>
   <li>De app blijft ingelogd en ontgrendelt met pincode, vingerafdruk of gezichtsherkenning.</li>
   <li>Een vergeten wachtwoord herstelt de gebruiker zelf via e-mail.</li>
@@ -219,18 +219,18 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <li>Nieuwe items in de gedeelde bibliotheek geven geen pushmelding.</li>
 </ul>
 
-<h3><span class="num">4.7</span>Beheer</h3>
+<h3><span class="num">4.7</span>Taken van de casehouder</h3>
 <ul>
-  <li>De beheerder heeft in de app dezelfde schermen en functies als een professional, met eigen cliënten.</li>
-  <li>De beheerder nodigt in de app een nieuwe cliënt uit met naam en e-mailadres, en kan die daarbij direct aan een professional koppelen. De cliënt krijgt een e-mail met de uitnodiging en kiest zelf een wachtwoord.</li>
+  <li>De casehouder heeft in de app dezelfde schermen en functies als een professional, met eigen cliënten.</li>
+  <li>De casehouder nodigt in de app een nieuwe cliënt uit met naam en e-mailadres, en kan die daarbij direct aan een professional koppelen. De cliënt krijgt een e-mail met de uitnodiging en kiest zelf een wachtwoord.</li>
   <li>Tot de cliënt voor het eerst inlogt, staat die in het overzicht als uitgenodigd.</li>
-  <li>De beheerder koppelt in de app een cliënt aan een professional. De discipline is die van de professional. Per discipline heeft een cliënt één professional.</li>
-  <li>De beheerder ziet per cliënt een overzicht van de koppelingen: de discipline en de professional.</li>
-  <li>De beheerder kan een koppeling beëindigen (ontkoppelen). Cliënt en professional kunnen daarna niets nieuws meer delen of sturen, en komende afspraken vervallen. Wat er al staat, blijft voor beiden leesbaar tot de bewaartermijn uit hoofdstuk 5 afloopt.</li>
+  <li>De casehouder koppelt in de app een cliënt aan een professional. De discipline is die van de professional. Per discipline heeft een cliënt één professional.</li>
+  <li>De casehouder ziet per cliënt een overzicht van de koppelingen: de discipline en de professional.</li>
+  <li>De casehouder kan een koppeling beëindigen (ontkoppelen). Cliënt en professional kunnen daarna niets nieuws meer delen of sturen, en komende afspraken vervallen. Wat er al staat, blijft voor beiden leesbaar tot de bewaartermijn uit hoofdstuk 5 afloopt.</li>
   <li>Wordt dezelfde cliënt later opnieuw aan dezelfde professional gekoppeld, dan gaat de koppeling weer open met alles wat er al stond.</li>
   <li>Een nieuwe of beëindigde koppeling is direct zichtbaar bij de cliënt en de professional.</li>
-  <li>Professionals uitnodigen, accounts blokkeren en accounts afsluiten doet de beheerder in de webbrowser.</li>
-  <li>De beheerder stelt de lijst met disciplines in.</li>
+  <li>Professionals uitnodigen, accounts blokkeren en accounts afsluiten doet de casehouder in de webbrowser.</li>
+  <li>De casehouder stelt de lijst met disciplines in.</li>
 </ul>
 
 <h2 id="h5"><span class="num">5</span>Privacy</h2>
@@ -238,7 +238,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
 <ol class="rules">
   <li>De werkgever heeft geen account en krijgt geen gegevens uit de app.</li>
   <li>Een professional ziet alleen cliënten die aan hem of haar gekoppeld zijn, en van die cliënten alleen de eigen pagina en het eigen gesprek.</li>
-  <li>De beheerder ziet welke cliënt bij welke professional hoort, maar leest alleen de pagina's en gesprekken van de eigen cliënten.</li>
+  <li>De casehouder ziet welke cliënt bij welke professional hoort, maar leest alleen de pagina's en gesprekken van de eigen cliënten.</li>
   <li>Een cliënt ziet nooit iets van andere cliënten, ook geen namen.</li>
   <li>Een melding op het vergrendelscherm toont geen inhoud, alleen dat er iets nieuws is.</li>
   <li>Na het einde van een traject houdt de cliënt voorlopig 1 jaar toegang. Daarna wordt het account gesloten en worden berichten en persoonlijke onderdelen verwijderd.</li>
@@ -261,12 +261,12 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
 <p>Dit ontwerp gaat uit van de volgende uitgangspunten. Ze worden bij de bespreking van de demo met BPB bevestigd of aangepast.</p>
 <ol class="rules">
   <li>Een cliënt doorloopt meerdere disciplines, elk met een eigen professional. Elke discipline heeft een eigen pagina in de app.</li>
-  <li>De beheerder stelt de lijst met disciplines in.</li>
+  <li>De casehouder stelt de lijst met disciplines in.</li>
   <li>Professionals van dezelfde cliënt zien elkaars pagina en gesprek niet.</li>
   <li>Alle professionals mogen de gedeelde bibliotheek beheren.</li>
   <li>De bibliotheek is ingedeeld in de zes werkenergie-thema's.</li>
-  <li>Professional en beheerder werken zowel in de app als in de webbrowser.</li>
-  <li>De beheerder is zelf ook professional. Berichten en persoonlijke onderdelen van andere professionals en hun cliënten kan de beheerder niet inzien.</li>
+  <li>Professional en casehouder werken zowel in de app als in de webbrowser.</li>
+  <li>De casehouder is zelf ook coach en begeleidt eigen cliënten. Berichten en persoonlijke onderdelen van andere professionals en hun cliënten kan de casehouder niet inzien.</li>
   <li>Elke professional heeft één discipline. Bij het koppelen volgt de discipline uit de gekozen professional.</li>
   <li>Na het ontkoppelen blijft wat gedeeld en geschreven is leesbaar voor cliënt en professional, tot de bewaartermijn afloopt.</li>
   <li>De professional ziet niet of een cliënt een bericht heeft gelezen.</li>
@@ -282,14 +282,15 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
     <tr><td class="key">0.1</td><td>9 oktober 2026</td><td>Eerste concept, opgesteld bij de demo</td></tr>
     <tr><td class="key">0.2</td><td>9 oktober 2026</td><td>Overzicht van afspraken toegevoegd</td></tr>
     <tr><td class="key">0.3</td><td>10 oktober 2026</td><td>Inloggen met alleen e-mailadres en wachtwoord; tweestapsverificatie vervallen</td></tr>
-    <tr><td class="key">0.4</td><td>10 oktober 2026</td><td>De beheerder kan alles wat een professional kan; koppelen en ontkoppelen in de app</td></tr>
+    <tr><td class="key">0.4</td><td>10 oktober 2026</td><td>De casehouder kan alles wat een professional kan; koppelen en ontkoppelen in de app</td></tr>
     <tr><td class="key">0.5</td><td>10 oktober 2026</td><td>De professional voert afspraken in en kan een gedeeld onderdeel intrekken</td></tr>
-    <tr><td class="key">0.6</td><td>10 oktober 2026</td><td>De beheerder nodigt in de app een nieuwe cliënt uit; wat eerst begeleider heette, heet nu professional</td></tr>
+    <tr><td class="key">0.6</td><td>10 oktober 2026</td><td>De casehouder nodigt in de app een nieuwe cliënt uit; wat eerst begeleider heette, heet nu professional</td></tr>
+    <tr><td class="key">0.7</td><td>11 oktober 2026</td><td>Wat eerst beheerder heette, heet nu casehouder; de casehouder is ook coach</td></tr>
   </tbody>
 </table>
 </div>
 
-<footer><span>BPB-app · Functioneel ontwerp</span><span>Versie 0.6 · 10 oktober 2026 · concept</span></footer>
+<footer><span>BPB-app · Functioneel ontwerp</span><span>Versie 0.7 · 11 oktober 2026 · concept</span></footer>
 </div>
 </body>
 </html>

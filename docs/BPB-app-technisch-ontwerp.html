@@ -80,8 +80,8 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <p class="lede">Hoe de app voor cliënten en professionals van Burnout Preventie &amp; Begeleiding wordt gebouwd, beveiligd en in gebruik genomen.</p>
   <dl class="meta">
     <dt>Opdrachtgever</dt><dd>Burnout Preventie &amp; Begeleiding</dd>
-    <dt>Versie</dt><dd>0.6</dd>
-    <dt>Datum</dt><dd>10 oktober 2026</dd>
+    <dt>Versie</dt><dd>0.7</dd>
+    <dt>Datum</dt><dd>11 oktober 2026</dd>
     <dt>Status</dt><dd>Concept, ter bespreking bij de demo</dd>
   </dl>
 </header>
@@ -118,8 +118,8 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <path class="ln" d="M601 256V296H194V320" marker-end="url(#arrow)"/>
   <path class="ln" d="M681 256V320" marker-end="url(#arrow)"/>
 
-  <rect class="bx" x="24" y="24" width="340" height="64" rx="8"/><text class="tn" x="36" y="48">App voor cliënt, professional en beheerder</text><text class="tb" x="36" y="66">Expo, één codebase voor Android en iPhone</text>
-  <rect class="bx" x="396" y="24" width="340" height="64" rx="8"/><text class="tn" x="408" y="48">Webomgeving voor professional en beheerder</text><text class="tb" x="408" y="66">In de browser, met dezelfde inlog en regels</text>
+  <rect class="bx" x="24" y="24" width="340" height="64" rx="8"/><text class="tn" x="36" y="48">App voor cliënt, professional en casehouder</text><text class="tb" x="36" y="66">Expo, één codebase voor Android en iPhone</text>
+  <rect class="bx" x="396" y="24" width="340" height="64" rx="8"/><text class="tn" x="408" y="48">Webomgeving voor professional en casehouder</text><text class="tb" x="408" y="66">In de browser, met dezelfde inlog en regels</text>
 
   <rect class="bx" x="40" y="168" width="158" height="88" rx="8"/><text class="tn" x="52" y="192">Inloggen</text><text class="tb" x="52" y="208">Alleen op uitnodiging,</text><text class="tb" x="52" y="224">met e-mailadres</text><text class="tb" x="52" y="240">en wachtwoord</text>
   <rect class="bx-p" x="214" y="168" width="158" height="88" rx="8"/><text class="tn" x="226" y="192">Database</text><text class="tb-d" x="226" y="208">Toegangsregels per</text><text class="tb-d" x="226" y="224">rij: alleen de eigen</text><text class="tb-d" x="226" y="240">koppelingen</text>
@@ -142,7 +142,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
   <thead><tr><th>Onderdeel</th><th>Keuze</th><th>Waarom</th><th>Alternatief</th></tr></thead>
   <tbody>
     <tr><td class="key">App voor Android en iPhone</td><td><a href="https://docs.expo.dev/workflow/overview/">Expo</a> (React Native)</td><td>Eén codebase voor beide telefoons. De app wordt in de cloud gebouwd; een lokale installatie van Android Studio of Xcode is niet nodig.</td><td>Flutter</td></tr>
-    <tr><td class="key">Webomgeving voor professional en beheerder</td><td>Webapp in React op dezelfde backend</td><td>Beheren en filmpjes uploaden gaat beter op een groot scherm. Inlog en toegangsregels zijn dezelfde als in de app.</td><td>De Expo-app ook als website laten draaien</td></tr>
+    <tr><td class="key">Webomgeving voor professional en casehouder</td><td>Webapp in React op dezelfde backend</td><td>Beheren en filmpjes uploaden gaat beter op een groot scherm. Inlog en toegangsregels zijn dezelfde als in de app.</td><td>De Expo-app ook als website laten draaien</td></tr>
     <tr><td class="key">Backend: inloggen, database, bestanden</td><td><a href="https://supabase.com/docs/guides/platform/regions">Supabase</a>, project in Frankfurt (eu-central-1)</td><td>Inloggen, database en bestandsopslag in één dienst, met toegangsregels per rij. De regio wordt per project gekozen.</td><td>Firebase, of Supabase zelf hosten bij een Europese partij</td></tr>
     <tr><td class="key">Berichten</td><td>Tabel in de database, met live-updates van Supabase</td><td>Een aparte chatdienst is niet nodig. Berichten vallen onder dezelfde toegangsregels als de rest.</td><td>Een losse chatdienst</td></tr>
     <tr><td class="key">Filmpjes</td><td><a href="https://bunny.net/pricing/stream/">Bunny Stream</a></td><td>Zet filmpjes om naar een streambaar formaat zonder omzetkosten. Links kunnen worden ondertekend en verlopen dan.</td><td>Mux of Cloudflare Stream</td></tr>
@@ -154,13 +154,13 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
 <div class="note"><p><strong>Aandachtspunt.</strong> Supabase is geen Europees bedrijf. De <a href="https://supabase.com/legal/dpa">verwerkersovereenkomst</a> wordt gesloten met Supabase Pte. Ltd., en de gegevens staan in een datacenter van Amazon in Frankfurt. Of dat voor BPB volstaat, is een vraag voor een privacydeskundige. Zie hoofdstuk 8.</p></div>
 
 <h2 id="h4"><span class="num">4</span>Gegevensmodel</h2>
-<p>Alles wat privé is, hangt aan één gegeven: de koppeling van één cliënt aan één professional voor één discipline. De persoonlijke pagina en het gesprek horen allebei bij zo'n koppeling. De professional in een koppeling kan ook de beheerder zijn, want die begeleidt zelf ook cliënten.</p>
+<p>Alles wat privé is, hangt aan één gegeven: de koppeling van één cliënt aan één professional voor één discipline. De persoonlijke pagina en het gesprek horen allebei bij zo'n koppeling. De professional in een koppeling kan ook de casehouder zijn, want die is zelf ook coach van cliënten.</p>
 <div class="tablewrap">
 <table>
   <thead><tr><th>Tabel</th><th>Inhoud</th></tr></thead>
   <tbody>
-    <tr><td class="key">Gebruikers</td><td>Naam, e-mailadres, rol (cliënt, professional of beheerder), status van het account</td></tr>
-    <tr><td class="key">Disciplines</td><td>De lijst die de beheerder instelt</td></tr>
+    <tr><td class="key">Gebruikers</td><td>Naam, e-mailadres, rol (cliënt, professional of casehouder), status van het account</td></tr>
+    <tr><td class="key">Disciplines</td><td>De lijst die de casehouder instelt</td></tr>
     <tr><td class="key">Koppelingen</td><td>Cliënt, professional en discipline, met begin- en einddatum. Ontkoppelen vult de einddatum in; de koppeling en wat eraan hangt blijven staan</td></tr>
     <tr><td class="key">Bibliotheekitems</td><td>Titel, omschrijving, thema, soort (filmpje of document), verwijzing naar het bestand, wie het plaatste</td></tr>
     <tr><td class="key">Persoonlijke items</td><td>De koppeling, soort (filmpje, document, notitie of aanrader uit de bibliotheek), inhoud of verwijzing, datum</td></tr>
@@ -180,22 +180,22 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
 <table>
   <thead><tr><th>Regel uit het functioneel ontwerp</th><th>Technische maatregel</th></tr></thead>
   <tbody>
-    <tr><td class="key">De werkgever ziet niets</td><td>Er bestaat geen rol voor werkgevers. Vrij registreren staat uit; een account ontstaat alleen via een uitnodiging van de beheerder.</td></tr>
+    <tr><td class="key">De werkgever ziet niets</td><td>Er bestaat geen rol voor werkgevers. Vrij registreren staat uit; een account ontstaat alleen via een uitnodiging van de casehouder.</td></tr>
     <tr><td class="key">Een professional ziet alleen eigen cliënten, en alleen de eigen pagina en het eigen gesprek</td><td><a href="https://supabase.com/docs/guides/auth/row-level-security">Toegangsregels per rij</a>: persoonlijke items, berichten en afspraken zijn alleen leesbaar voor de cliënt en de professional van die koppeling. Alleen die professional kan er persoonlijke items en afspraken aan toevoegen, of ze weer weghalen.</td></tr>
     <tr><td class="key">Een cliënt ziet nooit iets van andere cliënten</td><td>Dezelfde regels. De lijst met gebruikers is voor cliënten niet opvraagbaar.</td></tr>
-    <tr><td class="key">De beheerder leest alleen de pagina's en gesprekken van eigen cliënten</td><td>Voor persoonlijke items, berichten en afspraken gelden voor de beheerder dezelfde toegangsregels als voor een professional: alleen de eigen koppelingen. Het overzicht van alle koppelingen bevat alleen namen en disciplines. Koppelen, ontkoppelen en het beheer van accounts lopen via afgebakende functies die alleen de beheerder mag aanroepen.</td></tr>
+    <tr><td class="key">De casehouder leest alleen de pagina's en gesprekken van eigen cliënten</td><td>Voor persoonlijke items, berichten en afspraken gelden voor de casehouder dezelfde toegangsregels als voor een professional: alleen de eigen koppelingen. Het overzicht van alle koppelingen bevat alleen namen en disciplines. Koppelen, ontkoppelen en het beheer van accounts lopen via afgebakende functies die alleen de casehouder mag aanroepen.</td></tr>
     <tr><td class="key">Na het ontkoppelen kan niets nieuws meer gedeeld of gestuurd worden</td><td>De database weigert nieuwe persoonlijke items en berichten bij een koppeling waarvan de einddatum is verstreken. Lezen blijft mogelijk tot de bewaartermijn afloopt.</td></tr>
-    <tr><td class="key">Inloggen met e-mailadres en wachtwoord</td><td>Alle rollen loggen in met e-mailadres en wachtwoord. <a href="https://supabase.com/docs/guides/auth/auth-mfa">Tweestapsverificatie</a> is geen onderdeel van de eerste versie. De database kan die later met één instelling verplichten voor professionals en beheerder.</td></tr>
+    <tr><td class="key">Inloggen met e-mailadres en wachtwoord</td><td>Alle rollen loggen in met e-mailadres en wachtwoord. <a href="https://supabase.com/docs/guides/auth/auth-mfa">Tweestapsverificatie</a> is geen onderdeel van de eerste versie. De database kan die later met één instelling verplichten voor professionals en casehouder.</td></tr>
     <tr><td class="key">Bestanden zijn besloten</td><td>Documenten en bijlagen vallen onder dezelfde regels. Een filmpje speelt alleen af via een <a href="https://bunny.net/docs/stream/token-authentication.md">ondertekende link die verloopt</a>, uitgegeven na de toegangscontrole.</td></tr>
     <tr><td class="key">Een melding toont geen inhoud</td><td>De pushmelding bevat alleen de tekst dat er iets nieuws is. De app haalt de inhoud pas op na het ontgrendelen.</td></tr>
     <tr><td class="key">Na 1 jaar vervalt de toegang en verdwijnen de gegevens</td><td>Een dagelijkse taak sluit accounts 1 jaar na het einde van het traject en verwijdert berichten, persoonlijke items, bijlagen en persoonlijke filmpjes.</td></tr>
-    <tr><td class="key">De cliënt kan gegevens opvragen en laten verwijderen</td><td>Een functie die alle gegevens van één cliënt exporteert of verwijdert, te starten door de beheerder.</td></tr>
+    <tr><td class="key">De cliënt kan gegevens opvragen en laten verwijderen</td><td>Een functie die alle gegevens van één cliënt exporteert of verwijdert, te starten door de casehouder.</td></tr>
   </tbody>
 </table>
 </div>
 <h3><span class="num">5.1</span>Grenzen van deze maatregelen</h3>
 <ul>
-  <li>Inloggen gebeurt met alleen e-mailadres en wachtwoord. Wie het wachtwoord van een professional kent, kan bij de gegevens van diens cliënten. Wie het wachtwoord van de beheerder kent, kan bovendien koppelingen maken en beëindigen.</li>
+  <li>Inloggen gebeurt met alleen e-mailadres en wachtwoord. Wie het wachtwoord van een professional kent, kan bij de gegevens van diens cliënten. Wie het wachtwoord van de casehouder kent, kan bovendien koppelingen maken en beëindigen.</li>
   <li>Wie het Supabase-account zelf beheert, kan technisch altijd bij alle gegevens. Het advies is die toegang te beperken tot één of twee personen.</li>
   <li>Een ondertekende videolink is niet aan één kijker gebonden. Wie de link heeft, kan het filmpje bekijken tot de link verloopt. De looptijd wordt daarom kort gehouden.</li>
 </ul>
@@ -203,14 +203,14 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
 <h2 id="h6"><span class="num">6</span>Fasering</h2>
 <p>De bouw verloopt in tien stappen. Elke stap wordt afgesloten met een test op een telefoon. De toegangsregels komen eerst, zodat alles wat daarna wordt gebouwd er vanaf het begin onder valt.</p>
 <ol class="rules">
-  <li><strong>Fundament.</strong> Supabase-project in Frankfurt, de tabellen en de toegangsregels. Daarbij automatische tests die als cliënt, professional en beheerder proberen andermans gegevens te lezen en moeten falen.</li>
+  <li><strong>Fundament.</strong> Supabase-project in Frankfurt, de tabellen en de toegangsregels. Daarbij automatische tests die als cliënt, professional en casehouder proberen andermans gegevens te lezen en moeten falen.</li>
   <li><strong>Inloggen.</strong> Uitnodiging per e-mail, wachtwoord en vergrendeling met pincode of vingerafdruk. Testaccounts worden in deze fase nog met de hand aangemaakt.</li>
   <li><strong>Bibliotheek.</strong> Bekijken in de app, daarna toevoegen en wijzigen door de professional, inclusief het uploaden van filmpjes.</li>
   <li><strong>Voor mij en afspraken.</strong> De pagina per discipline bij de cliënt, het delen en intrekken door de professional, en het invoeren en bekijken van afspraken.</li>
   <li><strong>Berichten.</strong> Gesprekken per koppeling, met bijlagen.</li>
-  <li><strong>Beheerder in de app.</strong> De beheerder krijgt de schermen van een professional, met het uitnodigen van een nieuwe cliënt, het overzicht van alle koppelingen en het koppelen en ontkoppelen. De toegangsregels en de tests uit stap 1 worden hierop aangepast: daarin is de beheerder nu nog geen professional.</li>
+  <li><strong>Casehouder in de app.</strong> De casehouder krijgt de schermen van een professional, met het uitnodigen van een nieuwe cliënt, het overzicht van alle koppelingen en het koppelen en ontkoppelen. De toegangsregels en de tests uit stap 1 worden hierop aangepast: daarin is de casehouder nu nog geen professional.</li>
   <li><strong>Pushmeldingen.</strong> Bij een nieuw bericht en een nieuw persoonlijk onderdeel.</li>
-  <li><strong>Webomgeving.</strong> Accounts en disciplines voor de beheerder, en dezelfde schermen voor professional en beheerder in de browser.</li>
+  <li><strong>Webomgeving.</strong> Accounts en disciplines voor de casehouder, en dezelfde schermen voor professional en casehouder in de browser.</li>
   <li><strong>Bewaartermijn en inzage.</strong> De dagelijkse opruimtaak en het exporteren en verwijderen van de gegevens van één cliënt.</li>
   <li><strong>Pilot en publicatie.</strong> Een proef met een beperkte groep professionals en cliënten, daarna indienen bij de App Store en Google Play.</li>
 </ol>
@@ -250,7 +250,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
     <tr><td class="key">Supabase als verwerker</td><td>Toets door een privacydeskundige of een niet-Europees bedrijf met opslag in Frankfurt voor BPB volstaat. Het alternatief is Supabase zelf hosten bij een Europese partij.</td></tr>
     <tr><td class="key">Opslag van filmpjes in de EU</td><td>Bevestiging van Bunny Stream dat filmpjes uitsluitend in de EU kunnen worden opgeslagen. De website noemt een keuze uit opslagregio's, maar bevestigt dit niet.</td></tr>
     <tr><td class="key">D-U-N-S-nummer</td><td>Nagaan of BPB een D-U-N-S-nummer heeft. Apple vraagt hierom bij de aanmelding als organisatie.</td></tr>
-    <tr><td class="key">Disciplines per professional</td><td>Vaststellen of een professional altijd één discipline heeft. Zo niet, dan kiest de beheerder bij het koppelen ook de discipline.</td></tr>
+    <tr><td class="key">Disciplines per professional</td><td>Vaststellen of een professional altijd één discipline heeft. Zo niet, dan kiest de casehouder bij het koppelen ook de discipline.</td></tr>
     <tr><td class="key">Herkomst van afspraken</td><td>Het ontwerp gaat uit van invoer door de professional in de app. Vaststellen of daarnaast een koppeling met een bestaande agenda nodig is; dat is extra werk.</td></tr>
     <tr><td class="key">Afzender van uitnodigingen</td><td>Vaststellen vanaf welk e-mailadres van BPB de uitnodigingen worden verstuurd, en met welke maildienst.</td></tr>
   </tbody>
@@ -284,14 +284,15 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-
     <tr><td class="key">0.1</td><td>9 oktober 2026</td><td>Eerste concept, opgesteld bij de demo</td></tr>
     <tr><td class="key">0.2</td><td>9 oktober 2026</td><td>Overzicht van afspraken toegevoegd</td></tr>
     <tr><td class="key">0.3</td><td>10 oktober 2026</td><td>Inloggen met alleen e-mailadres en wachtwoord; tweestapsverificatie vervallen, later aan te zetten</td></tr>
-    <tr><td class="key">0.4</td><td>10 oktober 2026</td><td>De beheerder is ook professional; koppelen en ontkoppelen in de app, als eigen bouwstap</td></tr>
+    <tr><td class="key">0.4</td><td>10 oktober 2026</td><td>De casehouder is ook professional; koppelen en ontkoppelen in de app, als eigen bouwstap</td></tr>
     <tr><td class="key">0.5</td><td>10 oktober 2026</td><td>De professional voert afspraken in en kan een gedeeld onderdeel intrekken</td></tr>
-    <tr><td class="key">0.6</td><td>10 oktober 2026</td><td>De beheerder nodigt in de app een nieuwe cliënt uit; wat eerst begeleider heette, heet nu professional</td></tr>
+    <tr><td class="key">0.6</td><td>10 oktober 2026</td><td>De casehouder nodigt in de app een nieuwe cliënt uit; wat eerst begeleider heette, heet nu professional</td></tr>
+    <tr><td class="key">0.7</td><td>11 oktober 2026</td><td>Wat eerst beheerder heette, heet nu casehouder; de casehouder is ook coach</td></tr>
   </tbody>
 </table>
 </div>
 
-<footer><span>BPB-app · Technisch ontwerp</span><span>Versie 0.6 · 10 oktober 2026 · concept</span></footer>
+<footer><span>BPB-app · Technisch ontwerp</span><span>Versie 0.7 · 11 oktober 2026 · concept</span></footer>
 </div>
 </body>
 </html>

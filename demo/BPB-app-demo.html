@@ -238,7 +238,7 @@ textarea.input{min-height:120px;padding:14px 16px;resize:vertical}
     <h1>BPB-app</h1>
     <span class="pill">Demo met voorbeeldgegevens</span>
     <p>Deel iets als professional en zie het bij de cliënt verschijnen. De rondleiding laat stap voor stap zien wat je kunt proberen.</p>
-    <div class="seg" role="group" aria-label="Professional en beheerder bekijken op">
+    <div class="seg" role="group" aria-label="Professional en casehouder bekijken op">
       <button type="button" data-view="phone" aria-pressed="true">Telefoon</button>
       <button type="button" data-view="web" aria-pressed="false">Webbrowser</button>
     </div>
@@ -248,7 +248,7 @@ textarea.input{min-height:120px;padding:14px 16px;resize:vertical}
   <div class="switch switch-all" role="tablist" aria-label="Kies een rol">
     <button type="button" role="tab" data-role="client" aria-selected="true">Cliënt</button>
     <button type="button" role="tab" data-role="coach" aria-selected="false">Professional</button>
-    <button type="button" role="tab" data-role="admin" aria-selected="false">Beheerder</button>
+    <button type="button" role="tab" data-role="admin" aria-selected="false">Casehouder</button>
   </div>
   <main class="stage">
     <section class="device is-active" data-role="client">
@@ -256,9 +256,9 @@ textarea.input{min-height:120px;padding:14px 16px;resize:vertical}
       <div class="phone" id="phone-client" data-role="client"></div>
     </section>
     <div class="staff">
-      <div class="switch switch-staff" role="tablist" aria-label="Kies professional of beheerder">
+      <div class="switch switch-staff" role="tablist" aria-label="Kies professional of casehouder">
         <button type="button" role="tab" data-role="coach" aria-selected="true">Professional · Marjolijn</button>
-        <button type="button" role="tab" data-role="admin" aria-selected="false">Beheerder · Femke</button>
+        <button type="button" role="tab" data-role="admin" aria-selected="false">Casehouder · Femke</button>
       </div>
       <section class="device is-staff" data-role="coach">
         <h2 class="device-label">Professional · Marjolijn (ontspannen)</h2>
@@ -266,7 +266,7 @@ textarea.input{min-height:120px;padding:14px 16px;resize:vertical}
         <div class="phone" id="phone-coach" data-role="coach"></div>
       </section>
       <section class="device" data-role="admin">
-        <h2 class="device-label">Beheerder · Femke (ook professional inzicht)</h2>
+        <h2 class="device-label">Casehouder / coach · Femke</h2>
         <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span>BPB-app in de webbrowser</span></div>
         <div class="phone" id="phone-admin" data-role="admin"></div>
       </section>
@@ -285,8 +285,8 @@ textarea.input{min-height:120px;padding:14px 16px;resize:vertical}
         <li><strong>Cliënt · Voor mij</strong><p>Open Ontspannen: de notitie staat bovenaan. Stuur van daaruit een bericht aan Marjolijn.</p></li>
         <li><strong>Professional · Berichten</strong><p>Het bericht komt binnen. Antwoord, met of zonder bijlage.</p></li>
         <li><strong>Professional · Afspraken</strong><p>Voeg een afspraak met Anouk toe. Die staat direct bij de cliënt.</p></li>
-        <li><strong>Beheerder · Cliënten</strong><p>Nodig een nieuwe cliënt uit en koppel die aan Marjolijn: de cliënt komt in Marjolijns lijst. Kies daarna Alle koppelingen en ontkoppel een cliënt.</p></li>
-        <li><strong>Webbrowser</strong><p>Zet op een computerscherm de weergave bovenaan op Webbrowser. Professional en beheerder hebben daar dezelfde schermen.</p></li>
+        <li><strong>Casehouder · Cliënten</strong><p>Nodig een nieuwe cliënt uit en koppel die aan Marjolijn: de cliënt komt in Marjolijns lijst. Kies daarna Alle koppelingen en ontkoppel een cliënt.</p></li>
+        <li><strong>Webbrowser</strong><p>Zet op een computerscherm de weergave bovenaan op Webbrowser. Professional en casehouder hebben daar dezelfde schermen.</p></li>
         <li><strong>Privacy</strong><p>Wijs op de slotjes onderaan de schermen. Wat privé is, zien alleen de cliënt en de eigen professional.</p></li>
       </ol>
     </section>
@@ -294,7 +294,7 @@ textarea.input{min-height:120px;padding:14px 16px;resize:vertical}
       <h3>Nog te bespreken</h3>
       <ul class="asks">
         <li>Welke disciplines zijn er, en heeft elke professional er één?<span>In de demo volgt de discipline uit de professional.</span></li>
-        <li>Wie wordt beheerder, en mag die meelezen bij andere professionals?<span>In de demo niet.</span></li>
+        <li>Wie wordt casehouder, en mag die meelezen bij andere professionals?<span>In de demo niet.</span></li>
         <li>Hoe komen afspraken in de app?<span>In de demo voert de professional ze in. Een koppeling met een bestaande agenda is extra werk.</span></li>
         <li>Hoe lang blijven gegevens bewaard na het einde van een traject?<span>Het ontwerp gaat uit van 1 jaar.</span></li>
         <li>Vanaf welk e-mailadres gaan de uitnodigingen?</li>
@@ -313,23 +313,23 @@ const KIND = { video: 'Filmpje', doc: 'Document', note: 'Notitie' };
 const ME = {
   client: { name: 'Anouk V.', role: 'Cliënt' },
   coach: { name: 'Marjolijn', role: 'Professional ontspannen', disc: 'Ontspannen' },
-  admin: { name: 'Femke', role: 'Beheerder · professional inzicht', disc: 'Inzicht' }
+  admin: { name: 'Femke', role: 'Casehouder / coach', disc: 'Coaching' }
 };
 const ROLES = ['client', 'coach', 'admin'];
-// Alle cliënten en professionals die de beheerder kan koppelen. `phone` zegt
+// Alle cliënten en professionals die de casehouder kan koppelen. `phone` zegt
 // welke telefoon in de demo bij die professional hoort.
 const CLIENTS = [{ name: 'Anouk V.', init: 'AV' }, { name: 'Bram J.', init: 'BJ' }, { name: 'Fatima E.', init: 'FE' }, { name: 'Pieter K.', init: 'PK' }, { name: 'Lotte M.', init: 'LM' }];
 const STAFF = [
   { id: 'marjolijn', name: 'Marjolijn', init: 'M', disc: 'Ontspannen', phone: 'coach' },
   { id: 'joost', name: 'Joost', init: 'J', disc: 'Bewegen', phone: null },
   { id: 'sanne', name: 'Sanne', init: 'S', disc: 'Voeding', phone: null },
-  { id: 'femke', name: 'Femke', init: 'F', disc: 'Inzicht', phone: 'admin' }
+  { id: 'femke', name: 'Femke', init: 'F', disc: 'Coaching', phone: 'admin' }
 ];
 const STAFF_TABS = [['clients', 'Cliënten', 'people'], ['lib', 'Bibliotheek', 'book'], ['appts', 'Afspraken', 'calendar'], ['msgs', 'Berichten', 'msg'], ['me', 'Profiel', 'person']];
 const TABS = {
   client: [['lib', 'Bibliotheek', 'book'], ['mine', 'Voor mij', 'mark'], ['appts', 'Afspraken', 'calendar'], ['msgs', 'Berichten', 'msg'], ['me', 'Profiel', 'person']],
   coach: STAFF_TABS,
-  admin: STAFF_TABS // de beheerder kan alles wat een professional kan
+  admin: STAFF_TABS // de casehouder kan alles wat een professional kan
 };
 const PATHS = {
   book: '<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/>',
@@ -355,7 +355,7 @@ const PATHS = {
 const ic = (n, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${PATHS[n]}</svg>`;
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const first = name => name.split(' ')[0];
-// Een gesprek heeft twee kanten. De beheerder staat, net als een professional, aan de kant van de professional.
+// Een gesprek heeft twee kanten. De casehouder staat, net als een professional, aan de kant van de professional.
 const side = role => (role === 'client' ? 'client' : 'coach');
 
 function seed() {
@@ -391,7 +391,7 @@ function seed() {
         items: [{ id: 'p7', kind: 'lib', ref: 'b4', date: '5 okt', seen: true }],
         msgs: [{ from: 'coach', text: 'Hoe gaat het wandelen?', day: 'Maandag 5 oktober' }, { from: 'client', text: 'Het wandelen gaat goed, dank je.' }] },
       L6: { id: 'L6', client: 'Anouk V.', clientInit: 'AV', coach: 'Sanne', coachInit: 'S', disc: 'Voeding', last: '', unread: { client: false, coach: false }, items: [], msgs: [] },
-      L7: { id: 'L7', client: 'Bram J.', clientInit: 'BJ', coach: 'Femke', coachInit: 'F', disc: 'Inzicht', last: '7 okt', unread: { client: false, coach: false },
+      L7: { id: 'L7', client: 'Bram J.', clientInit: 'BJ', coach: 'Femke', coachInit: 'F', disc: 'Coaching', last: '7 okt', unread: { client: false, coach: false },
         items: [{ id: 'p8', kind: 'lib', ref: 'b3', date: '7 okt', seen: true }],
         msgs: [{ from: 'coach', text: 'Ik heb het werkblad voor je klaargezet. Lukt het om het voor vrijdag in te vullen?', day: 'Woensdag 7 oktober' }, { from: 'client', text: 'Ja, dat gaat lukken.' }] }
     }
@@ -434,7 +434,7 @@ function reset() {
 }
 // Welke telefoon hoort bij deze professional (null: geen telefoon in de demo).
 const phoneOf = coach => (STAFF.find(p => p.name === coach) || {}).phone || null;
-// De koppelingen die iemand zelf ziet: de cliënt de eigen professionals, een professional of beheerder de eigen cliënten.
+// De koppelingen die iemand zelf ziet: de cliënt de eigen professionals, een professional of casehouder de eigen cliënten.
 const mine = role => Object.values(db.links).filter(l => (role === 'client' ? l.client === ME.client.name : l.owner === role)).map(l => l.id);
 const top = role => nav[role].stack.at(-1) || null;
 const libItem = id => db.lib.find(i => i.id === id);
@@ -529,7 +529,7 @@ function msgsScreen(role) {
       : `<span class="avatar soft">${l.clientInit}</span><span class="row-main"><span class="row-title">${esc(l.client)}</span>`;
     return `<button class="row" type="button" data-push="chat" data-a="${id}">${who}<span class="row-line${unread ? ' strong' : ''}">${preview(l, role)}</span></span><span class="row-side"><span>${l.last}</span>${unread ? '<span class="dot"></span><span class="sr">Ongelezen</span>' : ''}</span></button>`;
   }).join('');
-  const note = role === 'client' ? 'Alleen jij en de professional van dat gesprek lezen mee.' : role === 'coach' ? 'Alleen jij en de cliënt lezen mee. Andere professionals en de beheerder zien deze gesprekken niet.' : 'Alleen jij en de cliënt lezen mee. De gesprekken van andere professionals zie je als beheerder niet.';
+  const note = role === 'client' ? 'Alleen jij en de professional van dat gesprek lezen mee.' : role === 'coach' ? 'Alleen jij en de cliënt lezen mee. Andere professionals en de casehouder zien deze gesprekken niet.' : 'Alleen jij en de cliënt lezen mee. De gesprekken van andere professionals zie je als casehouder niet.';
   return page(role, `<div class="head"><h2 class="h1">Berichten</h2><p class="sub">Eén gesprek per ${role === 'client' ? 'professional' : 'cliënt'}.</p></div>${rows ? `<div class="list">${rows}</div>` : '<p class="empty">Nog geen gesprekken.</p>'}${lock(note)}`);
 }
 function chatScreen(role, s) {
@@ -602,7 +602,7 @@ function clientRows(role) {
     return `<button class="row" type="button" data-push="client" data-a="${id}"><span class="avatar soft">${l.clientInit}</span><span class="row-main"><span class="row-title">${esc(l.client)}</span>${status}</span>${ic('right')}</button>`;
   }).join('')}</div>`;
 }
-// Alleen voor de beheerder: per cliënt bij welke professional die hoort.
+// Alleen voor de casehouder: per cliënt bij welke professional die hoort.
 function allLinks() {
   return `<div class="stack">${db.clients.map(c => {
     const links = Object.values(db.links).filter(l => l.client === c.name);
@@ -618,12 +618,12 @@ function clientsScreen(role) {
   if (role === 'coach') return page(role, `<div class="headrow"><h2 class="h1 grow">Mijn cliënten</h2><span class="tag">${ME.coach.disc}</span></div>${clientRows(role)}${lock('Je ziet alleen cliënten die voor jouw discipline aan jou gekoppeld zijn.')}`);
   const all = ui[role].cview === 'all';
   const chip = (id, label) => `<button class="chip" type="button" data-act="cview" data-a="${id}" aria-pressed="${ui[role].cview === id}">${label}</button>`;
-  return page(role, `<div class="head"><h2 class="h1">Cliënten</h2><p class="sub">Als beheerder nodig je cliënten uit en koppel je ze aan professionals.</p></div>
+  return page(role, `<div class="head"><h2 class="h1">Cliënten</h2><p class="sub">Als casehouder nodig je cliënten uit en koppel je ze aan professionals.</p></div>
     <div class="stack"><button class="btn" type="button" data-push="link" data-a="">${ic('link')}<span>Cliënt koppelen aan professional</span></button>
     <button class="btn ghost" type="button" data-push="newclient">${ic('plus')}<span>Nieuwe cliënt uitnodigen</span></button></div>
     <div class="chips">${chip('mine', 'Mijn cliënten')}${chip('all', 'Alle koppelingen')}</div>
     ${all ? allLinks() + lock('Je ziet wie aan wie gekoppeld is en kunt een koppeling beëindigen. Wat een professional en een cliënt delen en schrijven, zie je alleen bij je eigen cliënten.')
-      : clientRows(role) + lock(`Dit zijn je eigen cliënten, voor ${ME[role].disc.toLowerCase()}. Hier werk je als professional.`)}`);
+      : clientRows(role) + lock(`Dit zijn je eigen cliënten, voor ${ME[role].disc.toLowerCase()}. Hier werk je als coach.`)}`);
 }
 function newclientScreen(role) {
   return page(role, `${back('Cliënten')}<div class="head"><h2 class="h1">Nieuwe cliënt uitnodigen</h2><p class="sub">De cliënt krijgt een e-mail met een uitnodiging en kiest zelf een wachtwoord.</p></div>
@@ -877,7 +877,7 @@ function setRole(role) {
 document.querySelectorAll('.switch').forEach(sw => sw.addEventListener('click', e => { const b = e.target.closest('button'); if (b) setRole(b.dataset.role); }));
 document.getElementById('reset').addEventListener('click', () => { reset(); document.querySelectorAll('.phone').forEach(p => { delete p.dataset.key; }); renderAll(); });
 
-// Weergave voor professional en beheerder: telefoon of webbrowser. De schermen en de gegevens zijn dezelfde.
+// Weergave voor professional en casehouder: telefoon of webbrowser. De schermen en de gegevens zijn dezelfde.
 document.querySelector('.seg').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   document.querySelector('.shell').classList.toggle('webmode', b.dataset.view === 'web');
