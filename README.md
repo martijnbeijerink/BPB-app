@@ -12,7 +12,8 @@ Het fundament staat (bouwstap 1 uit het technisch ontwerp) en de eerste schermen
 
 | Onderdeel | Status |
 | --- | --- |
-| Database: tabellen en toegangsregels per rij | Klaar, met 61 tests |
+| Database: tabellen en toegangsregels per rij | Klaar, met 74 tests |
+| Demo-gegevens voor de app: dezelfde voorbeelden als in de klikbare demo | Klaar als script voor de SQL Editor. Getest in de testdatabase, nog niet op het echte Supabase-project |
 | App: inloggen met e-mailadres en wachtwoord | Klaar, getest op een telefoon tegen het echte Supabase-project |
 | App: menubalk met tabs per rol, Bibliotheek met thema's en zoeken, Profiel | Klaar, getest op een telefoon |
 | App: Voor mij (cliënt) en Cliënten (professional): notitie delen en een bibliotheekitem aanraden | Klaar. In een browser doorgeklikt tegen een nagebootste backend, nog niet op een telefoon |
@@ -30,6 +31,7 @@ Het fundament staat (bouwstap 1 uit het technisch ontwerp) en de eerste schermen
 | Map | Inhoud |
 | --- | --- |
 | `supabase/migrations/` | De database: tabellen en toegangsregels |
+| `supabase/demo/` | Demo-gegevens laden en weer verwijderen |
 | `tests/db/` | Tests die als cliënt, professional en beheerder proberen bij andermans gegevens te komen |
 | `tests/app/` | Tests van losse onderdelen van de app |
 | `app/` | De app zelf (Expo, React Native, TypeScript) |
@@ -95,6 +97,26 @@ where c.email = 'anouk@voorbeeld.nl'
 De laatste opdracht hoort "1 row" te melden. Meldt hij "0 rows", dan klopt een van de e-mailadressen niet.
 
 Een professional ziet de tab Cliënten in plaats van Voor mij. Log met de professional in om een notitie te delen of een bericht te sturen, en met de cliënt om het te zien. Dat kan op twee telefoons, of op één telefoon door uit en in te loggen.
+
+### Demo-gegevens laden
+
+Met `supabase/demo/demo-gegevens-laden.sql` laat de app dezelfde voorbeelden zien als de klikbare demo: vier bibliotheekitems, de vier cliënten van Marjolijn, de drie disciplines van Anouk, gedeelde onderdelen en berichten.
+
+Nodig: de twee testaccounts van hierboven, één actieve cliënt en één actieve professional. Zij worden Anouk en Marjolijn; je logt in met hun eigen e-mailadres en wachtwoord.
+
+1. Open het bestand, kopieer de hele inhoud en plak die in de SQL Editor.
+2. Kies Run. Supabase waarschuwt dat de opdracht gegevens verwijdert; bevestig dat.
+3. Onderaan verschijnt een regel met 4 bibliotheekitems, 3 disciplines van Anouk, 4 cliënten van Marjolijn, 7 persoonlijke onderdelen en 7 berichten.
+
+Goed om te weten:
+
+- Het script vervangt de koppelingen van de twee testaccounts en de bibliotheekitems die zij hebben geplaatst.
+- Joost, Sanne, Bram, Fatima en Pieter bestaan alleen als naam. Met die accounts kan niemand inloggen.
+- Opnieuw uitvoeren zet alles terug in de beginstand, bijvoorbeeld na een demonstratie.
+- Heb je meer dan één actieve cliënt of professional, vul dan bovenaan in het script de twee e-mailadressen in.
+- Afspraken en de beheerder zitten nog niet in de app en dus ook niet in deze gegevens.
+
+Met `supabase/demo/demo-gegevens-verwijderen.sql` haal je de extra personen weer weg. Doe dat voordat er echte cliënten in de database komen.
 
 ## De app starten
 

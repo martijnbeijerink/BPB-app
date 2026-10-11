@@ -13,7 +13,20 @@ create schema auth;
 create table auth.users (
   id uuid primary key default gen_random_uuid(),
   email text unique,
-  raw_user_meta_data jsonb not null default '{}'::jsonb
+  raw_user_meta_data jsonb not null default '{}'::jsonb,
+  -- De kolommen hieronder gebruikt alleen het laden van de demo-gegevens.
+  instance_id uuid,
+  aud text,
+  role text,
+  encrypted_password text,
+  email_confirmed_at timestamptz,
+  raw_app_meta_data jsonb,
+  created_at timestamptz,
+  updated_at timestamptz,
+  confirmation_token text,
+  recovery_token text,
+  email_change_token_new text,
+  email_change text
 );
 
 create function auth.jwt() returns jsonb language sql stable as $$
