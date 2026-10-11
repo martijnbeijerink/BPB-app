@@ -73,7 +73,7 @@ afterEach(async () => { await db.exec('rollback'); });
 
 describe('Niet ingelogd', () => {
   test('een bezoeker zonder account kan geen enkele tabel lezen', async () => {
-    for (const table of ['profiles', 'disciplines', 'assignments', 'library_items', 'personal_items', 'messages', 'attachments', 'read_states', 'devices']) {
+    for (const table of ['profiles', 'disciplines', 'assignments', 'library_items', 'personal_items', 'messages', 'attachments', 'read_states', 'devices', 'appointments']) {
       await assertDenied(run(ANON, `select * from public.${table}`), table);
     }
   });
@@ -389,5 +389,82 @@ describe('Overzicht per koppeling en leesstand', () => {
   test('een beëindigde koppeling staat als beëindigd in het overzicht', async () => {
     assert.equal(byId(await mine(u.bram), k.bramVoedingGestopt).ended, true);
     assert.equal(byId(await mine(u.bram), k.bramOntspannen).ended, false);
+  });
+});
+
+describe('Afspraken', () => {
+  // Een afspraak over drie dagen, vastgelegd door de eigenaar van de database (zoals de demo-gegevens).
+  const planned = (assignment, coach, when = "now() + interval '3 days'") =>
+    one(`insert into public.appointments (assignment_id, starts_at, created_by) values ($1, ${when}, $2) returning id`, [assignment, u[coach].id]);
+  const visible = async (who) => ids(await run(who, 'select id from public.appointments'));
+  const add = (who, assignment, createdBy = who) =>
+    run(who, "insert into public.appointments (assignment_id, starts_at, place, created_by) values ($1, now() + interval '7 days', 'Telefonisch', $2) returning id", [assignment, createdBy.id]);
+
+  test('de professional voegt een afspraak toe met een eigen cliënt; alleen die twee zien hem', async () => {
+    const id = (await add(u.marjolijn, k.anoukOntspannen)).rows[0].id;
+    assert.deepEqual(await visible(u.marjolijn), [id]);
+    assert.deepEqual(await visible(u.anouk), [id]);
+    assert.deepEqual(await visible(u.bram), [], 'een andere cliënt van dezelfde professional');
+    assert.deepEqual(await visible(u.sanne), [], 'een andere professional van dezelfde cliënt');
+    assert.deepEqual(await visible(u.beheerder), [], 'de beheerder');
+  });
+
+  test('een cliënt ziet alleen de eigen afspraken, bij al haar professionals', async () => {
+    const ontspannen = await planned(k.anoukOntspannen, 'marjolijn');
+    const voeding = await planned(k.anoukVoeding, 'sanne');
+    await planned(k.bramOntspannen, 'marjolijn');
+    assert.deepEqual(await visible(u.anouk), [ontspannen, voeding].sort());
+  });
+
+  test('een cliënt kan geen afspraak toevoegen, wijzigen of laten vervallen', async () => {
+    const id = await planned(k.anoukOntspannen, 'marjolijn');
+    await assertDenied(add(u.anouk, k.anoukOntspannen));
+    const changed = await run(u.anouk, "update public.appointments set place = 'Bij mij thuis' where id = $1", [id]);
+    assert.equal(changed.affectedRows ?? changed.rowCount ?? 0, 0);
+    const removed = await run(u.anouk, 'delete from public.appointments where id = $1', [id]);
+    assert.equal(removed.affectedRows ?? removed.rowCount ?? 0, 0);
+    assert.equal((await run(null, 'select place from public.appointments where id = $1', [id])).rows[0].place, 'Op locatie');
+  });
+
+  test('een professional kan geen afspraak toevoegen bij de cliënt van een ander, of op naam van een ander', async () => {
+    await assertDenied(add(u.sanne, k.anoukOntspannen), 'Sanne bij de koppeling van Marjolijn');
+    await assertDenied(add(u.marjolijn, k.anoukOntspannen, u.sanne), 'Marjolijn op naam van Sanne');
+    await assertDenied(add(u.beheerder, k.anoukOntspannen), 'de beheerder');
+  });
+
+  test('de professional wijzigt tijdstip en plaats en laat een afspraak vervallen; een ander kan dat niet', async () => {
+    const id = await planned(k.anoukOntspannen, 'marjolijn');
+    const other = await run(u.sanne, "update public.appointments set place = 'Telefonisch' where id = $1", [id]);
+    assert.equal(other.affectedRows ?? other.rowCount ?? 0, 0);
+    await run(u.sanne, 'delete from public.appointments where id = $1', [id]);
+    assert.deepEqual(await visible(u.anouk), [id], 'de afspraak staat er nog');
+
+    await run(u.marjolijn, "update public.appointments set place = 'Telefonisch', starts_at = now() + interval '10 days' where id = $1", [id]);
+    assert.equal((await run(u.anouk, 'select place from public.appointments where id = $1', [id])).rows[0].place, 'Telefonisch');
+    await run(u.marjolijn, 'delete from public.appointments where id = $1', [id]);
+    assert.deepEqual(await visible(u.anouk), []);
+  });
+
+  test('een afspraak verhuist niet naar een andere koppeling', async () => {
+    const id = await planned(k.anoukOntspannen, 'marjolijn');
+    await assertDenied(run(u.marjolijn, 'update public.appointments set assignment_id = $2 where id = $1', [id, k.bramOntspannen]));
+  });
+
+  test('na het einde van een koppeling blijven afspraken leesbaar, maar komt er niets meer bij', async () => {
+    const id = await planned(k.bramVoedingGestopt, 'sanne', 'now() - interval \'10 days\'');
+    assert.deepEqual(await visible(u.bram), [id]);
+    assert.deepEqual(await visible(u.sanne), [id]);
+    await assertDenied(add(u.sanne, k.bramVoedingGestopt));
+    const changed = await run(u.sanne, "update public.appointments set place = 'Telefonisch' where id = $1", [id]);
+    assert.equal(changed.affectedRows ?? changed.rowCount ?? 0, 0);
+  });
+
+  test('een geblokkeerd account ziet de eigen afspraken niet meer', async () => {
+    await planned(k.geblokkeerd, 'marjolijn');
+    assert.deepEqual(await visible(u.geblokkeerd), []);
+  });
+
+  test('een afspraak heeft een plaats', async () => {
+    await assertDenied(run(u.marjolijn, "insert into public.appointments (assignment_id, starts_at, place, created_by) values ($1, now(), '  ', $2)", [k.anoukOntspannen, u.marjolijn.id]));
   });
 });

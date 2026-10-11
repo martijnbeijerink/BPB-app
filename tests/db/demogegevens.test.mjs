@@ -55,7 +55,7 @@ describe('Demo-gegevens laden', () => {
 
   test('het script meldt wat er staat', async () => {
     const results = await ctx.db.exec(load);
-    assert.deepEqual(results.at(-1).rows, [{ bibliotheekitems: 4, disciplines_van_anouk: 3, clienten_van_marjolijn: 4, persoonlijke_onderdelen: 7, berichten: 7 }]);
+    assert.deepEqual(results.at(-1).rows, [{ bibliotheekitems: 4, disciplines_van_anouk: 3, clienten_van_marjolijn: 4, persoonlijke_onderdelen: 7, berichten: 7, afspraken: 12 }]);
   });
 
   test('Anouk ziet drie disciplines, met twee nieuwe onderdelen en één ongelezen bericht bij Ontspannen', async () => {
@@ -94,6 +94,20 @@ describe('Demo-gegevens laden', () => {
     assert.deepEqual(rows.map((r) => r.title), ['Ademhalingsoefening voor rustmomenten', 'Wat doet stress met je brein?', 'Werkblad: energiegevers en energievreters', 'Wandelschema voor de eerste weken']);
   });
 
+  test('Anouk ziet haar zeven afspraken bij drie professionals, Marjolijn die met haar vier cliënten', async () => {
+    const mine = await as(ctx, ctx.client, `select d.name as discipline, ap.place, ap.starts_at > now() as komend,
+        extract(isodow from ap.starts_at at time zone 'Europe/Amsterdam')::int as weekdag,
+        to_char(ap.starts_at at time zone 'Europe/Amsterdam', 'HH24:MI') as tijd
+      from public.appointments ap join public.assignments a on a.id = ap.assignment_id join public.disciplines d on d.id = a.discipline_id`);
+    assert.equal(mine.length, 7);
+    assert.equal(mine.filter((r) => r.komend).length, 4, 'vier komend, drie geweest');
+    assert.ok(mine.every((r) => r.weekdag <= 5), 'geen afspraken in het weekend');
+    assert.deepEqual([...new Set(mine.filter((r) => r.discipline === 'ontspannen').map((r) => r.tijd))], ['10:00'], 'Nederlandse tijd');
+    assert.deepEqual(mine.filter((r) => r.discipline === 'voeding').map((r) => r.place), ['Telefonisch']);
+    const coach = await as(ctx, ctx.coach, 'select count(*)::int as n, count(*) filter (where starts_at > now())::int as komend from public.appointments');
+    assert.deepEqual(coach, [{ n: 9, komend: 5 }]);
+  });
+
   test('de oude testgegevens zijn vervangen en de eigen accounts zijn dezelfde gebleven', async () => {
     assert.equal(Number((await ctx.db.query("select count(*) as n from public.messages where body = 'oud testbericht'")).rows[0].n), 0);
     const { rows } = await ctx.db.query("select u.email, p.full_name, p.role, p.status from auth.users u join public.profiles p on p.id = u.id where u.email like '%@voorbeeld.nl' order by u.email");
@@ -119,6 +133,7 @@ describe('Demo-gegevens laden', () => {
     assert.equal(await count(ctx.db, 'public.personal_items'), 7);
     assert.equal(await count(ctx.db, 'public.messages'), 7);
     assert.equal(await count(ctx.db, 'public.disciplines'), 3);
+    assert.equal(await count(ctx.db, 'public.appointments'), 12);
   });
 
   test('verwijderen haalt de extra personen weg en laat de eigen accounts staan', async () => {

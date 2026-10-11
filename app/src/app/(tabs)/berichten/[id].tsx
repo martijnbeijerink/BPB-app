@@ -15,7 +15,7 @@ import { fetchMessages, markRead, sendMessage, type Message } from '@/lib/data';
 import { dayHeading, firstName, initials, timeLabel } from '@/lib/format';
 import { capitalize } from '@/lib/library';
 import { useAssignment, useOverview } from '@/lib/overview';
-import { supabase } from '@/lib/supabase';
+import { channelName, supabase } from '@/lib/supabase';
 import { colors, fonts } from '@/lib/theme';
 
 export default function Gesprek() {
@@ -66,7 +66,7 @@ export default function Gesprek() {
   useEffect(() => {
     if (!supabase || !id) return;
     const channel = supabase
-      .channel(`gesprek-${id}`)
+      .channel(channelName(`gesprek-${id}`))
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `assignment_id=eq.${id}` }, (payload) => {
         const message = payload.new as Message;
         setMessages((known) => mergeMessages(known ?? [], [message]));

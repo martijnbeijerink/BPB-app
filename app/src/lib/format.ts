@@ -43,3 +43,10 @@ export function initials(name: string): string {
   const letters = parts.slice(0, 2).map((part) => part.charAt(0).toUpperCase());
   return letters.join('') || '?';
 }
+
+/** Weekdag voluit, met hoofdletter: "Dinsdag". */
+export const weekdayName = (date: Date) => weekdays[date.getDay()];
+/** Korte maand: "okt". */
+export const monthShort = (date: Date) => months[date.getMonth()];
+/** Maand voluit; month loopt van 0 (januari) tot 11. */
+export const monthLong = (month: number) => monthsLong[month];

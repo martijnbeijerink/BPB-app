@@ -33,3 +33,12 @@ if (supabase && Platform.OS !== 'web') {
     else supabase.auth.stopAutoRefresh();
   });
 }
+
+let channels = 0;
+/**
+ * Een eigen kanaalnaam per scherm dat live meeluistert. Twee schermen met
+ * dezelfde kanaalnaam zouden één kanaal delen, en dat weigert Supabase met
+ * een foutmelding. Hetzelfde gesprek kan twee keer open staan, bijvoorbeeld
+ * via Berichten en via Voor mij.
+ */
+export const channelName = (base: string) => `${base}-${++channels}`;
