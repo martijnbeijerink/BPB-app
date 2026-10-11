@@ -37,7 +37,7 @@ export default function Clienten() {
 
       {failed ? <Notice tone="error">Je cliënten konden niet worden opgehaald. Trek het scherm omlaag om het opnieuw te proberen.</Notice> : null}
       {loading ? <Body muted>Bezig met ophalen…</Body> : null}
-      {!loading && !failed && assignments.length === 0 ? <Notice>Er zijn nog geen cliënten aan jou gekoppeld. De beheerder regelt dat.</Notice> : null}
+      {!loading && !failed && assignments.length === 0 ? <Notice>Er zijn nog geen cliënten aan jou gekoppeld. De casehouder regelt dat.</Notice> : null}
 
       {assignments.length > 0 ? (
         <View style={partStyles.list}>

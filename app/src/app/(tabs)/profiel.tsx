@@ -7,7 +7,7 @@ import { Screen, screenStyles } from '@/components/screen';
 import { Body, Button, Title } from '@/components/ui';
 import { useAuth, type Role } from '@/lib/auth';
 
-const roleName: Record<Role, string> = { client: 'Cliënt', coach: 'Professional', admin: 'Beheerder' };
+const roleName: Record<Role, string> = { client: 'Cliënt', coach: 'Professional', admin: 'Casehouder' };
 
 export default function Profiel() {
   const { profile, session, signOut } = useAuth();

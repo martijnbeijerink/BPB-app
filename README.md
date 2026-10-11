@@ -6,7 +6,7 @@ Het functioneel en technisch ontwerp staan in de map `docs/`, de klikbare demo i
 
 ## Stand van zaken
 
-In de app en de ontwerpen heet de begeleider van een cliënt een **professional**. In de database en de code heet die rol `coach`.
+In de app en de ontwerpen heet de begeleider van een cliënt een **professional** en heet de beheerder een **casehouder**. De casehouder is zelf ook coach van cliënten. In de database en de code heten die rollen `coach` en `admin`.
 
 Het fundament staat (bouwstap 1 uit het technisch ontwerp) en de eerste schermen van de app zijn gebouwd.
 
@@ -24,7 +24,7 @@ Het fundament staat (bouwstap 1 uit het technisch ontwerp) en de eerste schermen
 | Tweede inlogstap | Niet in gebruik: inloggen is e-mailadres en wachtwoord. In de database met één instelling aan te zetten |
 | Uitnodigen per e-mail, wachtwoord herstellen | Volgt |
 | Meldingen op de telefoon (push) | Volgt |
-| Beheerder in de app: alles wat een professional kan, plus een nieuwe cliënt uitnodigen, koppelen en ontkoppelen | Staat in de demo en in de ontwerpen (versie 0.6). In de echte app en de database nog te bouwen: daar is de beheerder nu nog geen professional |
+| Casehouder in de app: alles wat een professional kan, plus een nieuwe cliënt uitnodigen, koppelen en ontkoppelen | Staat in de demo en in de ontwerpen (versie 0.7). In de echte app en de database nog te bouwen: daar is de casehouder nu nog geen professional |
 
 ## Indeling
 
@@ -32,11 +32,11 @@ Het fundament staat (bouwstap 1 uit het technisch ontwerp) en de eerste schermen
 | --- | --- |
 | `supabase/migrations/` | De database: tabellen en toegangsregels |
 | `supabase/demo/` | Demo-gegevens laden en weer verwijderen |
-| `tests/db/` | Tests die als cliënt, professional en beheerder proberen bij andermans gegevens te komen |
+| `tests/db/` | Tests die als cliënt, professional en casehouder proberen bij andermans gegevens te komen |
 | `tests/app/` | Tests van losse onderdelen van de app |
 | `app/` | De app zelf (Expo, React Native, TypeScript) |
-| `docs/` | Functioneel en technisch ontwerp, versie 0.6 (concept) |
-| `demo/` | Klikbare demo met voorbeeldgegevens, zonder backend: cliënt, professional en beheerder, op de telefoon en in de webbrowser, met een rondleiding |
+| `docs/` | Functioneel en technisch ontwerp, versie 0.7 (concept) |
+| `demo/` | Klikbare demo met voorbeeldgegevens, zonder backend: cliënt, professional en casehouder, op de telefoon en in de webbrowser, met een rondleiding |
 
 ## Tests draaien
 
@@ -115,7 +115,7 @@ Goed om te weten:
 - Opnieuw uitvoeren zet alles terug in de beginstand, bijvoorbeeld na een demonstratie.
 - Heb je meer dan één actieve cliënt of professional, vul dan bovenaan in het script de twee e-mailadressen in.
 - De afspraken staan op dagen ten opzichte van vandaag: voer het script opnieuw uit als de komende afspraken voorbij zijn.
-- De beheerder zit nog niet in de app en dus ook niet in deze gegevens.
+- De casehouder zit nog niet in de app en dus ook niet in deze gegevens.
 
 Met `supabase/demo/demo-gegevens-verwijderen.sql` haal je de extra personen weer weg. Doe dat voordat er echte cliënten in de database komen.
 
